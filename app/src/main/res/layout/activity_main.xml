@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/teal_700"
+    tools:context=".MainActivity"
+    >
+
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/sliderPager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    </androidx.viewpager.widget.ViewPager>
+
+    <TextView
+        android:id="@+id/texto1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Encuentra a tu \nmejor compañero"
+        android:lineSpacingExtra="-4dp"
+        android:textColor="@color/white"
+        android:layout_marginTop="342dp"
+        android:layout_marginLeft="40dp"
+        android:fontFamily="@font/dmsansbold"
+        android:textSize="30sp"
+        />
+
+    <TextView
+        android:id="@+id/texto2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/texto1"
+        android:text="Ayuda a adoptar distintos animales "
+        android:textColor="@color/white"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="40dp"
+        android:fontFamily="@font/dmsansregular"
+        android:textSize="18sp"
+        >
+
+    </TextView>
+
+
+
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/sign_in_button"
+        android:background="@drawable/registrarsegmailbutton"
+        android:drawableLeft="@drawable/icon_google"
+        android:layout_marginTop="95dp"
+        android:layout_width="215dp"
+        android:layout_height="37.4dp"
+        android:paddingLeft="22dp"
+        android:paddingRight="35dp"
+        android:paddingTop="11dp"
+        android:paddingBottom="10dp"
+        android:layout_below="@id/texto2"
+        android:layout_centerHorizontal="true"
+        android:text="Inicia sesión con gmail"
+        android:textAllCaps="false"
+        android:textColor="#020202"
+        android:textSize="12sp"
+        >
+
+    </androidx.appcompat.widget.AppCompatButton>
+
+
+
+
+    <LinearLayout
+        android:id="@+id/dotsLayout"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_alignBottom="@id/sliderPager">
+
+    </LinearLayout>
+</RelativeLayout>

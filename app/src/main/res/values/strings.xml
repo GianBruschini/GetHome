@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">GetHome</string>
+    <string name="ErrorSpinnerTipoAnimalMensaje">Debe seleccionar un tipo de animal</string>
+    <string name="ErrorSpinnerSexoAnimalMensaje">Debe seleccionar el sexo</string>
+    <string name="ErrorSpinnerEdadAnimalMensaje">Debe seleccionar una edad</string>
+
+    <string name="Continuar">Habilitar</string>
+    <string name="Salir">Salir</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+</resources>
