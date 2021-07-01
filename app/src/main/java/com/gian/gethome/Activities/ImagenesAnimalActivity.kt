@@ -163,6 +163,7 @@ class ImagenesAnimalActivity : AppCompatActivity() {
         val descripcion = FirebaseDatabase.getInstance().reference.child("Users").child("Animales").child(userId).child(key).child("descripcion")
         val userIDRF = FirebaseDatabase.getInstance().reference.child("Users").child("Animales").child(userId).child(key).child("userIDowner")
         val animalKey = FirebaseDatabase.getInstance().reference.child("Users").child("Animales").child(userId).child(key).child("animalKey")
+        val sexoAnimalDB = FirebaseDatabase.getInstance().reference.child("Users").child("Animales").child(userId).child(key).child("sexo")
         userIDRF.setValue(userId)
         nombre.setValue(nombreAnimal)
         tipo.setValue(tipoAnimal)
@@ -170,6 +171,7 @@ class ImagenesAnimalActivity : AppCompatActivity() {
         edad.setValue(edadAnimal)
         descripcion.setValue(descripcionAnimal)
         animalKey.setValue(key.toString())
+        sexoAnimalDB.setValue(sexoAnimal)
         //Start images upload
         storeImagesOnDataBase(key, currentUser)
 

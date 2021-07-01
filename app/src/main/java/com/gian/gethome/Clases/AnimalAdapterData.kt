@@ -7,4 +7,5 @@ data class AnimalAdapterData(var nombre: String,
                              var descripcion: String,
                              var transitoUrgente: String,
                              var idOwner: String,
-                             var animalKey:String)
+                             var animalKey:String,
+                             var sexo:String)

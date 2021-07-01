@@ -30,12 +30,13 @@ class HomeAdapter(private val mData: List<AnimalAdapterData>): RecyclerView.Adap
 
     override fun onBindViewHolder(holder: HomeViewHolder, position: Int) {
         val currentItem: AnimalAdapterData = mData[position]
-        val imageUrl: String = currentItem.imageURL
-        val title: String = currentItem.nombre
-        holder.nombreAnimal.text = title
+        holder.nombreAnimal.text = currentItem.nombre
         holder.edadAnimal.text = currentItem.edad
-
-        Picasso.get().load(imageUrl).placeholder(R.drawable.progress_animation).into(holder.fotoAnimal)
+        when(currentItem.sexo){
+            "Macho"->Picasso.get().load(R.drawable.male).into(holder.genreIcon)
+            "Hembra"->Picasso.get().load(R.drawable.female).into(holder.genreIcon)
+        }
+        Picasso.get().load(currentItem.imageURL).placeholder(R.drawable.progress_animation).into(holder.fotoAnimal)
     }
 
     override fun getItemCount(): Int {
@@ -46,6 +47,7 @@ class HomeAdapter(private val mData: List<AnimalAdapterData>): RecyclerView.Adap
         val fotoAnimal: ImageView = itemView.findViewById(R.id.fotoAnimalImage)
         val nombreAnimal: TextView = itemView.findViewById(R.id.nombreAnimalText)
         val edadAnimal: TextView = itemView.findViewById(R.id.edadText)
+        val genreIcon: ImageView = itemView.findViewById(R.id.iconGenre)
 
         init {
             itemView.setOnClickListener {

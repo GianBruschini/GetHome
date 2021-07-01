@@ -3,6 +3,7 @@ package com.gian.gethome.Fragments
 import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -52,7 +53,7 @@ class HomeFragment: Fragment(), HomeAdapter.OnItemClickListener {
                                 imagenNotNull,
                                 animal.edad, animal.descripcion,
                                 animal.transitoUrgente,
-                                animal.userIDowner, animal.animalKey))
+                                animal.userIDowner, animal.animalKey,animal.sexo))
                     }
                 }
                 myRecycler.adapter?.notifyDataSetChanged()
@@ -101,6 +102,14 @@ class HomeFragment: Fragment(), HomeAdapter.OnItemClickListener {
     override fun onitemClick(position: Int) {
         val intent = Intent(activity, AnimalDetalleActivity::class.java)
         val animalClicked:AnimalAdapterData = mlist[position]
+        Log.i("InfoAnimal", animalClicked.nombre)
+        Log.i("InfoAnimal", animalClicked.tipoAnimal)
+        Log.i("InfoAnimal", animalClicked.descripcion)
+        Log.i("InfoAnimal", animalClicked.edad)
+        Log.i("InfoAnimal", animalClicked.transitoUrgente)
+        Log.i("InfoAnimal", animalClicked.idOwner)
+        Log.i("InfoAnimal", animalClicked.animalKey)
+        Log.i("InfoAnimal", animalClicked.sexo)
         intent.putExtra("nombre", animalClicked.nombre)
         intent.putExtra("tipoAnimal", animalClicked.tipoAnimal)
         intent.putExtra("descripcion", animalClicked.descripcion)
@@ -108,6 +117,7 @@ class HomeFragment: Fragment(), HomeAdapter.OnItemClickListener {
         intent.putExtra("transitoUrgente", animalClicked.transitoUrgente)
         intent.putExtra("userIDowner", animalClicked.idOwner)
         intent.putExtra("animalKey", animalClicked.animalKey)
+        intent.putExtra("sexoAnimal", animalClicked.sexo)
         startActivity(intent)
     }
 

@@ -15,7 +15,7 @@
         <androidx.viewpager.widget.ViewPager
             android:id="@+id/imagenAnimalViewPager"
             android:layout_width="match_parent"
-            android:layout_height="250dp"
+            android:layout_height="290dp"
             android:src="@drawable/dog"
             android:scaleType="centerCrop"
             >
@@ -51,8 +51,8 @@
         android:layout_width="340dp"
         android:layout_height="120dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="190dp"
-        app:cardCornerRadius="40dp"
+        android:layout_marginTop="230dp"
+        app:cardCornerRadius="30dp"
         android:elevation="10dp"
         >
 
@@ -60,102 +60,97 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/linearNombre">
-
                 <TextView
-                    android:id="@+id/nombreAnimal"
+                    android:id="@+id/nombreAnimalTxt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="15dp"
                     android:layout_marginLeft="20dp"
-                    android:padding="10dp"
-                    android:textColor="#000000"
-                    android:textSize="15sp"
-                    android:text="Nombre del animal"
-                    >
+                    android:fontFamily="@font/opensans_bold"
+                    android:padding="5dp"
+                    android:textColor="#D9000000"
+                    android:textSize="20sp"
+                    android:text="Firulais"
+                    android:layout_marginStart="20dp">
                 </TextView>
 
-                <TextView
-                    android:id="@+id/sexoAnimal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginLeft="98dp"
-                    android:padding="10dp"
-                    android:textColor="#000000"
-                    android:textSize="15sp"
-                    android:text="Macho"
-                    >
-                </TextView>
 
-            </LinearLayout>
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/transitoUrgenteTxt"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/linearNombre"
-                android:layout_marginLeft="30dp"
-                android:orientation="horizontal"
-                android:id="@+id/linearEdad">
+                android:layout_below="@id/nombreAnimalTxt"
+                android:textColor="#000000"
+                android:textSize="15sp"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="25dp"
+                android:text="Con transito urgente"
+
+                >
+            </TextView>
 
 
 
+            <ImageView
+                android:id="@+id/sexoAnimalImage"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/male"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="40dp"
+                android:text="Macho"
+                android:layout_alignParentEnd="true">
+            </ImageView>
 
                 <TextView
-                    android:id="@+id/edadAnimal"
+                    android:id="@+id/edadAnimalTxt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="#000000"
                     android:textSize="15sp"
                     android:text="2 años"
+                    android:gravity="center"
+                    android:layout_below="@id/sexoAnimalImage"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginTop="15dp"
 
-                    android:layout_marginTop="1dp"
 
                     >
                 </TextView>
 
-            </LinearLayout>
-
-
-
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_below="@id/linearEdad"
-                android:layout_marginLeft="30dp"
-                android:layout_marginTop="8dp"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/opensans_bold"
-                    android:src="@drawable/ic_baseline_location_on_24"
-                    android:textSize="20sp"
-                    />
-
-                <TextView
-                    android:id="@+id/distanceTextCard"
+                <LinearLayout
+                    android:layout_below="@id/transitoUrgenteTxt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="11sp"
-                    android:text="Distance"
-                    android:textColor="#000000"
-                    android:padding="4dp"
-
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="5dp"
                     >
-                </TextView>
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/opensans_bold"
+                        android:src="@drawable/ic_baseline_location_on_24"
+                        android:textSize="20sp"
+                        />
+
+                    <TextView
+                        android:id="@+id/distanceTextCard"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="11sp"
+                        android:text="Distance"
+                        android:textColor="#000000"
+                        android:padding="4dp"
+                        >
+                    </TextView>
+                </LinearLayout>
 
 
-            </LinearLayout>
+
+
+
 
         </RelativeLayout>
 
@@ -172,8 +167,8 @@
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/profileImage"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:src="@drawable/ic_perfil"
             android:layout_marginLeft="40dp"
             >
@@ -185,10 +180,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
-            android:padding="10dp"
-            android:textSize="14sp"
+            android:layout_marginTop="5dp"
+            android:textSize="15sp"
             android:text="Nombre"
-            android:fontFamily="@font/grandstander_semibold"
+            android:fontFamily="@font/dmsansbold"
             >
         </TextView>
 
@@ -196,8 +191,7 @@
             android:id="@+id/fechaPublicacion"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="120dp"
-            android:padding="10dp"
+            android:layout_marginLeft="100dp"
             android:textSize="14sp"
             android:text="May 25, 2019"
             android:fontFamily="@font/montserrat_medium"
@@ -215,19 +209,10 @@
         android:layout_marginTop="10dp"
         android:layout_marginLeft="45dp">
 
-        <TextView
-            android:id="@+id/transitoUrgente"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="#000000"
-            android:textSize="15sp"
-            android:text="Transito urgente: NO"
 
-            >
-        </TextView>
 
         <TextView
-            android:id="@+id/descripcionAnimal"
+            android:id="@+id/descripcionAnimalTxt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/datosUsuario"
@@ -246,21 +231,16 @@
     </LinearLayout>
 
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cardButton"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/linearMasDatosAnimal"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/card_rounded_design"
-        app:cardPreventCornerOverlap="true"
-        >
+
 
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:orientation="horizontal"
+            android:layout_below="@id/linearMasDatosAnimal"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
 
             >
 
@@ -275,6 +255,8 @@
                 android:visibility="visible"
                 android:fontFamily="@font/montserrat_medium"
                 android:textColor="#fff"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="30dp"
                 android:background="@drawable/button_design"
 
                 >
@@ -284,7 +266,7 @@
 
 
 
-    </androidx.cardview.widget.CardView>
+
 
 
 
