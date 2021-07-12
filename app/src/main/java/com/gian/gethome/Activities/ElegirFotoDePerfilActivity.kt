@@ -1,30 +1,23 @@
 package com.gian.gethome.Activities
 
-import android.Manifest
 import android.content.Intent
-import android.content.pm.PackageManager
-import android.location.Geocoder
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.webkit.MimeTypeMap
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
 import com.gian.gethome.Clases.Model
 import com.gian.gethome.databinding.ActivityElegirFotoDePerfilBinding
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.*
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.StorageTask
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_elegir_foto_de_perfil.*
 import java.io.IOException
-import java.util.*
 
 class ElegirFotoDePerfilActivity : AppCompatActivity() {
     private lateinit var binding: ActivityElegirFotoDePerfilBinding
@@ -38,6 +31,7 @@ class ElegirFotoDePerfilActivity : AppCompatActivity() {
     private  var instagram:String? = null
     private var twitter:String? = null
     private  var web:String? = null
+    private lateinit var mAuth:FirebaseAuth
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
     private var countryName: String? = null
     private var provinceName: String? = null
@@ -48,9 +42,35 @@ class ElegirFotoDePerfilActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityElegirFotoDePerfilBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        checkIfUserIsSetInDb()
         initializeValues()
         openOptionsImage()
+    }
 
+    private fun checkIfUserIsSetInDb() {
+        mAuth = FirebaseAuth.getInstance()
+        if (mAuth.currentUser != null) {
+            val ref = FirebaseDatabase.getInstance().reference.child("Users").child("Person").child(mAuth.currentUser!!.uid)
+            ref.addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    for (data in dataSnapshot.children) {
+                        if (data.exists()) {
+                            val intent = Intent(this@ElegirFotoDePerfilActivity, HomeActivity::class.java)
+                            //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            startActivity(intent)
+                        } else {
+                            val intent = Intent(this@ElegirFotoDePerfilActivity, ElegirFotoDePerfilActivity::class.java)
+                            //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            startActivity(intent)
+                        }
+                        this@ElegirFotoDePerfilActivity.finish()
+                    }
+                }
+
+                
+                override fun onCancelled(error: DatabaseError) {}
+            })
+        }
     }
 
     private fun initializeValues() {
@@ -120,6 +140,8 @@ class ElegirFotoDePerfilActivity : AppCompatActivity() {
         val currentUser = mFirebaseAuth.currentUser
         val userId = currentUser!!.uid
         val imagenRef: DatabaseReference = FirebaseDatabase.getInstance().reference.child("Users").child("Person").child(userId).child("imageURL")
+        val userName: DatabaseReference = FirebaseDatabase.getInstance().reference.child("Users").child("Person").child(userId).child("userName")
+        userName.setValue(currentUser.displayName)
         imagenRef.setValue(imageURL)
     }
 

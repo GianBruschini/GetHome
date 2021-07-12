@@ -18,9 +18,11 @@
         <activity
             android:name=".Activities.ImagenesAnimalActivity"
             android:screenOrientation="portrait" />
-        <activity
-            android:name=".Activities.UbicacionActivity"
-            android:screenOrientation="portrait" />
+        <activity android:name=".Activities.UbicacionActivity"
+            android:screenOrientation="portrait" >
+
+        </activity>
+
         <activity
             android:name=".Activities.HomeActivity"
             android:screenOrientation="portrait" />

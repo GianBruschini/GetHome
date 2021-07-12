@@ -2,6 +2,8 @@ package com.gian.gethome.Fragments
 
 import android.content.Intent
 import android.graphics.Color
+import android.location.Location
+import android.location.LocationManager
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -15,13 +17,13 @@ import androidx.fragment.app.Fragment
 import com.basgeekball.awesomevalidation.AwesomeValidation
 import com.basgeekball.awesomevalidation.ValidationStyle
 import com.basgeekball.awesomevalidation.utility.RegexTemplate
-import com.basgeekball.awesomevalidation.utility.custom.CustomErrorReset
-import com.basgeekball.awesomevalidation.utility.custom.CustomValidation
-import com.basgeekball.awesomevalidation.utility.custom.CustomValidationCallback
+import com.gian.gethome.Activities.HomeActivity
 import com.gian.gethome.Activities.ImagenesAnimalActivity
 import com.gian.gethome.R
 import com.gian.gethome.databinding.FragmentPublicarAnimalBinding
-import kotlinx.android.synthetic.main.fragment_publicar_animal.*
+import com.google.android.gms.location.*
+import kotlinx.android.synthetic.main.activity_home.*
+import java.text.DateFormat
 import java.util.*
 
 
@@ -34,15 +36,27 @@ class PublicarAnimalFragment: Fragment(R.layout.fragment_publicar_animal) {
     private lateinit var edadAnimal:String
     private lateinit var descripcionAnimal: String
     private lateinit var awesomeValidation: AwesomeValidation
+    private lateinit var pais: String
+    private lateinit var provincia: String
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentPublicarAnimalBinding.inflate(inflater)
         awesomeValidation = AwesomeValidation(ValidationStyle.BASIC)
+        // restore the values from saved instance state
+        getBundle()
         settingSpinner()
         settingOnClickListenerBotonContinuar()
         return binding!!.root
     }
+
+    private fun getBundle() {
+        var bundle: Bundle? = this.arguments
+        pais= bundle!!.getString("Pais","")
+        provincia = bundle.getString("Provincia","")
+
+    }
+
 
     private fun settingOnClickListenerBotonContinuar() {
         binding?.botonContinuar?.setOnClickListener {
@@ -64,18 +78,14 @@ class PublicarAnimalFragment: Fragment(R.layout.fragment_publicar_animal) {
 
         if(awesomeValidation.validate()){
             val intent = Intent(context, ImagenesAnimalActivity::class.java)
-            intent.putExtra("nombreAnimal",nombreAnimal)
-            intent.putExtra("tipoAnimal",tipoAnimal)
-            intent.putExtra("sexoAnimal",sexoAnimal)
-            intent.putExtra("transitoUrgente",transitoUrgente.toString())
-            intent.putExtra("edadAnimal",edadAnimal)
-            intent.putExtra("descripcionAnimal",descripcionAnimal)
-            Log.i("InfoAnimal",nombreAnimal)
-            Log.i("InfoAnimal",tipoAnimal)
-            Log.i("InfoAnimal",sexoAnimal)
-            Log.i("InfoAnimal",transitoUrgente.toString())
-            Log.i("InfoAnimal",edadAnimal)
-            Log.i("InfoAnimal",descripcionAnimal)
+            intent.putExtra("nombreAnimal", nombreAnimal)
+            intent.putExtra("tipoAnimal", tipoAnimal)
+            intent.putExtra("sexoAnimal", sexoAnimal)
+            intent.putExtra("transitoUrgente", transitoUrgente.toString())
+            intent.putExtra("edadAnimal", edadAnimal)
+            intent.putExtra("descripcionAnimal", descripcionAnimal)
+            intent.putExtra("Provincia", provincia)
+            intent.putExtra("Pais", pais)
             startActivity(intent)
         }else{
             Toast.makeText(requireContext(), "Error al registrar los datos!", Toast.LENGTH_SHORT).show()
@@ -126,9 +136,9 @@ class PublicarAnimalFragment: Fragment(R.layout.fragment_publicar_animal) {
 
 
     private fun settingSpinner() {
-        val value = arrayOf("Edad del animal", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15")
-        val tipoAnimal = arrayOf("Tipo de animal", "Perro", "Gato", "Loro", "Conejo", "Tortuga", "Otro")
-        val sexoAnimal = arrayOf("Sexo animal","Macho", "Hembra")
+        val value = arrayOf("Edad del animal", "Menos de 2 semanas", "2 semanas a 1 mes", "1 a 3 meses", "3 a 6 meses", "6 meses a 1 año", "1 a 3 años", "3 a 5 años", "5 a 8 años", "Más de 8 años")
+        val tipoAnimal = arrayOf("Tipo de animal", "Perro", "Gato", "Ave", "Conejo", "Tortuga", "Roedor", "Otro")
+        val sexoAnimal = arrayOf("Sexo animal", "Macho", "Hembra")
         val arrayList = ArrayList(Arrays.asList(*value))
         val arrayListTipoAnimal = ArrayList(Arrays.asList(*tipoAnimal))
         val arrayListSexoAnimal = ArrayList(Arrays.asList(*sexoAnimal))
@@ -157,4 +167,8 @@ class PublicarAnimalFragment: Fragment(R.layout.fragment_publicar_animal) {
         super.onDestroy()
         binding = null
     }
+
+
+
+
 }

@@ -6,6 +6,7 @@
 
     <string name="Continuar">Habilitar</string>
     <string name="Salir">Salir</string>
+    <string name="api_key_location">AIzaSyA_LYwMmUjzpWPgGoI7V8Z1HUF8mPEcl3I</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

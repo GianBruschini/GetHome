@@ -43,6 +43,8 @@ class ImagenesAnimalActivity : AppCompatActivity() {
     private lateinit var progressDialog: ProgressDialog
     private var total:Int = 0
     private var esIgual: Boolean = false
+    private lateinit var pais:String
+    private  lateinit var provincia:String
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -140,6 +142,8 @@ class ImagenesAnimalActivity : AppCompatActivity() {
         transitoUrgente = intent.getStringExtra("transitoUrgente").toString()
         edadAnimal = intent.getStringExtra("edadAnimal").toString()
         descripcionAnimal = intent.getStringExtra("descripcionAnimal").toString()
+        pais = intent.getStringExtra("Pais").toString()
+        provincia = intent.getStringExtra("Provincia").toString()
     }
 
     fun publicarAnimal(view: View) {
@@ -164,6 +168,8 @@ class ImagenesAnimalActivity : AppCompatActivity() {
         val userIDRF = FirebaseDatabase.getInstance().reference.child("Users").child("Animales").child(userId).child(key).child("userIDowner")
         val animalKey = FirebaseDatabase.getInstance().reference.child("Users").child("Animales").child(userId).child(key).child("animalKey")
         val sexoAnimalDB = FirebaseDatabase.getInstance().reference.child("Users").child("Animales").child(userId).child(key).child("sexo")
+        val provinciaDB = FirebaseDatabase.getInstance().reference.child("Users").child("Animales").child(userId).child(key).child("provincia")
+        val paisDB = FirebaseDatabase.getInstance().reference.child("Users").child("Animales").child(userId).child(key).child("pais")
         userIDRF.setValue(userId)
         nombre.setValue(nombreAnimal)
         tipo.setValue(tipoAnimal)
@@ -172,6 +178,8 @@ class ImagenesAnimalActivity : AppCompatActivity() {
         descripcion.setValue(descripcionAnimal)
         animalKey.setValue(key.toString())
         sexoAnimalDB.setValue(sexoAnimal)
+        provinciaDB.setValue(provincia)
+        paisDB.setValue(pais)
         //Start images upload
         storeImagesOnDataBase(key, currentUser)
 

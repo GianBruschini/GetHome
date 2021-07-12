@@ -16,10 +16,12 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
@@ -114,6 +116,7 @@ public class HomeActivity extends AppCompatActivity implements DrawerAdapter.OnI
     private String imagenPerfil;
     private TextView provincia;
     private TextView pais;
+    private ProgressDialog progressDialog;
 
     LocationManager locationManager;
     private double latitude,longitude;
@@ -146,6 +149,14 @@ public class HomeActivity extends AppCompatActivity implements DrawerAdapter.OnI
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setTitle("Cargando");
+        progressDialog.setMessage("Por favor, espere");
+        progressDialog.setCancelable(false);
+        progressDialog.show();
+        SharedPreferences.Editor editor = getSharedPreferences("prefCheckUser", MODE_PRIVATE).edit();
+        editor.putInt("code", 1);
+        editor.apply();
         fotoPerfil = findViewById(R.id.fotoPerfil);
         provincia = findViewById(R.id.provincia);
         pais = findViewById(R.id.pais);
@@ -236,6 +247,7 @@ public class HomeActivity extends AppCompatActivity implements DrawerAdapter.OnI
             }
 
         }
+        progressDialog.dismiss();
     }
 
     @Override
@@ -432,8 +444,10 @@ public class HomeActivity extends AppCompatActivity implements DrawerAdapter.OnI
         }
 
         if (position == POS_AGREGAR) {
-
-            setFragment(new PublicarAnimalFragment());
+            Bundle bundle = new Bundle();
+            bundle.putString("Pais",pais.getText().toString());
+            bundle.putString("Provincia",provincia.getText().toString());
+            setFragmentWithBundle(new PublicarAnimalFragment(),bundle);
         }
 
         if (position == POS_SETTINGS) {
@@ -445,6 +459,13 @@ public class HomeActivity extends AppCompatActivity implements DrawerAdapter.OnI
         }
         slidingRootNav.closeMenu();
 
+    }
+
+    private void setFragmentWithBundle(Fragment fragment, Bundle bundle) {
+        fragment.setArguments(bundle);
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.frame_layout,fragment);
+        fragmentTransaction.commit();
     }
 
 

@@ -95,7 +95,6 @@
                     android:layout_marginTop="25dp"
                     android:layout_marginLeft="30dp"
                     android:layout_marginStart="30dp">
-
                 </Spinner>
 
                 <EditText
@@ -119,34 +118,6 @@
 
 
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp">
-
-                    <ImageView
-                        android:id="@+id/imagen3"
-                        android:layout_width="150dp"
-                        android:layout_height="100dp"
-                        android:layout_gravity="center"
-                        android:background="#fff"
-                        android:layout_marginLeft="20dp"
-                        android:layout_marginStart="20dp">
-                    </ImageView>
-
-                    <ImageView
-                        android:id="@+id/imagen4"
-                        android:layout_width="150dp"
-                        android:layout_height="100dp"
-                        android:layout_gravity="center"
-                        android:background="#fff"
-                        android:layout_marginLeft="20dp"
-                        android:layout_marginStart="20dp">
-                    </ImageView>
-
-                </LinearLayout>
-
-
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/botonContinuar"
@@ -156,7 +127,7 @@
                     android:text="Continuar"
                     android:textColor="#fff"
                     android:background="@drawable/button_design"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="30dp"
                     android:layout_marginBottom="25dp"
                     android:layout_gravity="center"/>
 

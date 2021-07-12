@@ -3,20 +3,17 @@ package com.gian.gethome.Activities
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager.widget.ViewPager
-import com.gian.gethome.Adapters.SliderPagerAdapter
 import com.gian.gethome.Adapters.SliderPagerAdapterAnimal
 import com.gian.gethome.Clases.Animal
-import com.gian.gethome.Clases.SlideFirstScreen
 import com.gian.gethome.Clases.SliderAnimalDetailScreen
+import com.gian.gethome.Clases.UserInfo
 import com.gian.gethome.R
 import com.google.android.material.tabs.TabLayout
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.*
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_animal_detalle.*
 import java.text.SimpleDateFormat
@@ -35,13 +32,54 @@ class AnimalDetalleActivity : AppCompatActivity() {
     private lateinit var userIDownerAnimal:String
     private lateinit var animalKey:String
     private lateinit var mFirebaseAuth:FirebaseAuth
+    private lateinit var imagenPerfil: String
     private var animalImages:MutableList<String> = mutableListOf()
     private val imagesViewPagerList:MutableList<Int> = mutableListOf()
+    private lateinit var provincia:String
+    private lateinit var pais:String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_animal_detalle)
         getIntentValues()
+        checkIfIlikePub()
+        checkIfPubItsMine()
+        setFotoPerfilYNombredePerfil()
         loadImagesOfTheAnimal()
+    }
+
+    private fun checkIfPubItsMine() {
+        val database = FirebaseDatabase.getInstance().reference.child("Users").child("Animales")
+        database.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                mFirebaseAuth = FirebaseAuth.getInstance()
+                val currentUserID = mFirebaseAuth.currentUser!!.uid
+                for (dataSnapshot in snapshot.children) {
+                    for (snap in dataSnapshot.children) {
+                        val animal = snap.getValue(Animal::class.java)
+                        if ((nombreAnimal == animal!!.nombre) and (animal.userIDowner == currentUserID)) {
+                            buttonLike.visibility = View.GONE
+                        }
+                    }
+                }
+                //Por ahi crashee cuando no haya ningun animal publicado... despues testear esto.
+            }
+
+            override fun onCancelled(error: DatabaseError) {}
+        })
+    }
+
+    private fun setFotoPerfilYNombredePerfil() {
+            mFirebaseAuth = FirebaseAuth.getInstance()
+            val profilePicture = FirebaseDatabase.getInstance().reference.child("Users").child("Person").child(userIDownerAnimal)
+            profilePicture.addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    val userInfo: UserInfo = dataSnapshot.getValue(UserInfo::class.java)!!
+                    Picasso.get().load(userInfo.imageURL).placeholder(R.drawable.progress_animation).fit().into(profileImage)
+                    nameOwner.text = userInfo.userName
+                }
+
+                override fun onCancelled(databaseError: DatabaseError) {}
+            })
     }
 
     private fun loadImagesOfTheAnimal() {
@@ -52,7 +90,7 @@ class AnimalDetalleActivity : AppCompatActivity() {
                 for (dataSnapshot in snapshot.children) {
                     for (snap in dataSnapshot.children) {
                         val animal: Animal? = snap.getValue(Animal::class.java)
-                        if(animal?.animalKey == animalKey){
+                        if (animal?.animalKey == animalKey) {
                             checkWhatImageIsNotNull(animal)
                         }
                     }
@@ -65,9 +103,9 @@ class AnimalDetalleActivity : AppCompatActivity() {
                 animalImages.add(animal.imagen2)
                 animalImages.add(animal.imagen3)
                 animalImages.add(animal.imagen4)
-                for(pos in animalImages.indices){
-                    if(animalImages[pos] != "null"){
-                            settingViewPager(animalImages[pos])
+                for (pos in animalImages.indices) {
+                    if (animalImages[pos] != "null") {
+                        settingViewPager(animalImages[pos])
                     }
                 }
                 val adapter = SliderPagerAdapterAnimal(applicationContext, lstSlides)
@@ -101,6 +139,8 @@ class AnimalDetalleActivity : AppCompatActivity() {
         userIDownerAnimal = intent.getStringExtra("userIDowner").toString()
         animalKey = intent.getStringExtra("animalKey").toString()
         sexoAnimal = intent.getStringExtra("sexoAnimal").toString()
+        provincia = intent.getStringExtra("Provincia").toString()
+        pais = intent.getStringExtra("Pais").toString()
         setUIvalues()
     }
 
@@ -108,6 +148,7 @@ class AnimalDetalleActivity : AppCompatActivity() {
         nombreAnimalTxt.text = nombreAnimal
         edadAnimalTxt.text = edadAnimal
         descripcionAnimalTxt.text = descripcionAnimal
+        distanceTextCard.text = provincia + pais
         when(transitoUrgente){
             "true" -> transitoUrgenteTxt.text = "Con tránsito urgente"
             "false" -> transitoUrgenteTxt.text = "Sin tránsito urgente"
@@ -127,51 +168,65 @@ class AnimalDetalleActivity : AppCompatActivity() {
         fechaPublicacion.text=formatted
     }
 
+    fun likeAnimal(view: View) {
+        saveDataUserSendLikes();
+        saveDataCurrentUserLike()
+    }
 
-    /*
-      private fun loadValues() {
-          val database = FirebaseDatabase.getInstance().reference.child("Users").child("Animales")
-          database.addValueEventListener(object : ValueEventListener {
-              override fun onDataChange(snapshot: DataSnapshot) {
-                  mFirebaseAuth = FirebaseAuth.getInstance()
-
-                  for (dataSnapshot in snapshot.children) {
-                      for (snap in dataSnapshot.children) {
-                          val animal: Animal? = snap.getValue(Animal::class.java)
-                          if(animal?.animalKey == animalKey){
-                              checkWhatImageIsNotNull(animal)
-                          }
-
-                      }
-                  }
-                  //Por ahi crashee cuando no haya ningun animal publicado... despues testear esto.
-              }
-
-              private fun checkWhatImageIsNotNull(animal: Animal) {
-                  animalImages.add(animal.imagen1)
-                  animalImages.add(animal.imagen2)
-                  animalImages.add(animal.imagen3)
-                  animalImages.add(animal.imagen4)
-                  for(pos in animalImages.indices){
-                      if(animalImages[pos] != "null"){
-                          println("Es distinto de null")
-                      }else{
-                          println("Es null")
-                      }
-                  }
+    private fun saveDataUserSendLikes() {
+        mFirebaseAuth = FirebaseAuth.getInstance()
+        val currentUserID = mFirebaseAuth.currentUser!!.uid
+        val key = FirebaseDatabase.getInstance().getReference("Person").push().key
+        val idLikeRef = FirebaseDatabase.getInstance().reference.child("Users").child("Person").child(userIDownerAnimal).child("OthersLikes").child(key!!).child("idDioLike")
+        val myKey = FirebaseDatabase.getInstance().reference.child("Users").child("Person").child(userIDownerAnimal).child("OthersLikes").child(key).child("myKey")
+        idLikeRef.setValue(currentUserID)
+        myKey.setValue(key.toString())
 
 
-              }
+        val currentUserkey = FirebaseDatabase.getInstance().getReference("Person").push().key
+        val myKeyDB = FirebaseDatabase.getInstance().reference.child("Users").child("Person").child(currentUserID).child("PubsDiLike").child(currentUserkey!!).child("myKey")
+        val animalKeyDB = FirebaseDatabase.getInstance().reference.child("Users").child("Person").child(currentUserID).child("PubsDiLike").child(currentUserkey).child("animalKey")
+        animalKeyDB.setValue(animalKey)
+        myKeyDB.setValue(currentUserkey.toString())
+    }
 
-              override fun onCancelled(error: DatabaseError) {}
-          })
-      }
+    private fun checkIfIlikePub() {
+        mFirebaseAuth = FirebaseAuth.getInstance()
+        val currentUserID = mFirebaseAuth.currentUser!!.uid
+        val database = FirebaseDatabase.getInstance().reference.child("Users").child("Person").child(currentUserID)
+        database.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if (snapshot.hasChild("PubsDiLike")) {
+                    println("Entre aca 1")
+                    val currentUserID = mFirebaseAuth.currentUser!!.uid
+                    val databaseREF = FirebaseDatabase.getInstance().reference.child("Users").child("Person").child(currentUserID).child("PubsDiLike")
+                    databaseREF.addValueEventListener(object : ValueEventListener {
+                        override fun onDataChange(snapshot: DataSnapshot) {
+                            println("Entre aca 1.8")
+                            for (dataSnapshot in snapshot.children) {
+                                val animal = dataSnapshot.getValue(Animal::class.java)
+                                if (animal!!.animalKey == animalKey) {
+                                    println("Entre aca 2")
+                                    buttonLike.setOnClickListener {
+                                        Toast.makeText(this@AnimalDetalleActivity,"Ya le has dado me gusta",Toast.LENGTH_SHORT).show()
+                                    }
+                                }
+                            }
+                        }
 
-       */
+                        override fun onCancelled(error: DatabaseError) {}
+                    })
+                } else {
+                }
+            }
 
+            override fun onCancelled(error: DatabaseError) {}
+        })
+    }
 
+    private fun saveDataCurrentUserLike() {
 
-    fun likeAnimal(view: View) {}
+    }
     fun backArrowButton(view: View) {
         finish()
     }

@@ -6,6 +6,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Html;
 import android.view.View;
@@ -52,6 +53,7 @@ public class MainActivity extends AppCompatActivity  {
     private GoogleSignInClient mGoogleSignInClient;
     private static int RC_SIGN_IN = 123;
     private FirebaseAuth mAuth;
+    private int code;
 
 
     @SuppressLint("NonConstantResourceId")
@@ -70,7 +72,6 @@ public class MainActivity extends AppCompatActivity  {
             startActivity(intent);
             this.finish();
         }
-
          */
     }
 
@@ -78,9 +79,9 @@ public class MainActivity extends AppCompatActivity  {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        checkSharedPreference();
         mAuth = FirebaseAuth.getInstance();
-        checkIfUserWasCreatedOnDatabase();
+        //checkIfUserWasCreatedOnDatabase();
         createRequestGmail();
         findViewById(R.id.sign_in_button).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -88,15 +89,28 @@ public class MainActivity extends AppCompatActivity  {
                 signIn();
             }
         });
-
         ButterKnife.bind(this);
         setSliderPage();
+
+    }
+
+    private void checkSharedPreference() {
+        SharedPreferences prefs = getSharedPreferences("prefCheckUser", MODE_PRIVATE);
+        code = prefs.getInt("code", 0);
+        System.out.println("El codigo es " + " " + code);
+        if(code!=0){
+            System.out.println("Entre por el code");
+            Intent intent = new Intent(this,HomeActivity.class);
+            startActivity(intent);
+            finish();
+        }
 
     }
 
     private void checkIfUserWasCreatedOnDatabase() {
 
         if(mAuth.getCurrentUser()!=null){
+
             DatabaseReference ref = FirebaseDatabase.getInstance().getReference().
                     child("Users").child("Person").
                     child(mAuth.getCurrentUser().getUid());
@@ -105,17 +119,15 @@ public class MainActivity extends AppCompatActivity  {
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     for(DataSnapshot data: dataSnapshot.getChildren()){
                         if(data.exists()){
-
                             Intent intent = new Intent (MainActivity.this, HomeActivity.class);
-                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                             startActivity(intent);
-                            MainActivity.this.finish();
                         }else{
                             Intent intent= new Intent(MainActivity.this,ElegirFotoDePerfilActivity.class);
-                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                             startActivity(intent);
-                            MainActivity.this.finish();
                         }
+                        MainActivity.this.finish();
                     }
                 }
 
@@ -128,9 +140,6 @@ public class MainActivity extends AppCompatActivity  {
         }
 
     }
-
-
-
 
     private void setSliderPage() {
         lstSlides = new ArrayList<>();
@@ -228,7 +237,6 @@ public class MainActivity extends AppCompatActivity  {
             try {
                 // Google Sign In was successful, authenticate with Firebase
                 GoogleSignInAccount account = task.getResult(ApiException.class);
-
                 firebaseAuthWithGoogle(account.getIdToken());
             } catch (ApiException e) {
                 Toast.makeText(this,e.getMessage(),Toast.LENGTH_LONG).show();
@@ -244,7 +252,8 @@ public class MainActivity extends AppCompatActivity  {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            checkIfUserWasCreatedOnDatabase();
+                            Intent intent= new Intent(MainActivity.this,ElegirFotoDePerfilActivity.class);
+                            startActivity(intent);
                         } else {
                             Toast.makeText(MainActivity.this, "Error al loguearse", Toast.LENGTH_SHORT).show();
                         }

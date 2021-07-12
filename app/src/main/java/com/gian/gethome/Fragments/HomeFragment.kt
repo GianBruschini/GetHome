@@ -37,13 +37,12 @@ class HomeFragment: Fragment(), HomeAdapter.OnItemClickListener {
         settingValues(view)
         loadRecycler()
         return view
-
     }
 
     private fun loadRecycler() {
         mFirebaseAuth = FirebaseAuth.getInstance()
         val database = FirebaseDatabase.getInstance().reference.child("Users").child("Animales")
-        database.addValueEventListener(object : ValueEventListener {
+        database.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 for (dataSnapshot in snapshot.children) {
                     for (snap in dataSnapshot.children) {
@@ -53,7 +52,7 @@ class HomeFragment: Fragment(), HomeAdapter.OnItemClickListener {
                                 imagenNotNull,
                                 animal.edad, animal.descripcion,
                                 animal.transitoUrgente,
-                                animal.userIDowner, animal.animalKey,animal.sexo))
+                                animal.userIDowner, animal.animalKey,animal.sexo,animal.pais,animal.provincia))
                     }
                 }
                 myRecycler.adapter?.notifyDataSetChanged()
@@ -102,14 +101,6 @@ class HomeFragment: Fragment(), HomeAdapter.OnItemClickListener {
     override fun onitemClick(position: Int) {
         val intent = Intent(activity, AnimalDetalleActivity::class.java)
         val animalClicked:AnimalAdapterData = mlist[position]
-        Log.i("InfoAnimal", animalClicked.nombre)
-        Log.i("InfoAnimal", animalClicked.tipoAnimal)
-        Log.i("InfoAnimal", animalClicked.descripcion)
-        Log.i("InfoAnimal", animalClicked.edad)
-        Log.i("InfoAnimal", animalClicked.transitoUrgente)
-        Log.i("InfoAnimal", animalClicked.idOwner)
-        Log.i("InfoAnimal", animalClicked.animalKey)
-        Log.i("InfoAnimal", animalClicked.sexo)
         intent.putExtra("nombre", animalClicked.nombre)
         intent.putExtra("tipoAnimal", animalClicked.tipoAnimal)
         intent.putExtra("descripcion", animalClicked.descripcion)
@@ -118,6 +109,9 @@ class HomeFragment: Fragment(), HomeAdapter.OnItemClickListener {
         intent.putExtra("userIDowner", animalClicked.idOwner)
         intent.putExtra("animalKey", animalClicked.animalKey)
         intent.putExtra("sexoAnimal", animalClicked.sexo)
+        intent.putExtra("Provincia", animalClicked.provincia)
+        intent.putExtra("Pais", animalClicked.pais)
+
         startActivity(intent)
     }
 

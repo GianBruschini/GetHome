@@ -36,7 +36,7 @@
             app:tabBackground="@drawable/indicator_selector"
             android:layout_height="20dp"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="170dp"
+            android:layout_marginTop="210dp"
             app:tabIndicatorHeight="0dp"
             app:tabGravity="center">
 
@@ -158,7 +158,7 @@
 
     <LinearLayout
         android:id="@+id/datosUsuario"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/cardViewDatos"
         android:layout_marginTop="20dp"
@@ -187,18 +187,23 @@
             >
         </TextView>
 
-        <TextView
-            android:id="@+id/fechaPublicacion"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="100dp"
-            android:textSize="14sp"
-            android:text="May 25, 2019"
-            android:fontFamily="@font/montserrat_medium"
-            >
-        </TextView>
+
 
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/fechaPublicacion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:layout_below="@id/cardViewDatos"
+        android:layout_alignRight="@id/cardViewDatos"
+        android:layout_marginTop="30dp"
+        android:layout_marginRight="10dp"
+        android:text="May 25, 2019"
+        android:fontFamily="@font/montserrat_medium"
+        >
+    </TextView>
 
     <LinearLayout
         android:id="@+id/linearMasDatosAnimal"

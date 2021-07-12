@@ -8,4 +8,6 @@ data class AnimalAdapterData(var nombre: String,
                              var transitoUrgente: String,
                              var idOwner: String,
                              var animalKey:String,
-                             var sexo:String)
+                             var sexo:String,
+                             var pais:String,
+                             var provincia:String)

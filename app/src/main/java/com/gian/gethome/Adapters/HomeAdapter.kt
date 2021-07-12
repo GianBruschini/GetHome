@@ -32,11 +32,16 @@ class HomeAdapter(private val mData: List<AnimalAdapterData>): RecyclerView.Adap
         val currentItem: AnimalAdapterData = mData[position]
         holder.nombreAnimal.text = currentItem.nombre
         holder.edadAnimal.text = currentItem.edad
+        val distance: String = currentItem.provincia + currentItem.pais
+        holder.distance.text = distance
         when(currentItem.sexo){
             "Macho"->Picasso.get().load(R.drawable.male).into(holder.genreIcon)
             "Hembra"->Picasso.get().load(R.drawable.female).into(holder.genreIcon)
         }
+
         Picasso.get().load(currentItem.imageURL).placeholder(R.drawable.progress_animation).into(holder.fotoAnimal)
+
+
     }
 
     override fun getItemCount(): Int {
@@ -48,6 +53,7 @@ class HomeAdapter(private val mData: List<AnimalAdapterData>): RecyclerView.Adap
         val nombreAnimal: TextView = itemView.findViewById(R.id.nombreAnimalText)
         val edadAnimal: TextView = itemView.findViewById(R.id.edadText)
         val genreIcon: ImageView = itemView.findViewById(R.id.iconGenre)
+        val distance: TextView = itemView.findViewById(R.id.distanceText)
 
         init {
             itemView.setOnClickListener {
