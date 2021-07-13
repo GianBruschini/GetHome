@@ -92,6 +92,7 @@ class AnimalDetalleActivity : AppCompatActivity() {
                         val animal: Animal? = snap.getValue(Animal::class.java)
                         if (animal?.animalKey == animalKey) {
                             checkWhatImageIsNotNull(animal)
+                            fechaPublicacion.text = animal.fechaDePublicacion
                         }
                     }
                 }
@@ -157,23 +158,17 @@ class AnimalDetalleActivity : AppCompatActivity() {
             "Macho" -> Picasso.get().load(R.drawable.male).into(sexoAnimalImage)
             "Hembra" -> Picasso.get().load(R.drawable.female).into(sexoAnimalImage)
         }
-        setLocalDate() //Este ultimo en realidad iria en PublicarAnimalFragment
+
 
     }
 
-    @SuppressLint("SimpleDateFormat")
-    private fun setLocalDate() {
-        val df = SimpleDateFormat("dd-MM-yyyy")
-        val formatted = df.format(Date())
-        fechaPublicacion.text=formatted
-    }
+
 
     fun likeAnimal(view: View) {
-        saveDataUserSendLikes();
-        saveDataCurrentUserLike()
+        saveLikes();
     }
 
-    private fun saveDataUserSendLikes() {
+    private fun saveLikes() {
         mFirebaseAuth = FirebaseAuth.getInstance()
         val currentUserID = mFirebaseAuth.currentUser!!.uid
         val key = FirebaseDatabase.getInstance().getReference("Person").push().key
@@ -182,12 +177,13 @@ class AnimalDetalleActivity : AppCompatActivity() {
         idLikeRef.setValue(currentUserID)
         myKey.setValue(key.toString())
 
-
         val currentUserkey = FirebaseDatabase.getInstance().getReference("Person").push().key
         val myKeyDB = FirebaseDatabase.getInstance().reference.child("Users").child("Person").child(currentUserID).child("PubsDiLike").child(currentUserkey!!).child("myKey")
         val animalKeyDB = FirebaseDatabase.getInstance().reference.child("Users").child("Person").child(currentUserID).child("PubsDiLike").child(currentUserkey).child("animalKey")
+        val userOwnerPubDB = FirebaseDatabase.getInstance().reference.child("Users").child("Person").child(currentUserID).child("PubsDiLike").child(currentUserkey).child("idUserOwner")
         animalKeyDB.setValue(animalKey)
         myKeyDB.setValue(currentUserkey.toString())
+        userOwnerPubDB.setValue(userIDownerAnimal)
     }
 
     private fun checkIfIlikePub() {
@@ -219,14 +215,11 @@ class AnimalDetalleActivity : AppCompatActivity() {
                 } else {
                 }
             }
-
             override fun onCancelled(error: DatabaseError) {}
         })
     }
 
-    private fun saveDataCurrentUserLike() {
 
-    }
     fun backArrowButton(view: View) {
         finish()
     }

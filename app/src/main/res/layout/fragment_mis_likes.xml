@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+        <TextView
+            android:id="@+id/texto_aviso"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textSize="20sp"
+            android:text="Todavía nos has dado ningún like"
+            android:fontFamily="@font/montserrat_medium"
+            android:visibility="gone"
+            android:gravity="center">
+
+        </TextView>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerview_likes"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="20dp">
+
+        </androidx.recyclerview.widget.RecyclerView>
+
+</RelativeLayout>

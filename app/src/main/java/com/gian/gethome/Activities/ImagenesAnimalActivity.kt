@@ -1,5 +1,6 @@
 package com.gian.gethome.Activities
 
+import android.annotation.SuppressLint
 import android.app.ProgressDialog
 import android.content.ContentResolver
 import android.content.Intent
@@ -20,6 +21,8 @@ import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.StorageTask
 import com.squareup.picasso.Picasso
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 class ImagenesAnimalActivity : AppCompatActivity() {
@@ -46,6 +49,7 @@ class ImagenesAnimalActivity : AppCompatActivity() {
     private lateinit var pais:String
     private  lateinit var provincia:String
 
+    private  lateinit var formatted:String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,12 +59,18 @@ class ImagenesAnimalActivity : AppCompatActivity() {
         progressDialog.setTitle("Publicando animal")
         progressDialog.setMessage("Por favor, espere")
         progressDialog.setCancelable(false)
-
+        setLocalDate()
         setMutableList()
         getValues()
         setOnClickListenerAddButtons()
         setOnClickListenerDeleteButtons()
 
+    }
+
+    @SuppressLint("SimpleDateFormat")
+    private fun setLocalDate() {
+        val df = SimpleDateFormat("dd-MM-yyyy")
+        formatted = df.format(Date())
     }
 
     private fun setOnClickListenerDeleteButtons() {
@@ -170,6 +180,7 @@ class ImagenesAnimalActivity : AppCompatActivity() {
         val sexoAnimalDB = FirebaseDatabase.getInstance().reference.child("Users").child("Animales").child(userId).child(key).child("sexo")
         val provinciaDB = FirebaseDatabase.getInstance().reference.child("Users").child("Animales").child(userId).child(key).child("provincia")
         val paisDB = FirebaseDatabase.getInstance().reference.child("Users").child("Animales").child(userId).child(key).child("pais")
+        val fechaPublicacionDB = FirebaseDatabase.getInstance().reference.child("Users").child("Animales").child(userId).child(key).child("fechaDePublicacion")
         userIDRF.setValue(userId)
         nombre.setValue(nombreAnimal)
         tipo.setValue(tipoAnimal)
@@ -180,6 +191,7 @@ class ImagenesAnimalActivity : AppCompatActivity() {
         sexoAnimalDB.setValue(sexoAnimal)
         provinciaDB.setValue(provincia)
         paisDB.setValue(pais)
+        fechaPublicacionDB.setValue(formatted)
         //Start images upload
         storeImagesOnDataBase(key, currentUser)
 

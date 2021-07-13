@@ -1,5 +1,6 @@
 package com.gian.gethome.Fragments
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Color
 import android.location.Location
@@ -22,8 +23,10 @@ import com.gian.gethome.Activities.ImagenesAnimalActivity
 import com.gian.gethome.R
 import com.gian.gethome.databinding.FragmentPublicarAnimalBinding
 import com.google.android.gms.location.*
+import kotlinx.android.synthetic.main.activity_animal_detalle.*
 import kotlinx.android.synthetic.main.activity_home.*
 import java.text.DateFormat
+import java.text.SimpleDateFormat
 import java.util.*
 
 
@@ -40,6 +43,7 @@ class PublicarAnimalFragment: Fragment(R.layout.fragment_publicar_animal) {
     private lateinit var provincia: String
 
 
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentPublicarAnimalBinding.inflate(inflater)
         awesomeValidation = AwesomeValidation(ValidationStyle.BASIC)
@@ -49,6 +53,8 @@ class PublicarAnimalFragment: Fragment(R.layout.fragment_publicar_animal) {
         settingOnClickListenerBotonContinuar()
         return binding!!.root
     }
+
+
 
     private fun getBundle() {
         var bundle: Bundle? = this.arguments

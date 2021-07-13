@@ -14,7 +14,7 @@
 
     defaultConfig {
         applicationId "com.gian.gethome"
-        minSdkVersion 16
+        minSdkVersion 21 //16
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
