@@ -52,6 +52,7 @@ import com.gian.gethome.Fragments.HomeFragment;
 import com.gian.gethome.Fragments.LikesFragment;
 import com.gian.gethome.Fragments.PerfilFragment;
 import com.gian.gethome.Fragments.PublicarAnimalFragment;
+import com.gian.gethome.MainActivity;
 import com.gian.gethome.R;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.ResolvableApiException;
@@ -391,41 +392,37 @@ public class HomeActivity extends AppCompatActivity implements DrawerAdapter.OnI
     public void onItemSelected(int position) {
 
         switch(position){
+            case POS_HOME:
+                //View v  = slidingRootNav.getLayout().getChildAt(position);
+                //TextView user= v.findViewById(R.id.nombrePerfilDrawer);
+                //user.setText(mFirebaseAuth.getCurrentUser().getDisplayName());
+                setFragment(new HomeFragment());
+                break;
+            case POS_LIKES:
+                setFragment(new LikesFragment());
+                break;
+            case POS_PERFIL:
+                setFragment(new PerfilFragment());
+                break;
+            case POS_AGREGAR:
+                Bundle bundle = new Bundle();
+                bundle.putString("Pais",pais.getText().toString());
+                bundle.putString("Provincia",provincia.getText().toString());
+                setFragmentWithBundle(new PublicarAnimalFragment(),bundle);
+                break;
+            case POS_LOGOUT:
+                SharedPreferences.Editor editor = getSharedPreferences("prefCheckUser", MODE_PRIVATE).edit();
+                editor.putInt("code", 0);
+                editor.apply();
+                FirebaseAuth.getInstance().signOut();
+                Intent intent = new Intent(this, MainActivity.class);
+                startActivity(intent);
+                finish();
+                break;
 
         }
-        if (position == POS_HOME) {
-            View v  = slidingRootNav.getLayout().getChildAt(position);
-            TextView user= v.findViewById(R.id.nombrePerfilDrawer);
-            user.setText(mFirebaseAuth.getCurrentUser().getDisplayName());
-            setFragment(new HomeFragment());
-        }
 
-        if (position == POS_LIKES) {
-            setFragment(new LikesFragment());
-        }
 
-        if (position == POS_MESSAGES) {
-            setFragment(new ChatFragment());
-        }
-
-        if (position == POS_PERFIL) {
-            setFragment(new PerfilFragment());
-        }
-
-        if (position == POS_AGREGAR) {
-            Bundle bundle = new Bundle();
-            bundle.putString("Pais",pais.getText().toString());
-            bundle.putString("Provincia",provincia.getText().toString());
-            setFragmentWithBundle(new PublicarAnimalFragment(),bundle);
-        }
-
-        if (position == POS_SETTINGS) {
-
-        }
-
-        if (position == POS_LOGOUT) {
-
-        }
         slidingRootNav.closeMenu();
 
     }
@@ -446,13 +443,14 @@ public class HomeActivity extends AppCompatActivity implements DrawerAdapter.OnI
 
     private void setFotoPerfil() {
         String currentUserID = mFirebaseAuth.getCurrentUser().getUid();
+
         DatabaseReference profilePicture = FirebaseDatabase.getInstance().getReference().child("Users").child("Person").child(currentUserID).child("imageURL");
         profilePicture.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 imagenPerfil = (String) dataSnapshot.getValue();
                 fotoPerfil = findViewById(R.id.fotoPerfil);
-                Picasso.get().load(imagenPerfil).fit().into(fotoPerfil);
+                Picasso.get().load(imagenPerfil).fit().placeholder(R.drawable.loader).into(fotoPerfil);
             }
 
             @Override

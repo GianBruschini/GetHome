@@ -66,8 +66,10 @@ class HomeFragment: Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLis
 
     private fun getBundle() {
             var bundle: Bundle? = this.arguments
-            pais= bundle!!.getString("Pais", "")
-            provincia = bundle.getString("Provincia", "")
+            if(bundle!=null){
+                pais= bundle.getString("Pais", "")
+                provincia = bundle.getString("Provincia", "")
+            }
     }
 
 
@@ -351,9 +353,6 @@ class HomeFragment: Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLis
         cardAll.setCardBackgroundColor(Color.parseColor("#ffffff"))
         todoImg.setColorFilter(Color.parseColor("#000000"))
     }
-
-
-
     private fun setTodoImgselected() {
         cardGato.setCardBackgroundColor(Color.parseColor("#ffffff"))
         gatoImg.setColorFilter(Color.parseColor("#000000"))
