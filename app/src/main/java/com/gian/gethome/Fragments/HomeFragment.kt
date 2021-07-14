@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.gian.gethome.Activities.AnimalDetalleActivity
 import com.gian.gethome.Activities.FilterActivity
+import com.gian.gethome.Activities.HomeActivity
 import com.gian.gethome.Adapters.HomeAdapter
 import com.gian.gethome.Clases.Animal
 import com.gian.gethome.Clases.AnimalAdapterData
@@ -25,6 +26,7 @@ import com.gian.gethome.R
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
+import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.fragment_home.*
 import java.util.*
 
@@ -52,24 +54,23 @@ class HomeFragment: Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLis
     private lateinit var  chooseFilter:FloatingActionButton
     private lateinit var texto_resultado:TextView
     private lateinit var buscador:EditText
+    private lateinit var homeActivity:HomeActivity
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_home, container, false)
         cardView = view.findViewById(R.id.cardViewHome)
-        getBundle()
+        getCountryAndProvinceFromHomeActivity()
         settingValues(view)
         loadRecycler()
         makeActionEditText()
         return view
     }
 
-    private fun getBundle() {
-            var bundle: Bundle? = this.arguments
-            if(bundle!=null){
-                pais= bundle.getString("Pais", "")
-                provincia = bundle.getString("Provincia", "")
-            }
+    private fun getCountryAndProvinceFromHomeActivity() {
+        homeActivity = (activity as HomeActivity?)!!
+        provincia = homeActivity.provincia.text.toString()
+        pais = homeActivity.pais.text.toString()
     }
 
 
@@ -393,9 +394,11 @@ class HomeFragment: Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLis
         buscador.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {
             }
+
             override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {
 
             }
+
             override fun afterTextChanged(editable: Editable) {
                 filter(editable.toString())
             }

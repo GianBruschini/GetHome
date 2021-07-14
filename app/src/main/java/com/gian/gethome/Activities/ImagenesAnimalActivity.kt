@@ -142,7 +142,7 @@ class ImagenesAnimalActivity : AppCompatActivity() {
         imageUri = data.data
         arrayUrisNulls[numberImageView]=imageUri
         //arrayUris.add(imageUri!!)
-        Picasso.get().load(imageUri).fit().into(imageList[numberImageView])
+        Picasso.get().load(imageUri).into(imageList[numberImageView])
     }
 
     private fun getValues() {
@@ -157,11 +157,21 @@ class ImagenesAnimalActivity : AppCompatActivity() {
     }
 
     fun publicarAnimal(view: View) {
-        if(arrayUrisNulls.isNotEmpty()){
+        var todosNull:Boolean = false;
+        var cont:Int = 0;
+        for (item in arrayUrisNulls.indices){
+            if(arrayUrisNulls[item] == null){
+                cont++;
+                if(cont == 4){
+                    todosNull = true;
+                }
+            }
+        }
+        if(!todosNull){
             progressDialog.show()
             storeValuesOnDatabase()
         }else{
-            Toast.makeText(applicationContext, "Debe agregar al menos una imagen", Toast.LENGTH_SHORT).show()
+            Toast.makeText(applicationContext, "Debe agregar al menos una imágen", Toast.LENGTH_SHORT).show()
         }
     }
 

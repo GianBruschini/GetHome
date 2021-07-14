@@ -138,6 +138,7 @@ public class HomeActivity extends AppCompatActivity implements DrawerAdapter.OnI
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
         progressDialog = new ProgressDialog(this);
         progressDialog.setTitle("Cargando");
         progressDialog.setMessage("Por favor, espere");
@@ -185,6 +186,9 @@ public class HomeActivity extends AppCompatActivity implements DrawerAdapter.OnI
         list.setNestedScrollingEnabled(false);
         list.setLayoutManager(new LinearLayoutManager(this));
         list.setAdapter(adapter);
+
+        TextView txt = slidingRootNav.getLayout().getChildAt(0).findViewById(R.id.nombrePerfilDrawer);
+        txt.setText(mFirebaseAuth.getCurrentUser().getDisplayName());
 
 
 
@@ -393,9 +397,6 @@ public class HomeActivity extends AppCompatActivity implements DrawerAdapter.OnI
 
         switch(position){
             case POS_HOME:
-                //View v  = slidingRootNav.getLayout().getChildAt(position);
-                //TextView user= v.findViewById(R.id.nombrePerfilDrawer);
-                //user.setText(mFirebaseAuth.getCurrentUser().getDisplayName());
                 setFragment(new HomeFragment());
                 break;
             case POS_LIKES:

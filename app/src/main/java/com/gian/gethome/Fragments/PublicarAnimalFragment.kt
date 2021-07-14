@@ -60,7 +60,6 @@ class PublicarAnimalFragment: Fragment(R.layout.fragment_publicar_animal) {
         var bundle: Bundle? = this.arguments
         pais= bundle!!.getString("Pais","")
         provincia = bundle.getString("Provincia","")
-
     }
 
 
