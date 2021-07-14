@@ -47,6 +47,8 @@ class ElegirFotoDePerfilActivity : AppCompatActivity() {
         openOptionsImage()
     }
 
+
+
     private fun checkIfUserIsSetInDb() {
         mAuth = FirebaseAuth.getInstance()
         if (mAuth.currentUser != null) {

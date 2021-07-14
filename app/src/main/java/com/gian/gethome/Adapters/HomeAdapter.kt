@@ -9,8 +9,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.gian.gethome.Clases.AnimalAdapterData
 import com.gian.gethome.R
 import com.squareup.picasso.Picasso
+import java.util.*
 
-class HomeAdapter(private val mData: List<AnimalAdapterData>): RecyclerView.Adapter<HomeAdapter.HomeViewHolder>() {
+class HomeAdapter(private var mData: List<AnimalAdapterData>): RecyclerView.Adapter<HomeAdapter.HomeViewHolder>() {
 
     private var mListener: OnItemClickListener? = null
 
@@ -24,7 +25,7 @@ class HomeAdapter(private val mData: List<AnimalAdapterData>): RecyclerView.Adap
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomeViewHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.grid_item,
-        parent,false)
+                parent, false)
          return HomeViewHolder(itemView)
     }
 
@@ -35,8 +36,8 @@ class HomeAdapter(private val mData: List<AnimalAdapterData>): RecyclerView.Adap
         val distance: String = currentItem.provincia + currentItem.pais
         holder.distance.text = distance
         when(currentItem.sexo){
-            "Macho"->Picasso.get().load(R.drawable.male).into(holder.genreIcon)
-            "Hembra"->Picasso.get().load(R.drawable.female).into(holder.genreIcon)
+            "Macho" -> Picasso.get().load(R.drawable.male).into(holder.genreIcon)
+            "Hembra" -> Picasso.get().load(R.drawable.female).into(holder.genreIcon)
         }
 
         Picasso.get().load(currentItem.imageURL).placeholder(R.drawable.progress_animation).into(holder.fotoAnimal)
@@ -46,6 +47,11 @@ class HomeAdapter(private val mData: List<AnimalAdapterData>): RecyclerView.Adap
 
     override fun getItemCount(): Int {
         return mData.size
+    }
+
+    fun filterList(filteredList: List<AnimalAdapterData>) {
+        mData = filteredList
+        notifyDataSetChanged()
     }
 
     inner class HomeViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){

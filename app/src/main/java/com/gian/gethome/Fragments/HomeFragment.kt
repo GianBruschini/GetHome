@@ -4,17 +4,20 @@ import android.app.ProgressDialog
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.gian.gethome.Activities.AnimalDetalleActivity
 import com.gian.gethome.Activities.FilterActivity
-import com.gian.gethome.Activities.ImagenesAnimalActivity
 import com.gian.gethome.Adapters.HomeAdapter
 import com.gian.gethome.Clases.Animal
 import com.gian.gethome.Clases.AnimalAdapterData
@@ -26,8 +29,10 @@ import kotlinx.android.synthetic.main.fragment_home.*
 import java.util.*
 
 
-class HomeFragment: Fragment(), HomeAdapter.OnItemClickListener, View.OnClickListener {
+class HomeFragment: Fragment(), HomeAdapter.OnItemClickListener, View.OnClickListener{
 
+    private lateinit var pais: String
+    private lateinit var provincia: String
     private lateinit var ordenarPorGenero: String
     private var ordenarPorFechaDePublicacion: Boolean? = false
     private var ordenarPorTransitoUrgente: Boolean? = false
@@ -43,20 +48,31 @@ class HomeFragment: Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLis
     private lateinit var loroImg:ImageView
     private lateinit var conejoImg:ImageView
     private lateinit var tortugaImg:ImageView
+    private lateinit var todoImg:ImageView
     private lateinit var  chooseFilter:FloatingActionButton
-
+    private lateinit var texto_resultado:TextView
+    private lateinit var buscador:EditText
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_home, container, false)
         cardView = view.findViewById(R.id.cardViewHome)
+        getBundle()
         settingValues(view)
         loadRecycler()
+        makeActionEditText()
         return view
+    }
+
+    private fun getBundle() {
+            var bundle: Bundle? = this.arguments
+            pais= bundle!!.getString("Pais", "")
+            provincia = bundle.getString("Provincia", "")
     }
 
 
     private fun loadRecycler() {
+        texto_resultado.visibility = View.GONE
         mFirebaseAuth = FirebaseAuth.getInstance()
         val database = FirebaseDatabase.getInstance().reference.child("Users").child("Animales")
         database.addListenerForSingleValueEvent(object : ValueEventListener {
@@ -64,15 +80,29 @@ class HomeFragment: Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLis
                 for (dataSnapshot in snapshot.children) {
                     for (snap in dataSnapshot.children) {
                         val animal: Animal = snap.getValue(Animal::class.java)!!
-                        imagenNotNull = checkWhatImageIsNotNull(animal)
-                        mlist.add(AnimalAdapterData(animal.nombre, animal.tipoAnimal,
-                                imagenNotNull,
-                                animal.edad, animal.fechaDePublicacion,animal.descripcion,
-                                animal.transitoUrgente,
-                                animal.userIDowner, animal.animalKey, animal.sexo, animal.pais, animal.provincia))
+                        if (animal.provincia == provincia && animal.pais == pais) {
+                            imagenNotNull = checkWhatImageIsNotNull(animal)
+                            mlist.add(AnimalAdapterData(
+                                    animal.nombre,
+                                    animal.tipoAnimal,
+                                    imagenNotNull,
+                                    animal.edad,
+                                    animal.fechaDePublicacion,
+                                    animal.descripcion,
+                                    animal.transitoUrgente,
+                                    animal.userIDowner,
+                                    animal.animalKey,
+                                    animal.sexo,
+                                    animal.pais,
+                                    animal.provincia))
+                        }
+
                     }
                 }
                 myRecycler.adapter?.notifyDataSetChanged()
+                if (adapter.itemCount == 0) {
+                    texto_resultado.visibility = View.VISIBLE
+                }
             }
 
             private fun checkWhatImageIsNotNull(animal: Animal): String {
@@ -106,6 +136,8 @@ class HomeFragment: Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLis
 
     private fun settingValues(view: View) {
         myRecycler = view.findViewById(R.id.myRecycler)
+        texto_resultado = view.findViewById(R.id.texto_resultados)
+        buscador = view.findViewById(R.id.buscador)
         cardView = view.findViewById(R.id.cardViewHome)
         cardView.setBackgroundResource(R.drawable.card_rounded_design)
         gatoImg = view.findViewById(R.id.gato)
@@ -114,14 +146,17 @@ class HomeFragment: Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLis
         loroImg = view.findViewById(R.id.loro)
         tortugaImg = view.findViewById(R.id.tortuga)
         chooseFilter = view.findViewById(R.id.chooseFilters)
+        todoImg = view.findViewById(R.id.all)
         gatoImg.setOnClickListener(this)
         perroImg.setOnClickListener(this)
         loroImg.setOnClickListener(this)
         conejoImg.setOnClickListener(this)
         tortugaImg.setOnClickListener(this)
+        todoImg.setOnClickListener(this)
+
         chooseFilter.setOnClickListener {
             val intent= Intent(context, FilterActivity::class.java)
-            startActivityForResult(intent,101)
+            startActivityForResult(intent, 101)
         }
         setOnClickImages()
         progressDialog = ProgressDialog(context)
@@ -134,7 +169,7 @@ class HomeFragment: Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLis
         super.onActivityResult(requestCode, resultCode, data)
         if(requestCode==101){
             if(data!=null){
-                ordenarPorTransitoUrgente = data.getBooleanExtra("filtrarPorTransito",false)!!
+                ordenarPorTransitoUrgente = data.getBooleanExtra("filtrarPorTransito", false)!!
                 val genero = data.getStringExtra("filtrarPorGenero");
                 if(genero != "Género animal"){
                     ordenarPorGenero = genero.toString()
@@ -174,7 +209,15 @@ class HomeFragment: Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLis
             fillScreenWith("Loro")
             myRecycler.adapter!!.notifyDataSetChanged()
         }
+        todoImg.setOnClickListener {
+            clearListOfRecycler()
+            setTodoImgselected()
+            loadRecycler()
+            myRecycler.adapter!!.notifyDataSetChanged()
+        }
     }
+
+
 
     private fun clearListOfRecycler() {
         val size: Int = mlist.size
@@ -187,6 +230,7 @@ class HomeFragment: Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLis
     }
 
     private fun fillScreenWith(theTypeOfAnimal: String) {
+        texto_resultado.visibility = View.GONE
         mFirebaseAuth = FirebaseAuth.getInstance()
         val database = FirebaseDatabase.getInstance().reference.child("Users").child("Animales")
         database.addListenerForSingleValueEvent(object : ValueEventListener {
@@ -196,18 +240,24 @@ class HomeFragment: Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLis
                         val tipoAnimal: String = snap.child("tipoAnimal").value.toString();
                         if (tipoAnimal == theTypeOfAnimal) {
                             val animal: Animal = snap.getValue(Animal::class.java)!!
-                            imagenNotNull = checkWhatImageIsNotNull(animal)
-                            mlist.add(AnimalAdapterData(animal.nombre, animal.tipoAnimal,
-                                    imagenNotNull,
-                                    animal.edad, animal.fechaDePublicacion,animal.descripcion,
-                                    animal.transitoUrgente,
-                                    animal.userIDowner, animal.animalKey, animal.sexo, animal.pais, animal.provincia))
+                            if (animal.provincia == provincia && animal.pais == pais) {
+                                imagenNotNull = checkWhatImageIsNotNull(animal)
+                                mlist.add(AnimalAdapterData(animal.nombre, animal.tipoAnimal,
+                                        imagenNotNull,
+                                        animal.edad, animal.fechaDePublicacion, animal.descripcion,
+                                        animal.transitoUrgente,
+                                        animal.userIDowner, animal.animalKey, animal.sexo, animal.pais, animal.provincia))
+                            }
+
                         }
 
                     }
                 }
 
                 myRecycler.adapter?.notifyDataSetChanged()
+                if (adapter.itemCount == 0) {
+                    texto_resultado.visibility = View.VISIBLE
+                }
 
             }
 
@@ -242,6 +292,8 @@ class HomeFragment: Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLis
         loroImg.setColorFilter(Color.parseColor("#000000"))
         cardTortuga.setCardBackgroundColor(Color.parseColor("#ffffff"))
         tortugaImg.setColorFilter(Color.parseColor("#000000"))
+        cardAll.setCardBackgroundColor(Color.parseColor("#ffffff"))
+        todoImg.setColorFilter(Color.parseColor("#000000"))
     }
     private fun setPerroImgselected(){
         cardGato.setCardBackgroundColor(Color.parseColor("#ffffff"))
@@ -254,6 +306,8 @@ class HomeFragment: Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLis
         loroImg.setColorFilter(Color.parseColor("#000000"))
         cardTortuga.setCardBackgroundColor(Color.parseColor("#ffffff"))
         tortugaImg.setColorFilter(Color.parseColor("#000000"))
+        cardAll.setCardBackgroundColor(Color.parseColor("#ffffff"))
+        todoImg.setColorFilter(Color.parseColor("#000000"))
     }
     private fun setConejoImgselected(){
         cardGato.setCardBackgroundColor(Color.parseColor("#ffffff"))
@@ -266,6 +320,8 @@ class HomeFragment: Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLis
         loroImg.setColorFilter(Color.parseColor("#000000"))
         cardTortuga.setCardBackgroundColor(Color.parseColor("#ffffff"))
         tortugaImg.setColorFilter(Color.parseColor("#000000"))
+        cardAll.setCardBackgroundColor(Color.parseColor("#ffffff"))
+        todoImg.setColorFilter(Color.parseColor("#000000"))
     }
     private fun setLoroImgselected(){
         cardGato.setCardBackgroundColor(Color.parseColor("#ffffff"))
@@ -278,6 +334,8 @@ class HomeFragment: Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLis
         loroImg.setColorFilter(Color.parseColor("#ffffff"))
         cardTortuga.setCardBackgroundColor(Color.parseColor("#ffffff"))
         tortugaImg.setColorFilter(Color.parseColor("#000000"))
+        cardAll.setCardBackgroundColor(Color.parseColor("#ffffff"))
+        todoImg.setColorFilter(Color.parseColor("#000000"))
     }
     private fun setTortugaImgselected(){
         cardGato.setCardBackgroundColor(Color.parseColor("#ffffff"))
@@ -290,6 +348,25 @@ class HomeFragment: Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLis
         loroImg.setColorFilter(Color.parseColor("#000000"))
         cardTortuga.setCardBackgroundColor(Color.parseColor("#306060"))
         tortugaImg.setColorFilter(Color.parseColor("#ffffff"))
+        cardAll.setCardBackgroundColor(Color.parseColor("#ffffff"))
+        todoImg.setColorFilter(Color.parseColor("#000000"))
+    }
+
+
+
+    private fun setTodoImgselected() {
+        cardGato.setCardBackgroundColor(Color.parseColor("#ffffff"))
+        gatoImg.setColorFilter(Color.parseColor("#000000"))
+        cardPerro.setCardBackgroundColor(Color.parseColor("#ffffff"))
+        perroImg.setColorFilter(Color.parseColor("#000000"))
+        cardConejo.setCardBackgroundColor(Color.parseColor("#ffffff"))
+        conejoImg.setColorFilter(Color.parseColor("#000000"))
+        cardLoro.setCardBackgroundColor(Color.parseColor("#ffffff"))
+        loroImg.setColorFilter(Color.parseColor("#000000"))
+        cardTortuga.setCardBackgroundColor(Color.parseColor("#ffffff"))
+        tortugaImg.setColorFilter(Color.parseColor("#000000"))
+        cardAll.setCardBackgroundColor(Color.parseColor("#306060"))
+        todoImg.setColorFilter(Color.parseColor("#ffffff"))
     }
 
     override fun onitemClick(position: Int) {
@@ -312,5 +389,36 @@ class HomeFragment: Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLis
     override fun onClick(v: View?) {
 
     }
+
+    private fun makeActionEditText() {
+        buscador.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {
+            }
+            override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {
+
+            }
+            override fun afterTextChanged(editable: Editable) {
+                filter(editable.toString())
+            }
+        })
+    }
+
+
+    private fun filter(text: String) {
+        val filteredList: ArrayList<AnimalAdapterData> = ArrayList<AnimalAdapterData>()
+        for (item in mlist) {
+            if (item.nombre.toLowerCase().contains(text.toLowerCase()) ||
+                    item.sexo.toLowerCase().contains(text.toLowerCase()) ||
+                    item.provincia.toLowerCase().contains(text.toLowerCase()) ||
+                    item.pais.toLowerCase().contains(text.toLowerCase()) ||
+                    item.edad.toLowerCase().contains(text.toLowerCase())) {
+                filteredList.add(item)
+            }
+        }
+        adapter.filterList(filteredList)
+
+
+    }
+
 
 }

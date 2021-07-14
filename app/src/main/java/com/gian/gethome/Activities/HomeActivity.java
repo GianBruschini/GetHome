@@ -32,7 +32,9 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Looper;
+import android.os.Message;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
@@ -83,18 +85,17 @@ import com.squareup.picasso.Picasso;
 import com.yarolegovich.slidingrootnav.SlidingRootNav;
 import com.yarolegovich.slidingrootnav.SlidingRootNavBuilder;
 
-import java.io.IOException;
+import org.jetbrains.annotations.NotNull;
+
 import java.text.DateFormat;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import butterknife.OnClick;
 import de.hdodenhof.circleimageview.CircleImageView;
 
-import static androidx.constraintlayout.motion.widget.Debug.getLocation;
-import static java.sql.DriverManager.println;
+
 
 public class HomeActivity extends AppCompatActivity implements DrawerAdapter.OnItemSelectedListener {
 
@@ -105,43 +106,30 @@ public class HomeActivity extends AppCompatActivity implements DrawerAdapter.OnI
     private static final int POS_AGREGAR = 4;
     private static final int POS_SETTINGS = 5;
     private static final int POS_LOGOUT = 7;
-
     private String[] screenTitles;
     private Drawable[] screenIcons;
     private SlidingRootNav slidingRootNav;
     private CircleImageView fotoPerfil;
-    private FirebaseStorage storage = FirebaseStorage.getInstance();
     private FirebaseAuth mFirebaseAuth = FirebaseAuth.getInstance();
-
     private String imagenPerfil;
     private TextView provincia;
     private TextView pais;
     private ProgressDialog progressDialog;
-
-    LocationManager locationManager;
-    private double latitude,longitude;
-
-    // bunch of location related apis
     private FusedLocationProviderClient mFusedLocationClient;
     private SettingsClient mSettingsClient;
     private LocationRequest mLocationRequest;
     private LocationSettingsRequest mLocationSettingsRequest;
     private LocationCallback mLocationCallback;
     private Location mCurrentLocation;
-
-    // boolean flag to toggle the ui
     private Boolean mRequestingLocationUpdates;
-    // location last updated time
     private String mLastUpdateTime;
-    // location updates interval - 10sec
+
     private static final long UPDATE_INTERVAL_IN_MILLISECONDS = 10000;
-
-    // fastest updates interval - 5 sec
-    // location updates will be received if another app is requesting the locations
-    // than your app can handle
     private static final long FASTEST_UPDATE_INTERVAL_IN_MILLISECONDS = 5000;
-
     private static final int REQUEST_CHECK_SETTINGS = 100;
+    private DrawerAdapter adapter;
+    private int seEjecuto=0;
+
 
 
 
@@ -164,9 +152,9 @@ public class HomeActivity extends AppCompatActivity implements DrawerAdapter.OnI
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-        // restore the values from saved instance state
 
         init();
+
         startLocation();
 
         slidingRootNav = new SlidingRootNavBuilder(this)
@@ -179,12 +167,9 @@ public class HomeActivity extends AppCompatActivity implements DrawerAdapter.OnI
                 .withSavedState(savedInstanceState)
                 .withMenuLayout(R.layout.drawer_menu)
                 .inject();
-
-
         screenIcons = loadScreenIcons();
         screenTitles = loadScreenTitles();
-
-        DrawerAdapter adapter = new DrawerAdapter(Arrays.asList(
+        adapter = new DrawerAdapter(Arrays.asList(
                 createItemFor(POS_HOME).setChecked(true),
                 createItemFor(POS_LIKES),
                 createItemFor(POS_MESSAGES),
@@ -199,14 +184,17 @@ public class HomeActivity extends AppCompatActivity implements DrawerAdapter.OnI
         list.setNestedScrollingEnabled(false);
         list.setLayoutManager(new LinearLayoutManager(this));
         list.setAdapter(adapter);
-        adapter.setSelected(POS_HOME);
+
+
+
+        //adapter.setSelected(POS_HOME);
+
     }
 
 
     private void init() {
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         mSettingsClient = LocationServices.getSettingsClient(this);
-
         mLocationCallback = new LocationCallback() {
             @Override
             public void onLocationResult(LocationResult locationResult) {
@@ -214,7 +202,6 @@ public class HomeActivity extends AppCompatActivity implements DrawerAdapter.OnI
                 // location is received
                 mCurrentLocation = locationResult.getLastLocation();
                 mLastUpdateTime = DateFormat.getTimeInstance().format(new Date());
-
                 updateLocationUI();
             }
         };
@@ -233,6 +220,7 @@ public class HomeActivity extends AppCompatActivity implements DrawerAdapter.OnI
 
     private void updateLocationUI() {
         if (mCurrentLocation != null) {
+            seEjecuto++;
             Geocoder geocoder;
             List<Address> addresses;
             geocoder = new Geocoder(this, Locale.getDefault());
@@ -241,20 +229,28 @@ public class HomeActivity extends AppCompatActivity implements DrawerAdapter.OnI
                 String chainProv = addresses.get(0).getLocality()+",";
                 pais.setText(addresses.get(0).getCountryName());
                 provincia.setText(chainProv);
+                if(seEjecuto==1){
+                    Bundle bundle = new Bundle();
+                    bundle.putString("Pais",pais.getText().toString());
+                    bundle.putString("Provincia",provincia.getText().toString());
+                    setFragmentWithBundle(new HomeFragment(),bundle);
+                    progressDialog.dismiss();
+                }
+
             }catch (Exception e)
             {
                 Toast.makeText(this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
             }
 
         }
-        progressDialog.dismiss();
+
+
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
-            // Check for the integer request code originally supplied to startResolutionForResult().
             case REQUEST_CHECK_SETTINGS:
                 switch (resultCode) {
                     case Activity.RESULT_OK:
@@ -270,31 +266,7 @@ public class HomeActivity extends AppCompatActivity implements DrawerAdapter.OnI
         }
     }
 
-    public void showAlertDialog() {
-
-            new AlertDialog.Builder(this)
-                    .setTitle("Ubicacion")
-                    .setMessage("Tienes que habilitar tu ubicacion para usar Get Home")
-                    .setPositiveButton(R.string.Continuar, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    })
-                    .setNegativeButton(R.string.Salir, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            HomeActivity.this.finish();
-                        }
-                    })
-                    .setIcon(android.R.drawable.ic_dialog_alert)
-                    .show();
-
-
-    }
-
-
     public void startLocation() {
-
-        // Requesting ACCESS_FINE_LOCATION using Dexter library
         Dexter.withActivity(this)
                         .withPermission(Manifest.permission.ACCESS_FINE_LOCATION)
                         .withListener(new PermissionListener() {
@@ -332,8 +304,6 @@ public class HomeActivity extends AppCompatActivity implements DrawerAdapter.OnI
                     @Override
                     public void onSuccess(LocationSettingsResponse locationSettingsResponse) {
                         Log.i("TAG", "All location settings are satisfied.");
-                        //Toast.makeText(getApplicationContext(), "Started location updates!", Toast.LENGTH_SHORT).show();
-                        //noinspection MissingPermission
                         mFusedLocationClient.requestLocationUpdates(mLocationRequest,
                                 mLocationCallback, Looper.myLooper());
 
@@ -350,8 +320,7 @@ public class HomeActivity extends AppCompatActivity implements DrawerAdapter.OnI
                                 Log.i("TAG", "Location settings are not satisfied. Attempting to upgrade " +
                                         "location settings ");
                                 try {
-                                    // Show the dialog by calling startResolutionForResult(), and check the
-                                    // result in onActivityResult().
+
                                     ResolvableApiException rae = (ResolvableApiException) e;
                                     rae.startResolutionForResult(HomeActivity.this, REQUEST_CHECK_SETTINGS);
                                 } catch (IntentSender.SendIntentException sie) {
@@ -468,7 +437,6 @@ public class HomeActivity extends AppCompatActivity implements DrawerAdapter.OnI
         fragmentTransaction.commit();
     }
 
-
     public void setFragment(Fragment fragment){
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.frame_layout,fragment);
@@ -496,10 +464,6 @@ public class HomeActivity extends AppCompatActivity implements DrawerAdapter.OnI
 
 
     }
-
-
-
-
 
 
 }
