@@ -51,7 +51,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/opensans_bold"
             android:layout_below="@id/location"
-            android:text="Kyiv,"
+            android:text=","
             android:layout_marginLeft="5dp"
             android:textSize="20sp"
             />
@@ -60,19 +60,12 @@
             android:id="@+id/pais"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Ukraine"
+            android:text=""
             android:layout_marginTop="1.5dp"
             android:layout_toRightOf="@id/provincia"
             android:textSize="17sp"
             android:layout_toEndOf="@id/provincia" />
-
-
-
-
     </LinearLayout>
-
-
-
 
 
     <FrameLayout

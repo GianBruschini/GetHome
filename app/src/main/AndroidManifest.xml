@@ -13,7 +13,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.GetHome">
-        <activity android:name=".Activities.FilterActivity"></activity>
+        <activity android:name=".Activities.ContactInfoActivity"></activity>
+        <activity android:name=".Activities.FilterActivity" />
         <activity android:name=".Activities.AnimalDetalleActivity" />
         <activity android:name=".Activities.MainActivity" />
         <activity
@@ -21,7 +22,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".Activities.UbicacionActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Activities.HomeActivity"
             android:screenOrientation="portrait" />

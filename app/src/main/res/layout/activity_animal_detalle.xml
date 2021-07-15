@@ -251,12 +251,11 @@
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/buttonLike"
-                android:onClick="likeAnimal"
+                android:onClick="goToContactInfo"
                 android:layout_width="230dp"
                 android:elevation="10dp"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:text="Me gusta"
+                android:text="Adoptar"
                 android:visibility="visible"
                 android:fontFamily="@font/montserrat_medium"
                 android:textColor="#fff"
@@ -266,6 +265,31 @@
 
                 >
             </androidx.appcompat.widget.AppCompatButton>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardGato"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="#473D3D"
+                app:cardCornerRadius="20dp"
+                android:elevation="20dp"
+                android:layout_toEndOf="@id/buttonLike"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="30dp"
+                android:layout_marginLeft="10dp">
+
+                <ImageView
+                    android:id="@+id/gato"
+                    android:layout_width="30dp"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_baseline_favorite_24"
+                    android:layout_gravity="center"
+                    android:onClick="likeAnimal"
+                    >
+
+                </ImageView>
+
+            </androidx.cardview.widget.CardView>
 
         </RelativeLayout>
 

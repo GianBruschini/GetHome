@@ -1,6 +1,7 @@
 package com.gian.gethome.Activities
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
@@ -222,5 +223,11 @@ class AnimalDetalleActivity : AppCompatActivity() {
 
     fun backArrowButton(view: View) {
         finish()
+
+    }
+
+    fun goToContactInfo(view: View) {
+            val intent = Intent(this,ContactInfoActivity::class.java)
+            startActivity(intent)
     }
 }
