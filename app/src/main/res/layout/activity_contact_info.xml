@@ -15,9 +15,10 @@
         <androidx.cardview.widget.CardView
             android:layout_width="370dp"
             android:layout_height="290dp"
-            app:cardCornerRadius="20dp"
+            app:cardCornerRadius="100dp"
             android:layout_gravity="center"
-            android:layout_marginTop="20dp">
+            android:layout_marginTop="20dp"
+            >
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
@@ -68,10 +69,73 @@
         app:cardCornerRadius="30dp"
         android:layout_below="@id/cardViewName"
         >
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-        </RelativeLayout>
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:gravity="center">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_phone"
+                android:layout_gravity="center"
+                >
+            </ImageView>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_whatsapp"
+                android:layout_gravity="center"
+                android:layout_marginStart="20dp"
+                >
+            </ImageView>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_facebook"
+                android:layout_gravity="center"
+                android:layout_marginStart="20dp"
+                >
+            </ImageView>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_twitter"
+                android:layout_gravity="center"
+                android:layout_marginStart="20dp"
+                >
+            </ImageView>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_instagram"
+                android:layout_gravity="center"
+                android:layout_marginStart="20dp"
+                >
+            </ImageView>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_email"
+                android:layout_gravity="center"
+                android:layout_marginStart="20dp"
+                >
+            </ImageView>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_web_page"
+                android:layout_gravity="center"
+                android:layout_marginStart="20dp"
+                >
+            </ImageView>
+        </LinearLayout>
 
     </androidx.cardview.widget.CardView>
 

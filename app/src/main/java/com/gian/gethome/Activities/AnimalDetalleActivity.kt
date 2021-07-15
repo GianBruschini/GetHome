@@ -58,11 +58,13 @@ class AnimalDetalleActivity : AppCompatActivity() {
                     for (snap in dataSnapshot.children) {
                         val animal = snap.getValue(Animal::class.java)
                         if ((nombreAnimal == animal!!.nombre) and (animal.userIDowner == currentUserID)) {
-                            buttonLike.visibility = View.GONE
+                            //buttonLike.visibility = View.GONE
+                            //addToFav.visibility = View.GONE
+                            //cardAddToFav.visibility = View.GONE
                         }
                     }
                 }
-                //Por ahi crashee cuando no haya ningun animal publicado... despues testear esto.
+
             }
 
             override fun onCancelled(error: DatabaseError) {}
@@ -228,6 +230,8 @@ class AnimalDetalleActivity : AppCompatActivity() {
 
     fun goToContactInfo(view: View) {
             val intent = Intent(this,ContactInfoActivity::class.java)
+            intent.putExtra("idOwner",userIDownerAnimal)
+            intent.putExtra("animalKey",animalKey)
             startActivity(intent)
     }
 }

@@ -267,7 +267,7 @@
             </androidx.appcompat.widget.AppCompatButton>
 
             <androidx.cardview.widget.CardView
-                android:id="@+id/cardGato"
+                android:id="@+id/cardAddToFav"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:background="#473D3D"
@@ -279,7 +279,7 @@
                 android:layout_marginLeft="10dp">
 
                 <ImageView
-                    android:id="@+id/gato"
+                    android:id="@+id/addToFav"
                     android:layout_width="30dp"
                     android:layout_height="match_parent"
                     android:src="@drawable/ic_baseline_favorite_24"

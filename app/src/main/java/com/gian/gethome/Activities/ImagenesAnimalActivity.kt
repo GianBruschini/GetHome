@@ -36,6 +36,13 @@ class ImagenesAnimalActivity : AppCompatActivity() {
     private lateinit var mFirebaseAuth:FirebaseAuth
     private lateinit var mStorageReference:StorageReference
     private lateinit var currentImageURL:String
+    private lateinit var whatsapp:String
+    private lateinit var phone:String
+    private lateinit var webPage:String
+    private lateinit var facebook:String
+    private lateinit var twitter:String
+    private lateinit var instagram:String
+    private lateinit var mail:String
     private var mUploadTask: StorageTask<*>? = null
     private var imageList:MutableList<ImageView> = mutableListOf()
     private var imageUri: Uri? = null
@@ -154,6 +161,14 @@ class ImagenesAnimalActivity : AppCompatActivity() {
         descripcionAnimal = intent.getStringExtra("descripcionAnimal").toString()
         pais = intent.getStringExtra("Pais").toString()
         provincia = intent.getStringExtra("Provincia").toString()
+
+        whatsapp = intent.getStringExtra("Whatsapp").toString()
+        phone = intent.getStringExtra("Phone").toString()
+        webPage = intent.getStringExtra("WebPage").toString()
+        facebook = intent.getStringExtra("Facebook").toString()
+        twitter = intent.getStringExtra("Twitter").toString()
+        instagram = intent.getStringExtra("Instagram").toString()
+        mail = intent.getStringExtra("Mail").toString()
     }
 
     fun publicarAnimal(view: View) {
@@ -191,6 +206,15 @@ class ImagenesAnimalActivity : AppCompatActivity() {
         val provinciaDB = FirebaseDatabase.getInstance().reference.child("Users").child("Animales").child(userId).child(key).child("provincia")
         val paisDB = FirebaseDatabase.getInstance().reference.child("Users").child("Animales").child(userId).child(key).child("pais")
         val fechaPublicacionDB = FirebaseDatabase.getInstance().reference.child("Users").child("Animales").child(userId).child(key).child("fechaDePublicacion")
+
+        val whatsappDB = FirebaseDatabase.getInstance().reference.child("Users").child("Animales").child(userId).child(key).child("whatsapp")
+        val phoneDB = FirebaseDatabase.getInstance().reference.child("Users").child("Animales").child(userId).child(key).child("phone")
+        val webPageDB = FirebaseDatabase.getInstance().reference.child("Users").child("Animales").child(userId).child(key).child("webPage")
+        val facebookDB = FirebaseDatabase.getInstance().reference.child("Users").child("Animales").child(userId).child(key).child("facebook")
+        val twitterDB = FirebaseDatabase.getInstance().reference.child("Users").child("Animales").child(userId).child(key).child("twitter")
+        val instagramDB = FirebaseDatabase.getInstance().reference.child("Users").child("Animales").child(userId).child(key).child("instagram")
+       val mailDB = FirebaseDatabase.getInstance().reference.child("Users").child("Animales").child(userId).child(key).child("mail")
+
         userIDRF.setValue(userId)
         nombre.setValue(nombreAnimal)
         tipo.setValue(tipoAnimal)
@@ -202,9 +226,15 @@ class ImagenesAnimalActivity : AppCompatActivity() {
         provinciaDB.setValue(provincia)
         paisDB.setValue(pais)
         fechaPublicacionDB.setValue(formatted)
+        whatsappDB.setValue(whatsapp)
+        phoneDB.setValue(phone)
+        webPageDB.setValue(webPage)
+        facebookDB.setValue(facebook)
+        twitterDB.setValue(twitter)
+        instagramDB.setValue(instagram)
+        mailDB.setValue(mail)
         //Start images upload
         storeImagesOnDataBase(key, currentUser)
-
     }
 
     private fun storeImagesOnDataBase(key: String, currentUser: FirebaseUser) {

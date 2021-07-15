@@ -10,6 +10,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.webkit.URLUtil
 import android.widget.ArrayAdapter
 import android.widget.Spinner
 import android.widget.TextView
@@ -41,25 +42,25 @@ class PublicarAnimalFragment: Fragment(R.layout.fragment_publicar_animal) {
     private lateinit var awesomeValidation: AwesomeValidation
     private lateinit var pais: String
     private lateinit var provincia: String
+    private lateinit var homeActivity:HomeActivity
 
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentPublicarAnimalBinding.inflate(inflater)
-        awesomeValidation = AwesomeValidation(ValidationStyle.BASIC)
-        // restore the values from saved instance state
-        getBundle()
+        initializeValues()
         settingSpinner()
         settingOnClickListenerBotonContinuar()
         return binding!!.root
     }
 
-
-
-    private fun getBundle() {
-        var bundle: Bundle? = this.arguments
-        pais= bundle!!.getString("Pais","")
-        provincia = bundle.getString("Provincia","")
+    private fun initializeValues() {
+        awesomeValidation = AwesomeValidation(ValidationStyle.BASIC)
+        homeActivity = (activity as HomeActivity?)!!
+        pais= homeActivity.pais.text.toString()
+        provincia = homeActivity.provincia.text.toString()
+        println("El pais es  $pais")
+        println("La provincia es  $provincia")
     }
 
 
@@ -76,22 +77,46 @@ class PublicarAnimalFragment: Fragment(R.layout.fragment_publicar_animal) {
                 RegexTemplate.NOT_EMPTY, "Tiene que indicar un nombre")
         awesomeValidation.addValidation(binding?.descripcionAnimal,
                 RegexTemplate.NOT_EMPTY, "Tiene que indicar una descripción")
+        awesomeValidation.addValidation(binding?.whatsppNumber,
+                RegexTemplate.TELEPHONE, "Tiene que indicar un número válido de Whatsapp")
+        awesomeValidation.addValidation(binding?.phoneNumber,
+                RegexTemplate.TELEPHONE, "Tiene que indicar un número válido de teléfono")
+
 
         validateSpinnerTipoAnimal()
         validateSpinnerSexoAnimal()
         validateSpinnerEdadAnimal()
 
         if(awesomeValidation.validate()){
-            val intent = Intent(context, ImagenesAnimalActivity::class.java)
-            intent.putExtra("nombreAnimal", nombreAnimal)
-            intent.putExtra("tipoAnimal", tipoAnimal)
-            intent.putExtra("sexoAnimal", sexoAnimal)
-            intent.putExtra("transitoUrgente", transitoUrgente.toString())
-            intent.putExtra("edadAnimal", edadAnimal)
-            intent.putExtra("descripcionAnimal", descripcionAnimal)
-            intent.putExtra("Provincia", provincia)
-            intent.putExtra("Pais", pais)
-            startActivity(intent)
+            if(binding?.whatsppNumber?.text.toString().isEmpty() &&
+                    binding?.phoneNumber?.text.toString().isEmpty() &&
+                    binding?.webPage?.text.toString().isEmpty() &&
+                    binding?.facebook?.text.toString().isEmpty() &&
+                    binding?.twitter?.text.toString().isEmpty() &&
+                    binding?.instagram?.text.toString().isEmpty() &&
+                    binding?.mail?.text.toString().isEmpty()){
+
+                Toast.makeText(context,"Debe indicar al menos un dato de contacto",Toast.LENGTH_LONG).show()
+
+            }else{
+                val intent = Intent(context, ImagenesAnimalActivity::class.java)
+                intent.putExtra("nombreAnimal", nombreAnimal)
+                intent.putExtra("tipoAnimal", tipoAnimal)
+                intent.putExtra("sexoAnimal", sexoAnimal)
+                intent.putExtra("transitoUrgente", transitoUrgente.toString())
+                intent.putExtra("edadAnimal", edadAnimal)
+                intent.putExtra("descripcionAnimal", descripcionAnimal)
+                intent.putExtra("Pais", pais)
+                intent.putExtra("Provincia", provincia)
+                intent.putExtra("Whatsapp", binding?.whatsppNumber?.text.toString())
+                intent.putExtra("Phone", binding?.phoneNumber?.text.toString())
+                intent.putExtra("WebPage", binding?.webPage?.text.toString())
+                intent.putExtra("Facebook", binding?.facebook?.text.toString())
+                intent.putExtra("Twitter", binding?.twitter?.text.toString())
+                intent.putExtra("Instagram", binding?.instagram?.text.toString())
+                intent.putExtra("Mail", binding?.mail?.text.toString())
+                startActivity(intent)
+            }
         }else{
             Toast.makeText(requireContext(), "Error al registrar los datos!", Toast.LENGTH_SHORT).show()
         }

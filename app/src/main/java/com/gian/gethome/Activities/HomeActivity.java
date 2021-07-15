@@ -406,10 +406,7 @@ public class HomeActivity extends AppCompatActivity implements DrawerAdapter.OnI
                 setFragment(new PerfilFragment());
                 break;
             case POS_AGREGAR:
-                Bundle bundle = new Bundle();
-                bundle.putString("Pais",pais.getText().toString());
-                bundle.putString("Provincia",provincia.getText().toString());
-                setFragmentWithBundle(new PublicarAnimalFragment(),bundle);
+                setFragment(new PublicarAnimalFragment());
                 break;
             case POS_LOGOUT:
                 SharedPreferences.Editor editor = getSharedPreferences("prefCheckUser", MODE_PRIVATE).edit();
