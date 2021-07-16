@@ -59,6 +59,8 @@ dependencies {
     implementation 'com.google.firebase:firebase-storage:19.2.1'
     implementation 'com.google.firebase:firebase-database-ktx:20.0.0'
     implementation 'com.google.firebase:firebase-database:20.0.0'
+    //Facebook firebase
+    implementation 'com.facebook.android:facebook-android-sdk:[4,5)'
     //ButterKnife
     implementation 'com.jakewharton:butterknife:10.2.3'
     annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.3'

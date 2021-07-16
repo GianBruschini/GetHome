@@ -10,10 +10,20 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Html;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.AccessToken;
+import com.facebook.AccessTokenTracker;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
+import com.facebook.login.LoginManager;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
 import com.gian.gethome.Activities.ElegirFotoDePerfilActivity;
 import com.gian.gethome.Activities.HomeActivity;
 import com.gian.gethome.Adapters.SliderPagerAdapter;
@@ -29,6 +39,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
@@ -39,6 +50,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -54,6 +66,13 @@ public class MainActivity extends AppCompatActivity  {
     private static int RC_SIGN_IN = 123;
     private FirebaseAuth mAuth;
     private int code;
+    private LoginButton loginButton;
+
+    private CallbackManager mCallBackManager;
+    private FirebaseAuth.AuthStateListener authStateListener;
+    private AccessTokenTracker accessTokenTracker;
+    private Button facebookButton;
+
 
 
     @SuppressLint("NonConstantResourceId")
@@ -92,6 +111,71 @@ public class MainActivity extends AppCompatActivity  {
         ButterKnife.bind(this);
         setSliderPage();
 
+        FacebookSdk.sdkInitialize(getApplicationContext());
+        mCallBackManager = CallbackManager.Factory.create();
+
+
+        facebookButton = findViewById(R.id.facebook_button);
+        facebookButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LoginManager.getInstance().logInWithReadPermissions(MainActivity.this, Arrays.asList("email","public_profile"));
+                LoginManager.getInstance().registerCallback(mCallBackManager, new FacebookCallback<LoginResult>() {
+                    @Override
+                    public void onSuccess(LoginResult loginResult) {
+                        handleFacebookToken(loginResult.getAccessToken());
+                    }
+
+                    @Override
+                    public void onCancel() {
+
+                    }
+
+                    @Override
+                    public void onError(FacebookException error) {
+
+                    }
+                });
+            }
+        });
+
+        authStateListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if(user!=null){
+                    updateUI();
+                    System.out.println("Se autentico!");
+                }else{
+
+                }
+
+            }
+        };
+
+
+
+    }
+
+    private void updateUI() {
+        Intent intent = new Intent(this,ElegirFotoDePerfilActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
+    private void handleFacebookToken(AccessToken accessToken) {
+        AuthCredential credential = FacebookAuthProvider.getCredential(accessToken.getToken());
+        mAuth.signInWithCredential(credential).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if(task.isSuccessful()){
+                    System.out.println("Es exitoso!");
+                    updateUI();
+                }else{
+                    System.out.println("NO Es exitoso!");
+                }
+            }
+        });
     }
 
     private void checkSharedPreference() {
@@ -230,6 +314,7 @@ public class MainActivity extends AppCompatActivity  {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        mCallBackManager.onActivityResult(requestCode, resultCode, data);
 
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
@@ -261,4 +346,12 @@ public class MainActivity extends AppCompatActivity  {
                 });
     }
 
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if(authStateListener != null){
+            mAuth.removeAuthStateListener(authStateListener);
+        }
+    }
 }

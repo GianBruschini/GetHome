@@ -278,16 +278,18 @@
                 android:layout_marginBottom="30dp"
                 android:layout_marginLeft="10dp">
 
-                <ImageView
+                <ToggleButton
                     android:id="@+id/addToFav"
                     android:layout_width="30dp"
-                    android:layout_height="match_parent"
-                    android:src="@drawable/ic_baseline_favorite_24"
+                    android:layout_height="30dp"
+                    android:textOn=""
+                    android:textOff=""
+                    android:background="@drawable/favourite_icon_selector"
                     android:layout_gravity="center"
-                    android:onClick="likeAnimal"
-                    >
 
-                </ImageView>
+                    >
+                </ToggleButton>
+
 
             </androidx.cardview.widget.CardView>
 

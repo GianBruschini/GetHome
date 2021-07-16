@@ -154,15 +154,15 @@ class ContactInfoActivity : AppCompatActivity() {
 
     private fun isAppInstalled(s: String): Boolean {
         val packageManager = packageManager
-        var is_installed: Boolean
+        var isInstalled: Boolean
         try {
             packageManager.getPackageInfo(s, PackageManager.GET_ACTIVITIES)
-            is_installed = true
+            isInstalled = true
         } catch (e: PackageManager.NameNotFoundException) {
-            is_installed = false
+            isInstalled = false
             e.printStackTrace()
         }
-        return is_installed
+        return isInstalled
     }
 
     fun back(view: View) {

@@ -68,6 +68,28 @@
     </androidx.appcompat.widget.AppCompatButton>
 
 
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/facebook_button"
+        android:layout_below="@id/sign_in_button"
+        android:background="@drawable/facebook_button_design"
+        android:layout_centerHorizontal="true"
+        android:drawableLeft="@drawable/ic_facebook"
+        android:drawableStart="@drawable/ic_facebook"
+        android:textAllCaps="false"
+        android:text="Inicia sesión con Facebook"
+        android:textSize="12sp"
+        android:textColor="#ffff"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:layout_width="215dp"
+        android:layout_height="37.4dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="30dp" />
+
+
 
 
     <LinearLayout

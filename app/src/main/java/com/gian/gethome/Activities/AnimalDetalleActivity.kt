@@ -1,10 +1,11 @@
 package com.gian.gethome.Activities
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.CompoundButton
 import android.widget.Toast
+import android.widget.ToggleButton
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager.widget.ViewPager
 import com.gian.gethome.Adapters.SliderPagerAdapterAnimal
@@ -17,8 +18,8 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_animal_detalle.*
-import java.text.SimpleDateFormat
 import java.util.*
+
 
 class AnimalDetalleActivity : AppCompatActivity() {
     private lateinit var sliderPager: ViewPager
@@ -38,14 +39,70 @@ class AnimalDetalleActivity : AppCompatActivity() {
     private val imagesViewPagerList:MutableList<Int> = mutableListOf()
     private lateinit var provincia:String
     private lateinit var pais:String
+    private lateinit var toggleButtonFav:ToggleButton
+    private lateinit var currentUserkey:String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_animal_detalle)
         getIntentValues()
+        checkFavouritesInDB()
+        setLogicToToggleButtonFav()
         checkIfIlikePub()
         checkIfPubItsMine()
         setFotoPerfilYNombredePerfil()
         loadImagesOfTheAnimal()
+    }
+
+
+    private fun checkFavouritesInDB() {
+        mFirebaseAuth = FirebaseAuth.getInstance()
+        val reference = FirebaseDatabase.getInstance().reference
+         val applesQuery = reference.child("Users").child("Person").
+         child(mFirebaseAuth.currentUser!!.uid).
+         child("PubsDiLike").
+         orderByChild("animalKey").
+         equalTo(animalKey)
+         applesQuery.addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    for (appleSnapshot in dataSnapshot.children) {
+                        if (appleSnapshot.exists()) {
+                            toggleButtonFav.isChecked = true
+                        }
+                    }
+                }
+
+                override fun onCancelled(databaseError: DatabaseError) {}
+            })
+
+    }
+
+    private fun setLogicToToggleButtonFav() {
+        toggleButtonFav.setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener { buttonView, isChecked ->
+            if (isChecked) {
+                saveLikes()
+            } else {
+                deleteLike()
+            }
+        })
+    }
+
+    private fun deleteLike() {
+        val ref = FirebaseDatabase.getInstance().reference
+        val applesQuery: Query = ref.child("Users").
+        child("Person").
+        child(mFirebaseAuth.currentUser!!.uid).
+        child("PubsDiLike").
+        orderByChild("animalKey").
+        equalTo(animalKey)
+        applesQuery.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                for (appleSnapshot in dataSnapshot.children) {
+                    appleSnapshot.ref.removeValue()
+                }
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {}
+        })
     }
 
     private fun checkIfPubItsMine() {
@@ -145,6 +202,8 @@ class AnimalDetalleActivity : AppCompatActivity() {
         sexoAnimal = intent.getStringExtra("sexoAnimal").toString()
         provincia = intent.getStringExtra("Provincia").toString()
         pais = intent.getStringExtra("Pais").toString()
+        toggleButtonFav = findViewById(R.id.addToFav)
+
         setUIvalues()
     }
 
@@ -172,16 +231,20 @@ class AnimalDetalleActivity : AppCompatActivity() {
     }
 
     private fun saveLikes() {
-        mFirebaseAuth = FirebaseAuth.getInstance()
         val currentUserID = mFirebaseAuth.currentUser!!.uid
+        /*
+        mFirebaseAuth = FirebaseAuth.getInstance()
+
         val key = FirebaseDatabase.getInstance().getReference("Person").push().key
         val idLikeRef = FirebaseDatabase.getInstance().reference.child("Users").child("Person").child(userIDownerAnimal).child("OthersLikes").child(key!!).child("idDioLike")
         val myKey = FirebaseDatabase.getInstance().reference.child("Users").child("Person").child(userIDownerAnimal).child("OthersLikes").child(key).child("myKey")
         idLikeRef.setValue(currentUserID)
         myKey.setValue(key.toString())
 
-        val currentUserkey = FirebaseDatabase.getInstance().getReference("Person").push().key
-        val myKeyDB = FirebaseDatabase.getInstance().reference.child("Users").child("Person").child(currentUserID).child("PubsDiLike").child(currentUserkey!!).child("myKey")
+         */
+
+        currentUserkey = FirebaseDatabase.getInstance().getReference("Person").push().key.toString()
+        val myKeyDB = FirebaseDatabase.getInstance().reference.child("Users").child("Person").child(currentUserID).child("PubsDiLike").child(currentUserkey).child("myKey")
         val animalKeyDB = FirebaseDatabase.getInstance().reference.child("Users").child("Person").child(currentUserID).child("PubsDiLike").child(currentUserkey).child("animalKey")
         val userOwnerPubDB = FirebaseDatabase.getInstance().reference.child("Users").child("Person").child(currentUserID).child("PubsDiLike").child(currentUserkey).child("idUserOwner")
         animalKeyDB.setValue(animalKey)
@@ -196,28 +259,28 @@ class AnimalDetalleActivity : AppCompatActivity() {
         database.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (snapshot.hasChild("PubsDiLike")) {
-                    println("Entre aca 1")
                     val currentUserID = mFirebaseAuth.currentUser!!.uid
                     val databaseREF = FirebaseDatabase.getInstance().reference.child("Users").child("Person").child(currentUserID).child("PubsDiLike")
                     databaseREF.addValueEventListener(object : ValueEventListener {
                         override fun onDataChange(snapshot: DataSnapshot) {
-                            println("Entre aca 1.8")
                             for (dataSnapshot in snapshot.children) {
                                 val animal = dataSnapshot.getValue(Animal::class.java)
                                 if (animal!!.animalKey == animalKey) {
-                                    println("Entre aca 2")
                                     buttonLike.setOnClickListener {
-                                        Toast.makeText(this@AnimalDetalleActivity,"Ya le has dado me gusta",Toast.LENGTH_SHORT).show()
+                                        Toast.makeText(this@AnimalDetalleActivity, "Ya le has dado me gusta", Toast.LENGTH_SHORT).show()
                                     }
                                 }
                             }
                         }
 
-                        override fun onCancelled(error: DatabaseError) {}
+                        override fun onCancelled(error: DatabaseError) {
+
+                        }
                     })
                 } else {
                 }
             }
+
             override fun onCancelled(error: DatabaseError) {}
         })
     }
@@ -225,13 +288,12 @@ class AnimalDetalleActivity : AppCompatActivity() {
 
     fun backArrowButton(view: View) {
         finish()
-
     }
 
     fun goToContactInfo(view: View) {
-            val intent = Intent(this,ContactInfoActivity::class.java)
-            intent.putExtra("idOwner",userIDownerAnimal)
-            intent.putExtra("animalKey",animalKey)
+            val intent = Intent(this, ContactInfoActivity::class.java)
+            intent.putExtra("idOwner", userIDownerAnimal)
+            intent.putExtra("animalKey", animalKey)
             startActivity(intent)
     }
 }

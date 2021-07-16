@@ -102,11 +102,9 @@ public class HomeActivity extends AppCompatActivity implements DrawerAdapter.OnI
 
     private static final int POS_HOME = 0;
     private static final int POS_LIKES = 1;
-    private static final int POS_MESSAGES = 2;
-    private static final int POS_PERFIL = 3;
-    private static final int POS_AGREGAR = 4;
-    private static final int POS_SETTINGS = 5;
-    private static final int POS_LOGOUT = 7;
+    private static final int POS_PERFIL = 2;
+    private static final int POS_AGREGAR = 3;
+    private static final int POS_LOGOUT = 5;
     private String[] screenTitles;
     private Drawable[] screenIcons;
     private SlidingRootNav slidingRootNav;
@@ -174,10 +172,8 @@ public class HomeActivity extends AppCompatActivity implements DrawerAdapter.OnI
         adapter = new DrawerAdapter(Arrays.asList(
                 createItemFor(POS_HOME).setChecked(true),
                 createItemFor(POS_LIKES),
-                createItemFor(POS_MESSAGES),
                 createItemFor(POS_PERFIL),
                 createItemFor(POS_AGREGAR),
-                createItemFor(POS_SETTINGS),
                 new SpaceItem(90),
                 createItemFor(POS_LOGOUT)));
         adapter.setListener(this);

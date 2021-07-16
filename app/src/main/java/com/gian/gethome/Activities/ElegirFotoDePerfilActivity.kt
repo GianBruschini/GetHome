@@ -127,7 +127,6 @@ class ElegirFotoDePerfilActivity : AppCompatActivity() {
                         fileReference.downloadUrl.addOnSuccessListener { uri ->
                             val model = Model(uri.toString())
                             storeValuesFirebase(model.imageURL)
-                            Toast.makeText(this, "Upload successful", Toast.LENGTH_LONG).show()
                         }
                     }
                     .addOnFailureListener { e -> Toast.makeText(this, e.message, Toast.LENGTH_SHORT).show() }
