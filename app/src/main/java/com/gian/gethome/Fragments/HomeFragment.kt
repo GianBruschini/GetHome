@@ -29,6 +29,7 @@ import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.fragment_home.*
 import java.util.*
+import kotlin.properties.Delegates
 
 
 class HomeFragment: Fragment(), HomeAdapter.OnItemClickListener, View.OnClickListener{
@@ -55,6 +56,7 @@ class HomeFragment: Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLis
     private lateinit var texto_resultado:TextView
     private lateinit var buscador:EditText
     private lateinit var homeActivity:HomeActivity
+    private var size by Delegates.notNull<Int>()
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -62,9 +64,16 @@ class HomeFragment: Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLis
         cardView = view.findViewById(R.id.cardViewHome)
         getCountryAndProvinceFromHomeActivity()
         settingValues(view)
-        loadRecycler()
         makeActionEditText()
+        setAllAnimalsSelected(view)
         return view
+    }
+
+    private fun setAllAnimalsSelected(view: View) {
+        val cardAll: CardView = view.findViewById(R.id.cardAll)
+        cardAll.setCardBackgroundColor(Color.parseColor("#306060"))
+        todoImg.setColorFilter(Color.parseColor("#ffffff"))
+        loadRecycler()
     }
 
     private fun getCountryAndProvinceFromHomeActivity() {
@@ -98,6 +107,13 @@ class HomeFragment: Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLis
                                     animal.sexo,
                                     animal.pais,
                                     animal.provincia))
+
+                            adapter = HomeAdapter(mlist)
+                            val gridLayoutManager = GridLayoutManager(context, 1, GridLayoutManager.VERTICAL, false)
+                            myRecycler.layoutManager = gridLayoutManager
+                            myRecycler.setHasFixedSize(true)
+                            myRecycler.adapter = adapter
+                            adapter.setOnItemClickListener(this@HomeFragment)
                         }
 
                     }
@@ -129,12 +145,7 @@ class HomeFragment: Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLis
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        adapter = HomeAdapter(mlist)
-        val gridLayoutManager = GridLayoutManager(context, 1, GridLayoutManager.VERTICAL, false)
-        myRecycler.layoutManager = gridLayoutManager
-        myRecycler.setHasFixedSize(true)
-        myRecycler.adapter = adapter
-        adapter.setOnItemClickListener(this)
+
     }
 
     private fun settingValues(view: View) {
@@ -186,71 +197,80 @@ class HomeFragment: Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLis
             clearListOfRecycler()
             setGatoImgselected()
             fillScreenWith("Gato")
-            myRecycler.adapter!!.notifyDataSetChanged()
         }
         perroImg.setOnClickListener {
             clearListOfRecycler()
             setPerroImgselected()
             fillScreenWith("Perro")
-            myRecycler.adapter!!.notifyDataSetChanged()
         }
         conejoImg.setOnClickListener {
             clearListOfRecycler()
             setConejoImgselected()
             fillScreenWith("Conejo")
-            myRecycler.adapter!!.notifyDataSetChanged()
         }
         tortugaImg.setOnClickListener {
             clearListOfRecycler()
             setTortugaImgselected()
             fillScreenWith("Tortuga")
-            myRecycler.adapter!!.notifyDataSetChanged()
         }
         loroImg.setOnClickListener {
             clearListOfRecycler()
             setLoroImgselected()
             fillScreenWith("Loro")
-            myRecycler.adapter!!.notifyDataSetChanged()
         }
         todoImg.setOnClickListener {
             clearListOfRecycler()
             setTodoImgselected()
             loadRecycler()
-            myRecycler.adapter!!.notifyDataSetChanged()
         }
     }
 
 
 
     private fun clearListOfRecycler() {
-        val size: Int = mlist.size
+        size= mlist.size
         if (size > 0) {
             for (i in 0 until size) {
                 mlist.removeAt(0)
             }
             myRecycler.adapter!!.notifyItemRangeRemoved(0, size)
         }
+        //adapter.clearList()
+        //myRecycler.adapter!!.notifyDataSetChanged()
     }
 
     private fun fillScreenWith(theTypeOfAnimal: String) {
+        adapter.clearList()
         texto_resultado.visibility = View.GONE
         mFirebaseAuth = FirebaseAuth.getInstance()
         val database = FirebaseDatabase.getInstance().reference.child("Users").child("Animales")
         database.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
+
                 for (dataSnapshot in snapshot.children) {
                     for (snap in dataSnapshot.children) {
                         val tipoAnimal: String = snap.child("tipoAnimal").value.toString();
                         if (tipoAnimal == theTypeOfAnimal) {
                             val animal: Animal = snap.getValue(Animal::class.java)!!
                             if (animal.provincia == provincia && animal.pais == pais) {
+
                                 imagenNotNull = checkWhatImageIsNotNull(animal)
                                 mlist.add(AnimalAdapterData(animal.nombre, animal.tipoAnimal,
                                         imagenNotNull,
                                         animal.edad, animal.fechaDePublicacion, animal.descripcion,
                                         animal.transitoUrgente,
                                         animal.userIDowner, animal.animalKey, animal.sexo, animal.pais, animal.provincia))
+
+
+                                adapter = HomeAdapter(mlist)
+                                val gridLayoutManager = GridLayoutManager(context, 1, GridLayoutManager.VERTICAL, false)
+                                myRecycler.layoutManager = gridLayoutManager
+                                myRecycler.setHasFixedSize(true)
+                                myRecycler.adapter = adapter
+                                adapter.setOnItemClickListener(this@HomeFragment)
+
                             }
+                            println("El mList size es " + " " + mlist.size)
 
                         }
 
@@ -382,7 +402,6 @@ class HomeFragment: Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLis
         intent.putExtra("sexoAnimal", animalClicked.sexo)
         intent.putExtra("Provincia", animalClicked.provincia)
         intent.putExtra("Pais", animalClicked.pais)
-
         startActivity(intent)
     }
 
@@ -400,11 +419,14 @@ class HomeFragment: Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLis
             }
 
             override fun afterTextChanged(editable: Editable) {
-                filter(editable.toString())
+                if(editable.toString().isNotEmpty()){
+                    filter(editable.toString())
+                }else{
+                    println("el size es " + " " + adapter.itemCount)
+                }
             }
         })
     }
-
 
     private fun filter(text: String) {
         val filteredList: ArrayList<AnimalAdapterData> = ArrayList<AnimalAdapterData>()
@@ -418,9 +440,5 @@ class HomeFragment: Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLis
             }
         }
         adapter.filterList(filteredList)
-
-
     }
-
-
 }

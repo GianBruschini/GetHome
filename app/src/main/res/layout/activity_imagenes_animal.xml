@@ -37,7 +37,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_centerInParent="true"
-                    android:scaleType="centerInside"
+                    android:scaleType="centerCrop"
                     >
                 </ImageView>
 
@@ -80,6 +80,7 @@
                     android:id="@+id/imagen2"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
                     >
                 </ImageView>
 
@@ -132,6 +133,7 @@
                     android:id="@+id/imagen3"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
                     >
                 </ImageView>
 
@@ -173,6 +175,7 @@
                     android:id="@+id/imagen4"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
                     >
                 </ImageView>
 

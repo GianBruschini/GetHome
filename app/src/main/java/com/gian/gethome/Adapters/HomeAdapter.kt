@@ -11,7 +11,7 @@ import com.gian.gethome.R
 import com.squareup.picasso.Picasso
 import java.util.*
 
-class HomeAdapter(private var mData: List<AnimalAdapterData>): RecyclerView.Adapter<HomeAdapter.HomeViewHolder>() {
+class HomeAdapter(private var mData: ArrayList<AnimalAdapterData>): RecyclerView.Adapter<HomeAdapter.HomeViewHolder>() {
 
     private var mListener: OnItemClickListener? = null
 
@@ -30,6 +30,9 @@ class HomeAdapter(private var mData: List<AnimalAdapterData>): RecyclerView.Adap
     }
 
     override fun onBindViewHolder(holder: HomeViewHolder, position: Int) {
+        for(item in mData.indices){
+            println("El size es del home " + " " + mData.size)
+        }
         val currentItem: AnimalAdapterData = mData[position]
         holder.nombreAnimal.text = currentItem.nombre
         holder.edadAnimal.text = currentItem.edad
@@ -49,9 +52,18 @@ class HomeAdapter(private var mData: List<AnimalAdapterData>): RecyclerView.Adap
         return mData.size
     }
 
-    fun filterList(filteredList: List<AnimalAdapterData>) {
+    fun filterList(filteredList: ArrayList<AnimalAdapterData>) {
         mData = filteredList
         notifyDataSetChanged()
+    }
+
+    fun clearList(){
+        if (mData.size > 0) {
+            for (i in mData.indices) {
+                mData.removeAt(0)
+            }
+            notifyItemRangeRemoved(0, mData.size)
+        }
     }
 
     inner class HomeViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
