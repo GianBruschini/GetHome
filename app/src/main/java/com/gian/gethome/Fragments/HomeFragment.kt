@@ -29,6 +29,7 @@ import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.fragment_home.*
 import java.util.*
+import kotlin.collections.ArrayList
 import kotlin.properties.Delegates
 
 
@@ -57,6 +58,8 @@ class HomeFragment: Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLis
     private lateinit var buscador:EditText
     private lateinit var homeActivity:HomeActivity
     private var size by Delegates.notNull<Int>()
+    private var listEmpty:MutableList<AnimalAdapterData> = mutableListOf()
+
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -119,7 +122,7 @@ class HomeFragment: Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLis
                     }
                 }
                 myRecycler.adapter?.notifyDataSetChanged()
-                if (adapter.itemCount == 0) {
+                if (mlist.size == 0) {
                     texto_resultado.visibility = View.VISIBLE
                 }
             }
@@ -240,7 +243,7 @@ class HomeFragment: Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLis
     }
 
     private fun fillScreenWith(theTypeOfAnimal: String) {
-        adapter.clearList()
+        //adapter.clearList()
         texto_resultado.visibility = View.GONE
         mFirebaseAuth = FirebaseAuth.getInstance()
         val database = FirebaseDatabase.getInstance().reference.child("Users").child("Animales")
@@ -278,7 +281,7 @@ class HomeFragment: Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLis
                 }
 
                 myRecycler.adapter?.notifyDataSetChanged()
-                if (adapter.itemCount == 0) {
+                if (mlist.size == 0) {
                     texto_resultado.visibility = View.VISIBLE
                 }
 

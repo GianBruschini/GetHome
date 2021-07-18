@@ -10,7 +10,6 @@ val nombre:String, val tipoAnimal:String, val transitoUrgente:String,val userIDo
                   val mail:String,
                   val phone:String) {
 
-
      constructor() : this("", "",
         "", "", "1",
         "", "","","","","","","","","","","","","","","",""

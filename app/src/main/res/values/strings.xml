@@ -11,6 +11,7 @@
 
     <string name="facebook_app_id">542698883592887</string>
     <string name="fb_login_protocol_scheme">fb542698883592887</string>
+    <string name="text_to_test">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc molestie arcu eu sem dignissim egestas. Morbi placerat magna non libero gravida cursus. Nullam interdum feugiat magna sed pretium. Fusce aliquam mollis leo, quis consectetur felis convallis vitae. Sed venenatis lorem enim, ac elementum nulla fermentum at. In facilisis diam et tellus venenatis gravida. Nam et bibendum quam. Maecenas vitae mi odio. Vestibulum nec tellus ut magna laoreet ullamcorper. Praesent vitae lectus vel lectus vestibulum luctus. Nunc libero justo, consectetur sollicitudin velit ac, sollicitudin auctor velit. Nunc sed bibendum mi. Donec gravida felis ac tortor lobortis tristique. Morbi ex magna, viverra nec cursus vel, scelerisque convallis magna. Maecenas quis purus mattis, fermentum metus at, euismod metus. Curabitur facilisis blandit lectus, ut consequat sapien gravida sit amet.</string>
 
 
 </resources>

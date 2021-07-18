@@ -2,6 +2,7 @@ package com.gian.gethome.Activities
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.method.ScrollingMovementMethod
 import android.view.View
 import android.widget.CompoundButton
 import android.widget.Toast
@@ -44,6 +45,7 @@ class AnimalDetalleActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_animal_detalle)
+        descripcionAnimalTxt.movementMethod = ScrollingMovementMethod()
         getIntentValues()
         checkFavouritesInDB()
         setLogicToToggleButtonFav()

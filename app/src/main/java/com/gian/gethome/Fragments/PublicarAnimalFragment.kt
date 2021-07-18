@@ -1,16 +1,12 @@
 package com.gian.gethome.Fragments
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Color
-import android.location.Location
-import android.location.LocationManager
 import android.os.Bundle
-import android.util.Log
+import android.text.method.ScrollingMovementMethod
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.webkit.URLUtil
 import android.widget.ArrayAdapter
 import android.widget.Spinner
 import android.widget.TextView
@@ -26,8 +22,6 @@ import com.gian.gethome.databinding.FragmentPublicarAnimalBinding
 import com.google.android.gms.location.*
 import kotlinx.android.synthetic.main.activity_animal_detalle.*
 import kotlinx.android.synthetic.main.activity_home.*
-import java.text.DateFormat
-import java.text.SimpleDateFormat
 import java.util.*
 
 
@@ -55,12 +49,11 @@ class PublicarAnimalFragment: Fragment(R.layout.fragment_publicar_animal) {
     }
 
     private fun initializeValues() {
+
         awesomeValidation = AwesomeValidation(ValidationStyle.BASIC)
         homeActivity = (activity as HomeActivity?)!!
         pais= homeActivity.pais.text.toString()
         provincia = homeActivity.provincia.text.toString()
-        println("El pais es  $pais")
-        println("La provincia es  $provincia")
     }
 
 
@@ -95,8 +88,7 @@ class PublicarAnimalFragment: Fragment(R.layout.fragment_publicar_animal) {
                     binding?.twitter?.text.toString().isEmpty() &&
                     binding?.instagram?.text.toString().isEmpty() &&
                     binding?.mail?.text.toString().isEmpty()){
-
-                Toast.makeText(context,"Debe indicar al menos un dato de contacto",Toast.LENGTH_LONG).show()
+                Toast.makeText(context, "Debe indicar al menos un dato de contacto", Toast.LENGTH_LONG).show()
 
             }else{
                 val intent = Intent(context, ImagenesAnimalActivity::class.java)
