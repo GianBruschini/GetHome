@@ -332,7 +332,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="end|bottom"
             android:src="@drawable/ic_baseline_filter_list_24"
-            android:layout_margin="16dp" />
+            android:layout_margin="16dp"
+            android:visibility="gone"/>
 
     </androidx.cardview.widget.CardView>
 
