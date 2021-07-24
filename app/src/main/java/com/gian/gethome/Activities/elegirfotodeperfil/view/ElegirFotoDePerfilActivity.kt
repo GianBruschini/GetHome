@@ -1,4 +1,4 @@
-package com.gian.gethome.Activities
+package com.gian.gethome.Activities.elegirfotodeperfil.view
 
 import android.content.Intent
 import android.net.Uri
@@ -7,6 +7,7 @@ import android.view.View
 import android.webkit.MimeTypeMap
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.gian.gethome.Activities.homeactivity.view.HomeActivity
 import com.gian.gethome.Clases.Model
 import com.gian.gethome.databinding.ActivityElegirFotoDePerfilBinding
 import com.google.android.gms.location.FusedLocationProviderClient

@@ -1,4 +1,4 @@
-package com.gian.gethome.Activities
+package com.gian.gethome.Activities.imagenesanimal.view
 
 import android.annotation.SuppressLint
 import android.app.ProgressDialog
@@ -11,6 +11,7 @@ import android.webkit.MimeTypeMap
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.gian.gethome.Activities.homeactivity.view.HomeActivity
 import com.gian.gethome.Clases.Model
 import com.gian.gethome.databinding.ActivityImagenesAnimalBinding
 
@@ -55,7 +56,6 @@ class ImagenesAnimalActivity : AppCompatActivity() {
     private var esIgual: Boolean = false
     private lateinit var pais:String
     private  lateinit var provincia:String
-
     private  lateinit var formatted:String
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -71,7 +71,6 @@ class ImagenesAnimalActivity : AppCompatActivity() {
         getValues()
         setOnClickListenerAddButtons()
         setOnClickListenerDeleteButtons()
-
     }
 
     @SuppressLint("SimpleDateFormat")

@@ -1,13 +1,12 @@
-package com.gian.gethome.Activities
+package com.gian.gethome.Activities.registrarse.view
 
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.gian.gethome.Activities.elegirfotodeperfil.view.ElegirFotoDePerfilActivity
 import com.gian.gethome.R
 import com.gian.gethome.databinding.ActivityRegistrarseBinding
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_registrarse.*
 
 class RegistrarseActivity : AppCompatActivity() {

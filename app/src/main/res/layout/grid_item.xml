@@ -15,7 +15,7 @@
         app:cardElevation="10dp"
         app:cardCornerRadius="10dp"
         android:layout_marginBottom="25dp"
-        android:layout_marginLeft="30dp"
+        android:layout_marginStart="30dp"
 
         >
 
@@ -82,7 +82,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/edadText"
-                android:layout_marginLeft="20dp"
                 android:layout_marginStart="18dp">
 
 

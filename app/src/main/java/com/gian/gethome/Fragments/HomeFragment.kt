@@ -16,9 +16,9 @@ import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.gian.gethome.Activities.AnimalDetalleActivity
+import com.gian.gethome.Activities.animaldetalle.view.AnimalDetalleActivity
 import com.gian.gethome.Activities.FilterActivity
-import com.gian.gethome.Activities.HomeActivity
+import com.gian.gethome.Activities.homeactivity.view.HomeActivity
 import com.gian.gethome.Adapters.HomeAdapter
 import com.gian.gethome.Clases.Animal
 import com.gian.gethome.Clases.AnimalAdapterData
@@ -56,7 +56,7 @@ class HomeFragment: Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLis
     private lateinit var  chooseFilter:FloatingActionButton
     private lateinit var texto_resultado:TextView
     private lateinit var buscador:EditText
-    private lateinit var homeActivity:HomeActivity
+    private lateinit var homeActivity: HomeActivity
     private var size by Delegates.notNull<Int>()
     private var listEmpty:MutableList<AnimalAdapterData> = mutableListOf()
 

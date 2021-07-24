@@ -3,7 +3,6 @@ package com.gian.gethome.Fragments
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
-import android.text.method.ScrollingMovementMethod
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,12 +14,10 @@ import androidx.fragment.app.Fragment
 import com.basgeekball.awesomevalidation.AwesomeValidation
 import com.basgeekball.awesomevalidation.ValidationStyle
 import com.basgeekball.awesomevalidation.utility.RegexTemplate
-import com.gian.gethome.Activities.HomeActivity
-import com.gian.gethome.Activities.ImagenesAnimalActivity
+import com.gian.gethome.Activities.homeactivity.view.HomeActivity
+import com.gian.gethome.Activities.imagenesanimal.view.ImagenesAnimalActivity
 import com.gian.gethome.R
 import com.gian.gethome.databinding.FragmentPublicarAnimalBinding
-import com.google.android.gms.location.*
-import kotlinx.android.synthetic.main.activity_animal_detalle.*
 import kotlinx.android.synthetic.main.activity_home.*
 import java.util.*
 
@@ -36,7 +33,7 @@ class PublicarAnimalFragment: Fragment(R.layout.fragment_publicar_animal) {
     private lateinit var awesomeValidation: AwesomeValidation
     private lateinit var pais: String
     private lateinit var provincia: String
-    private lateinit var homeActivity:HomeActivity
+    private lateinit var homeActivity: HomeActivity
 
 
 

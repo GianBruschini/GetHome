@@ -1,7 +1,6 @@
 package com.gian.gethome.Fragments
 
 import android.content.Intent
-import android.opengl.Visibility
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,7 +9,7 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.gian.gethome.Activities.AnimalDetalleActivity
+import com.gian.gethome.Activities.animaldetalle.view.AnimalDetalleActivity
 import com.gian.gethome.Adapters.HomeAdapter
 import com.gian.gethome.Clases.Animal
 import com.gian.gethome.Clases.AnimalAdapterData
@@ -21,7 +20,6 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import com.google.firebase.ktx.Firebase
 import java.util.ArrayList
 
 class LikesFragment: Fragment(), HomeAdapter.OnItemClickListener {
