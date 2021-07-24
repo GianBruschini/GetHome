@@ -5,3 +5,16 @@ Gethome is a pet adoption app. The user will be able to publish and adopt pets. 
 **Features**
 
 In this application an MVP architecture was used and Firebase was used for the persistence of the information.
+
+**Libraries used**
+
+* Firebase database, and Firebase storage.
+* Google play service, for Gmail login.
+* Facebook login,
+* Butterknife
+* CircleImageView
+* Picasso
+* Slidding Menu by yarolegovich
+* Dexter
+* FormValidation by basgeekball
+* Airbnb Lottie for animations
