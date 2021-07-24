@@ -14,7 +14,7 @@ In this application an MVP architecture was used and Firebase was used for the p
 * Butterknife
 * CircleImageView
 * Picasso
-* Slidding Menu by yarolegovich
+* Sliding Menu by yarolegovich
 * Dexter
 * FormValidation by basgeekball
 * Airbnb Lottie for animations
