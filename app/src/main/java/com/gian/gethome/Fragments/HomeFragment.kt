@@ -250,22 +250,24 @@ class HomeFragment: Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLis
                             if (animal.provincia == provincia && animal.pais == pais) {
 
                                 imagenNotNull = checkWhatImageIsNotNull(animal)
-                                mlist.add(AnimalAdapterData(animal.nombre, animal.tipoAnimal,
-                                        imagenNotNull,
-                                        animal.edad, animal.fechaDePublicacion, animal.descripcion,
-                                        animal.transitoUrgente,
-                                        animal.userIDowner, animal.animalKey, animal.sexo, animal.pais, animal.provincia))
+                                if(imagenNotNull != ""){
+                                    mlist.add(AnimalAdapterData(animal.nombre, animal.tipoAnimal,
+                                            imagenNotNull,
+                                            animal.edad, animal.fechaDePublicacion, animal.descripcion,
+                                            animal.transitoUrgente,
+                                            animal.userIDowner, animal.animalKey, animal.sexo, animal.pais, animal.provincia))
 
 
-                                adapter = HomeAdapter(mlist)
-                                val gridLayoutManager = GridLayoutManager(context, 1, GridLayoutManager.VERTICAL, false)
-                                myRecycler.layoutManager = gridLayoutManager
-                                myRecycler.setHasFixedSize(true)
-                                myRecycler.adapter = adapter
-                                adapter.setOnItemClickListener(this@HomeFragment)
+                                    adapter = HomeAdapter(mlist)
+                                    val gridLayoutManager = GridLayoutManager(context, 1, GridLayoutManager.VERTICAL, false)
+                                    myRecycler.layoutManager = gridLayoutManager
+                                    myRecycler.setHasFixedSize(true)
+                                    myRecycler.adapter = adapter
+                                    adapter.setOnItemClickListener(this@HomeFragment)
+                                }
 
                             }
-                            println("El mList size es " + " " + mlist.size)
+
 
                         }
 

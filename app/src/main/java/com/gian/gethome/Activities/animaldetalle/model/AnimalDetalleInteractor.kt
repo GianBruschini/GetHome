@@ -12,7 +12,6 @@ import kotlinx.android.synthetic.main.activity_animal_detalle.*
 
 class AnimalDetalleInteractor {
     private val mFirebaseAuth = FirebaseAuth.getInstance()
-    private lateinit var currentUserkey:String
     private var animalImages:MutableList<String> = mutableListOf()
 
     interface onAnimalDetalleListener{
@@ -55,7 +54,7 @@ class AnimalDetalleInteractor {
         val animalKeyDB = FirebaseDatabase.getInstance().reference.child("Users").child("Person").child(currentUserID).child("PubsDiLike").child(currentUserkey).child("animalKey")
         val userOwnerPubDB = FirebaseDatabase.getInstance().reference.child("Users").child("Person").child(currentUserID).child("PubsDiLike").child(currentUserkey).child("idUserOwner")
         animalKeyDB.setValue(animalKey)
-        myKeyDB.setValue(currentUserkey.toString())
+        myKeyDB.setValue(currentUserkey)
         userOwnerPubDB.setValue(userIDownerAnimal)
     }
 

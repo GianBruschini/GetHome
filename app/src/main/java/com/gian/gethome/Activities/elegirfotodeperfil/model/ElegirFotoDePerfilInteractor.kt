@@ -5,11 +5,15 @@ import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.webkit.MimeTypeMap
 import androidx.appcompat.app.AppCompatActivity
+import com.facebook.FacebookSdk
 import com.gian.gethome.Activities.elegirfotodeperfil.view.ElegirFotoDePerfilActivity
+import com.gian.gethome.R
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.StorageTask
+import com.yalantis.ucrop.UCrop
+import java.io.File
 import java.io.IOException
 
 class ElegirFotoDePerfilInteractor {
@@ -17,6 +21,7 @@ class ElegirFotoDePerfilInteractor {
     private val PICK_IMAGE: Int = 1
     private var imageUri: Uri? = null
     private var mUploadTask: StorageTask<*>? = null
+    private val SAMPLE_CROPPED_IMG_NAME:String = "Sample"
 
 
     interface onElegirFotoDePerfilListener{
@@ -29,10 +34,6 @@ class ElegirFotoDePerfilInteractor {
         fun onShowProgressDialog()
         fun onHideProgressDialog()
         fun startActivityWithImageURL(imageURL: String)
-
-
-
-
     }
 
     fun checkIfUserIsSetInDb(listener: onElegirFotoDePerfilListener) {
@@ -46,11 +47,10 @@ class ElegirFotoDePerfilInteractor {
                         if (data.exists()) {
                             listener.onStartHomeActivity()
                         } else {
-                            listener.onStartSameActivity()
+                            //listener.onStartSameActivity()
                         }
                     }
                 }
-
 
                 override fun onCancelled(error: DatabaseError) {
                     listener.onDatabaseError()
@@ -60,17 +60,49 @@ class ElegirFotoDePerfilInteractor {
     }
 
 
-    fun setActivityResultData(imageUriRef: Uri?, requestCode: Int, resultCode: Int, data: Intent?,listener: onElegirFotoDePerfilListener) {
-        if (requestCode == PICK_IMAGE && resultCode == AppCompatActivity.RESULT_OK && data != null) {
-
+    fun setActivityResultData(imageUriRef: Uri?, requestCode: Int, resultCode: Int, data: Intent?, listener: onElegirFotoDePerfilListener, context: ElegirFotoDePerfilActivity) {
+        if (requestCode == PICK_IMAGE && resultCode == AppCompatActivity.RESULT_OK) {
             imageUri  = imageUriRef
-            imageUri = data.data
-            try {
-                listener.onSetImageProfile(imageUri)
-            } catch (e: IOException) {
-                e.printStackTrace()
+            imageUri = data?.data
+            startCrop(imageUri!!, context)
+        }else{
+            if(requestCode == UCrop.REQUEST_CROP){
+                val imageUriResultCrop = UCrop.getOutput(data!!)
+                listener.onSetImageProfile(imageUriResultCrop)
             }
         }
+    }
+
+
+    fun startCrop(uri: Uri, context: ElegirFotoDePerfilActivity){
+        var destinationFile:String =SAMPLE_CROPPED_IMG_NAME
+        destinationFile += ".jpg"
+        val uCrop = UCrop.of(uri, Uri.fromFile(File(FacebookSdk.getCacheDir(), destinationFile)))
+        uCrop.withAspectRatio(1F, 1F)
+        //uCrop.withAspectRatio(3F,4F)
+        //uCrop.useSourceImageAspectRatio()
+        //uCrop.withAspectRatio(2F,3F)
+        //uCrop.withAspectRatio(16F,9F)
+
+        uCrop.withMaxResultSize(450, 450)
+        uCrop.withOptions(getCropOption(context))
+        uCrop.start(context)
+    }
+
+    fun getCropOption(context: ElegirFotoDePerfilActivity): UCrop.Options{
+        val options = UCrop.Options()
+        options.setCompressionQuality(70)
+        //options.setCompressionFormat(Bitmap.CompressFormat.PNG)
+        //options.setCompressionFormat(Bitmap.CompressFormat.PNG)
+
+        options.setHideBottomControls(false)
+        options.setFreeStyleCropEnabled(true)
+
+        options.setStatusBarColor(context.resources.getColor(R.color.purple_200))
+        options.setToolbarColor(context.resources.getColor(R.color.gray))
+        options.setToolbarTitle("Recortar imagen")
+        return options
+
     }
 
     fun checkAndUpload(profile: Drawable?, mStorageRef: StorageReference?,
@@ -121,6 +153,5 @@ class ElegirFotoDePerfilInteractor {
         listener.onHideProgressDialog()
 
     }
-
 
 }

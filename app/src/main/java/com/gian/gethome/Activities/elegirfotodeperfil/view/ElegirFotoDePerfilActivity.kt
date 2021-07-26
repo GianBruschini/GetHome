@@ -1,5 +1,6 @@
 package com.gian.gethome.Activities.elegirfotodeperfil.view
 
+import android.app.Dialog
 import android.app.ProgressDialog
 import android.content.Intent
 import android.net.Uri
@@ -11,6 +12,8 @@ import com.gian.gethome.Activities.elegirfotodeperfil.interfaces.ElegirFotoDePer
 import com.gian.gethome.Activities.elegirfotodeperfil.model.ElegirFotoDePerfilInteractor
 import com.gian.gethome.Activities.elegirfotodeperfil.presenter.ElegirFotoDePerfilPresenter
 import com.gian.gethome.Activities.homeactivity.view.HomeActivity
+import com.gian.gethome.Clases.CommonUtils
+import com.gian.gethome.Clases.CommonUtilsJava
 import com.gian.gethome.databinding.ActivityElegirFotoDePerfilBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
@@ -27,13 +30,12 @@ class ElegirFotoDePerfilActivity : AppCompatActivity(),ElegirFotoDePerfilView {
     private var imageUri: Uri? = null
     private var mStorageRef: StorageReference? = null
     private val presenter = ElegirFotoDePerfilPresenter(this, ElegirFotoDePerfilInteractor())
-    private var progressDialog: ProgressDialog? = null
+    private var loadingDialog: Dialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityElegirFotoDePerfilBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        //checkIfUserIsSetInDb()
         presenter.checkIfUserIsSetInDB()
         initializeValues()
         openOptionsImage()
@@ -65,7 +67,7 @@ class ElegirFotoDePerfilActivity : AppCompatActivity(),ElegirFotoDePerfilView {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        presenter.setActivityResultData(imageUri, requestCode, resultCode, data)
+        presenter.setActivityResultData(imageUri, requestCode, resultCode, data, this)
 
     }
     override fun navigateToHomeActivity() {
@@ -99,26 +101,26 @@ class ElegirFotoDePerfilActivity : AppCompatActivity(),ElegirFotoDePerfilView {
     }
 
     override fun showProgressDialog() {
-        progressDialog = ProgressDialog(this)
-        progressDialog!!.setTitle("Cargando")
-        progressDialog!!.setCancelable(false)
-        progressDialog!!.show()
+        hideProgressDialog()
+        loadingDialog = CommonUtils.showLoadingDialog(this)
     }
 
     override fun hideProgressDialog() {
-        progressDialog?.dismiss()
+        loadingDialog?.let {
+            if(it.isShowing)it.cancel()
+        }
     }
 
     override fun startActivityWithImageURL(imageURL: String) {
         val intent = Intent(this, HomeActivity::class.java)
-        intent.putExtra("drawableProfile",imageURL)
+        intent.putExtra("drawableProfile", imageURL)
         startActivity(intent)
         finish()
     }
 
     override fun onDestroy() {
-        super.onDestroy()
         presenter.onDestroy()
+        super.onDestroy()
     }
 
 

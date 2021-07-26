@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.IntentSender;
@@ -36,9 +37,10 @@ import com.gian.gethome.Adapters.DrawerItem;
 import com.gian.gethome.Adapters.SimpleItem;
 import com.gian.gethome.Adapters.SpaceItem;
 import com.gian.gethome.BuildConfig;
+import com.gian.gethome.Clases.CommonUtilsJava;
 import com.gian.gethome.Fragments.HomeFragment;
-import com.gian.gethome.Fragments.LikesFragment;
-import com.gian.gethome.Fragments.PerfilFragment;
+import com.gian.gethome.Fragments.likes.view.LikesFragment;
+import com.gian.gethome.Fragments.perfil.view.PerfilFragment;
 import com.gian.gethome.Fragments.PublicarAnimalFragment;
 import com.gian.gethome.MainActivity;
 import com.gian.gethome.R;
@@ -68,7 +70,6 @@ import com.karumi.dexter.listener.PermissionGrantedResponse;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.single.PermissionListener;
 import com.squareup.picasso.Picasso;
-import com.yalantis.ucrop.UCrop;
 import com.yarolegovich.slidingrootnav.SlidingRootNav;
 import com.yarolegovich.slidingrootnav.SlidingRootNavBuilder;
 
@@ -112,17 +113,14 @@ public class HomeActivity extends AppCompatActivity implements DrawerAdapter.OnI
     private DrawerAdapter adapter;
     private int seEjecuto=0;
     private FirebaseAuth mFirebaseAuth;
+    private Dialog loadingDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setTitle("Cargando");
-        progressDialog.setMessage("Por favor, espere");
-        progressDialog.setCancelable(false);
-        progressDialog.show();
+        loadingDialog = new Dialog(this);
+        showProgressDialog();
         SharedPreferences.Editor editor = getSharedPreferences("prefCheckUser", MODE_PRIVATE).edit();
         editor.putInt("code", 1);
         editor.apply();
@@ -135,9 +133,6 @@ public class HomeActivity extends AppCompatActivity implements DrawerAdapter.OnI
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         init();
         startLocation();
-
-
-
 
         slidingRootNav = new SlidingRootNavBuilder(this)
                 .withToolbarMenuToggle(toolbar)
@@ -171,6 +166,27 @@ public class HomeActivity extends AppCompatActivity implements DrawerAdapter.OnI
 
         //adapter.setSelected(POS_HOME);
 
+    }
+
+    private void showProgressDialog() {
+        /*progressDialog = new ProgressDialog(this);
+        progressDialog.setTitle("Cargando");
+        progressDialog.setMessage("Por favor, espere");
+        progressDialog.setCancelable(false);
+        progressDialog.show();
+
+         */
+        hideProgressDialog();
+        CommonUtilsJava commonUtils = new CommonUtilsJava();
+        loadingDialog = commonUtils.showLoadingDialog(this);
+
+    }
+
+    private void hideProgressDialog(){
+
+        if(loadingDialog.isShowing()){
+            loadingDialog.cancel();
+        }
     }
 
     private void init() {
@@ -214,7 +230,7 @@ public class HomeActivity extends AppCompatActivity implements DrawerAdapter.OnI
                     bundle.putString("Pais",pais.getText().toString());
                     bundle.putString("Provincia",provincia.getText().toString());
                     setFragmentWithBundle(new HomeFragment(),bundle);
-                    progressDialog.dismiss();
+                    hideProgressDialog();
                 }
 
             }catch (Exception e)
@@ -416,7 +432,22 @@ public class HomeActivity extends AppCompatActivity implements DrawerAdapter.OnI
     private void setFotoPerfil() {
         fotoPerfil = findViewById(R.id.fotoPerfil);
         String profileImageURL= getIntent().getStringExtra("drawableProfile");
-        Picasso.get().load(profileImageURL).placeholder(R.drawable.loader).into(fotoPerfil);
+        Picasso.get().load(profileImageURL).placeholder(R.drawable.progress_animation).into(fotoPerfil);
+        if(profileImageURL == null){
+            DatabaseReference profilePicture = FirebaseDatabase.getInstance().getReference().child("Users").child("Person").child(mFirebaseAuth.getCurrentUser().getUid()).child("imageURL");
+            profilePicture.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    imagenPerfil = (String) dataSnapshot.getValue();
+                    Picasso.get().load(imagenPerfil).placeholder(R.drawable.progress_animation).into(fotoPerfil);
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+        }
 
     }
 

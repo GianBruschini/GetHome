@@ -60,6 +60,7 @@
         android:layout_below="@id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        app:cardCornerRadius="30dp"
         android:elevation="10dp"
         >
 
@@ -81,10 +82,9 @@
                     android:layout_width="150dp"
                     android:layout_height="150dp"
                     android:layout_marginTop="30dp"
-                    android:src="@drawable/icon_google"
+                    android:src="@drawable/ic_user"
                     app:civ_border_width="2dp"
                     app:civ_border_color="@color/black">
-
                 </de.hdodenhof.circleimageview.CircleImageView>
 
                 <ImageView
@@ -92,22 +92,24 @@
                     android:layout_width="50dp"
                     android:layout_height="100dp"
                     android:src="@drawable/ic_baseline_photo_camera_24"
-
                     android:layout_marginTop="50dp">
 
                 </ImageView>
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/botonContinuar"
-                    android:layout_width="201dp"
+                    android:layout_width="220dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="50dp"
+                    android:textSize="17sp"
                     android:background="@drawable/button_design"
-                    android:fontFamily="@font/grandstander_semibold"
+                    android:fontFamily="@font/montserrat_medium"
                     android:onClick="Continuar"
                     android:text="Continuar"
-                    android:textColor="#EAE1E1" />
+                    android:textStyle="bold"
+                    android:textAllCaps="false"
+                    android:textColor="#FFFFFF" />
 
             </LinearLayout>
 

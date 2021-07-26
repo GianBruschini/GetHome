@@ -37,7 +37,6 @@ class ImagenesAnimalInteractor {
     private var esIgual: Boolean = false
     private var numberImg by Delegates.notNull<Int>()
 
-    private val CODE_IMG_GALLERY = 1;
     private val SAMPLE_CROPPED_IMG_NAME:String = "Sample"
 
 
@@ -70,7 +69,6 @@ class ImagenesAnimalInteractor {
             numberImg= requestCode
         }
 
-        println("El request code es " + " " + numberImg)
         if(resultCode == -1 && requestCode>= 0 && requestCode <=4){
             when(requestCode){
                 1 -> setImageViewWith(0, data, listener, context)
@@ -80,7 +78,7 @@ class ImagenesAnimalInteractor {
             }
         }else{
             if(requestCode == UCrop.REQUEST_CROP && resultCode == -1){
-                var imageUriResultCrop = UCrop.getOutput(data!!)
+                var imageUriResultCrop = UCrop.getOutput(data)
                 if(imageUriResultCrop!=null){
                     when(numberImg){
                         1 -> imageList[0].setImageURI(imageUriResultCrop)

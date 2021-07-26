@@ -46,7 +46,7 @@ class ContactInfoActivity : AppCompatActivity(),ContactInfoView {
     }
 
     override fun setUserInfo(userInfo: UserInfo) {
-        Picasso.get().load(userInfo.imageURL).placeholder(R.drawable.loader).fit().into(animalImg)
+        Picasso.get().load(userInfo.imageURL).placeholder(R.drawable.progress_animation).fit().into(animalImg)
         userOwnerName.text = userInfo.userName
     }
 

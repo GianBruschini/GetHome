@@ -52,8 +52,8 @@ class ElegirFotoDePerfilPresenter(var elegirFotoDePerfilView: ElegirFotoDePerfil
         elegirFotoDePerfilView?.startActivityWithImageURL(imageURL)
     }
 
-    fun setActivityResultData(imageUri: Uri?, requestCode: Int, resultCode: Int, data: Intent?) {
-        elegirFotoDePerfilInteractor.setActivityResultData(imageUri, requestCode, resultCode, data,this)
+    fun setActivityResultData(imageUri: Uri?, requestCode: Int, resultCode: Int, data: Intent?, context: ElegirFotoDePerfilActivity) {
+        elegirFotoDePerfilInteractor.setActivityResultData(imageUri, requestCode, resultCode, data,this,context)
     }
 
     fun uploadImageProfile(drawable: Drawable?, mStorageRef: StorageReference?, elegirFotoDePerfilActivity: ElegirFotoDePerfilActivity) {

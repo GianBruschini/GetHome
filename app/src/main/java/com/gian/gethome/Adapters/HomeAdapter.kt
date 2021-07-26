@@ -6,7 +6,9 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.gian.gethome.Clases.AnimalAdapterData
+import com.gian.gethome.Fragments.HomeFragment
 import com.gian.gethome.R
 import com.squareup.picasso.Picasso
 import java.util.*
@@ -43,7 +45,12 @@ class HomeAdapter(private var mData: ArrayList<AnimalAdapterData>): RecyclerView
             "Hembra" -> Picasso.get().load(R.drawable.female).into(holder.genreIcon)
         }
 
-        Picasso.get().load(currentItem.imageURL).placeholder(R.drawable.progress_animation).into(holder.fotoAnimal)
+        Picasso.get().
+        load(currentItem.imageURL).
+        placeholder(R.drawable.progress_animation).
+
+        into(holder.fotoAnimal)
+
 
 
     }

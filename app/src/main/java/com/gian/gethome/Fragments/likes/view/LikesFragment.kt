@@ -1,4 +1,4 @@
-package com.gian.gethome.Fragments
+package com.gian.gethome.Fragments.likes.view
 
 import android.content.Intent
 import android.os.Bundle
