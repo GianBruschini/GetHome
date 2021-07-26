@@ -61,6 +61,6 @@ class ElegirFotoDePerfilPresenter(var elegirFotoDePerfilView: ElegirFotoDePerfil
     }
 
     fun onDestroy() {
-        elegirFotoDePerfilView = null
+        elegirFotoDePerfilView = null //muy importante
     }
 }
