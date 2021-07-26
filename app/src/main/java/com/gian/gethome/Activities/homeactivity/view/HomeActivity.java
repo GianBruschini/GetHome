@@ -68,6 +68,7 @@ import com.karumi.dexter.listener.PermissionGrantedResponse;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.single.PermissionListener;
 import com.squareup.picasso.Picasso;
+import com.yalantis.ucrop.UCrop;
 import com.yarolegovich.slidingrootnav.SlidingRootNav;
 import com.yarolegovich.slidingrootnav.SlidingRootNavBuilder;
 
@@ -92,7 +93,6 @@ public class HomeActivity extends AppCompatActivity implements DrawerAdapter.OnI
     private Drawable[] screenIcons;
     private SlidingRootNav slidingRootNav;
     private CircleImageView fotoPerfil;
-    private FirebaseAuth mFirebaseAuth = FirebaseAuth.getInstance();
     private String imagenPerfil;
     private TextView provincia;
     private TextView pais;
@@ -111,6 +111,7 @@ public class HomeActivity extends AppCompatActivity implements DrawerAdapter.OnI
     private static final int REQUEST_CHECK_SETTINGS = 100;
     private DrawerAdapter adapter;
     private int seEjecuto=0;
+    private FirebaseAuth mFirebaseAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -128,14 +129,15 @@ public class HomeActivity extends AppCompatActivity implements DrawerAdapter.OnI
         fotoPerfil = findViewById(R.id.fotoPerfil);
         provincia = findViewById(R.id.provincia);
         pais = findViewById(R.id.pais);
-        setFotoPerfil();
+        mFirebaseAuth = FirebaseAuth.getInstance();
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-
         init();
-
         startLocation();
+
+
+
 
         slidingRootNav = new SlidingRootNavBuilder(this)
                 .withToolbarMenuToggle(toolbar)
@@ -165,13 +167,11 @@ public class HomeActivity extends AppCompatActivity implements DrawerAdapter.OnI
 
         TextView txt = slidingRootNav.getLayout().getChildAt(0).findViewById(R.id.nombrePerfilDrawer);
         txt.setText(mFirebaseAuth.getCurrentUser().getDisplayName());
-
-
+        setFotoPerfil();
 
         //adapter.setSelected(POS_HOME);
 
     }
-
 
     private void init() {
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
@@ -186,7 +186,6 @@ public class HomeActivity extends AppCompatActivity implements DrawerAdapter.OnI
                 updateLocationUI();
             }
         };
-
         mRequestingLocationUpdates = false;
 
         mLocationRequest = new LocationRequest();
@@ -334,7 +333,6 @@ public class HomeActivity extends AppCompatActivity implements DrawerAdapter.OnI
     }
 
 
-
     @SuppressWarnings("rawtypes")
     private DrawerItem createItemFor(int position) {
         return new SimpleItem(screenIcons[position], screenTitles[position])
@@ -416,24 +414,9 @@ public class HomeActivity extends AppCompatActivity implements DrawerAdapter.OnI
     }
 
     private void setFotoPerfil() {
-        String currentUserID = mFirebaseAuth.getCurrentUser().getUid();
-
-        DatabaseReference profilePicture = FirebaseDatabase.getInstance().getReference().child("Users").child("Person").child(currentUserID).child("imageURL");
-        profilePicture.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                imagenPerfil = (String) dataSnapshot.getValue();
-                fotoPerfil = findViewById(R.id.fotoPerfil);
-                Picasso.get().load(imagenPerfil).fit().placeholder(R.drawable.loader).into(fotoPerfil);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-
-
+        fotoPerfil = findViewById(R.id.fotoPerfil);
+        String profileImageURL= getIntent().getStringExtra("drawableProfile");
+        Picasso.get().load(profileImageURL).placeholder(R.drawable.loader).into(fotoPerfil);
 
     }
 

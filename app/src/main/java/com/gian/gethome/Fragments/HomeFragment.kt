@@ -17,13 +17,11 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.gian.gethome.Activities.animaldetalle.view.AnimalDetalleActivity
-import com.gian.gethome.Activities.FilterActivity
 import com.gian.gethome.Activities.homeactivity.view.HomeActivity
 import com.gian.gethome.Adapters.HomeAdapter
 import com.gian.gethome.Clases.Animal
 import com.gian.gethome.Clases.AnimalAdapterData
 import com.gian.gethome.R
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_home.*
@@ -53,7 +51,6 @@ class HomeFragment: Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLis
     private lateinit var conejoImg:ImageView
     private lateinit var tortugaImg:ImageView
     private lateinit var todoImg:ImageView
-    private lateinit var  chooseFilter:FloatingActionButton
     private lateinit var texto_resultado:TextView
     private lateinit var buscador:EditText
     private lateinit var homeActivity: HomeActivity
@@ -162,7 +159,6 @@ class HomeFragment: Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLis
         conejoImg = view.findViewById(R.id.conejo)
         loroImg = view.findViewById(R.id.loro)
         tortugaImg = view.findViewById(R.id.tortuga)
-        chooseFilter = view.findViewById(R.id.chooseFilters)
         todoImg = view.findViewById(R.id.all)
         gatoImg.setOnClickListener(this)
         perroImg.setOnClickListener(this)
@@ -171,10 +167,6 @@ class HomeFragment: Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLis
         tortugaImg.setOnClickListener(this)
         todoImg.setOnClickListener(this)
 
-        chooseFilter.setOnClickListener {
-            val intent= Intent(context, FilterActivity::class.java)
-            startActivityForResult(intent, 101)
-        }
         setOnClickImages()
         progressDialog = ProgressDialog(context)
         progressDialog.setTitle("Cargando publicaciones")
@@ -424,8 +416,6 @@ class HomeFragment: Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLis
             override fun afterTextChanged(editable: Editable) {
                 if(editable.toString().isNotEmpty()){
                     filter(editable.toString())
-                }else{
-                    println("el size es " + " " + adapter.itemCount)
                 }
             }
         })
@@ -442,6 +432,8 @@ class HomeFragment: Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLis
                 filteredList.add(item)
             }
         }
-        adapter.filterList(filteredList)
+        if(this::adapter.isInitialized){
+            adapter.filterList(filteredList)
+        }
     }
 }

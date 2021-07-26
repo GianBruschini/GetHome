@@ -95,6 +95,11 @@ dependencies {
     //Lottie
     def lottieVersion = "3.7.2"
     implementation "com.airbnb.android:lottie:$lottieVersion"
+    //Ucrop
+    implementation 'com.github.yalantis:ucrop:2.2.6'
+    implementation 'com.github.yalantis:ucrop:2.2.6-native'
+
+
 
 
 

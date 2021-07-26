@@ -171,87 +171,11 @@
                     android:layout_marginLeft="10dp">
                 </EditText>
 
-                <EditText
-                    android:id="@+id/webPage"
-                    android:layout_width="350dp"
-                    android:layout_height="40dp"
-                    android:background="@drawable/edittext_design"
-                    android:fontFamily="@font/dmsansregular"
-                    android:hint="Página Web"
-                    android:layout_gravity="center"
-                    android:drawableRight="@drawable/ic_web_page"
-                    android:elevation="5dp"
-                    android:inputType="textMultiLine"
-                    android:paddingStart="12dp"
-                    android:paddingEnd="12dp"
-                    android:textColor="#000000"
-                    android:textColorHint="#9FA3AC"
-                    android:textSize="14sp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginLeft="10dp">
-                </EditText>
-
-                <EditText
-                    android:id="@+id/facebook"
-                    android:layout_width="350dp"
-                    android:layout_height="40dp"
-                    android:background="@drawable/edittext_design"
-                    android:fontFamily="@font/dmsansregular"
-                    android:hint="Facebook"
-                    android:layout_gravity="center"
-                    android:drawableRight="@drawable/ic_facebook"
-                    android:elevation="5dp"
-                    android:inputType="textMultiLine"
-                    android:paddingStart="12dp"
-                    android:paddingEnd="12dp"
-                    android:textColor="#000000"
-                    android:textColorHint="#9FA3AC"
-                    android:textSize="14sp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginLeft="10dp">
-                </EditText>
 
 
-                <EditText
-                    android:id="@+id/twitter"
-                    android:layout_width="350dp"
-                    android:layout_height="40dp"
-                    android:background="@drawable/edittext_design"
-                    android:fontFamily="@font/dmsansregular"
-                    android:hint="Twitter"
-                    android:layout_gravity="center"
-                    android:drawableRight="@drawable/ic_twitter"
-                    android:elevation="5dp"
-                    android:inputType="textMultiLine"
-                    android:paddingStart="12dp"
-                    android:paddingEnd="12dp"
-                    android:textColor="#000000"
-                    android:textColorHint="#9FA3AC"
-                    android:textSize="14sp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginLeft="10dp">
-                </EditText>
 
 
-                <EditText
-                    android:id="@+id/instagram"
-                    android:layout_width="350dp"
-                    android:layout_height="40dp"
-                    android:background="@drawable/edittext_design"
-                    android:fontFamily="@font/dmsansregular"
-                    android:hint="Instagram"
-                    android:layout_gravity="center"
-                    android:drawableRight="@drawable/ic_instagram"
-                    android:elevation="5dp"
-                    android:inputType="textMultiLine"
-                    android:paddingStart="12dp"
-                    android:paddingEnd="12dp"
-                    android:textColor="#000000"
-                    android:textColorHint="#9FA3AC"
-                    android:textSize="14sp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginLeft="10dp">
-                </EditText>
+
 
 
                 <EditText

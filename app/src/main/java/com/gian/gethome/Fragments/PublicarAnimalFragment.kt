@@ -80,10 +80,7 @@ class PublicarAnimalFragment: Fragment(R.layout.fragment_publicar_animal) {
         if(awesomeValidation.validate()){
             if(binding?.whatsppNumber?.text.toString().isEmpty() &&
                     binding?.phoneNumber?.text.toString().isEmpty() &&
-                    binding?.webPage?.text.toString().isEmpty() &&
-                    binding?.facebook?.text.toString().isEmpty() &&
-                    binding?.twitter?.text.toString().isEmpty() &&
-                    binding?.instagram?.text.toString().isEmpty() &&
+
                     binding?.mail?.text.toString().isEmpty()){
                 Toast.makeText(context, "Debe indicar al menos un dato de contacto", Toast.LENGTH_LONG).show()
 
@@ -99,10 +96,6 @@ class PublicarAnimalFragment: Fragment(R.layout.fragment_publicar_animal) {
                 intent.putExtra("Provincia", provincia)
                 intent.putExtra("Whatsapp", binding?.whatsppNumber?.text.toString())
                 intent.putExtra("Phone", binding?.phoneNumber?.text.toString())
-                intent.putExtra("WebPage", binding?.webPage?.text.toString())
-                intent.putExtra("Facebook", binding?.facebook?.text.toString())
-                intent.putExtra("Twitter", binding?.twitter?.text.toString())
-                intent.putExtra("Instagram", binding?.instagram?.text.toString())
                 intent.putExtra("Mail", binding?.mail?.text.toString())
                 startActivity(intent)
             }
