@@ -55,7 +55,7 @@ import java.util.TimerTask;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
+//this is a new comment
 public class MainActivity extends AppCompatActivity  {
 
     private List<SlideFirstScreen> lstSlides;
