@@ -19,7 +19,7 @@ In this application an MVP architecture was used and Firebase was used for the p
 * FormValidation by basgeekball
 * Airbnb Lottie for animations
 
-# Screenshots of the app
+# Some screenshots of the app
 
 <p align="center">
 <img src="https://user-images.githubusercontent.com/59579790/127693579-71657620-046a-464d-b869-ca66076e44da.png" width="200" height="400" />
