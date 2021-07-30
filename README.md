@@ -18,3 +18,27 @@ In this application an MVP architecture was used and Firebase was used for the p
 * Dexter
 * FormValidation by basgeekball
 * Airbnb Lottie for animations
+
+# Screenshots of the app
+
+<p align="center">
+<img src="https://user-images.githubusercontent.com/59579790/127693579-71657620-046a-464d-b869-ca66076e44da.png" width="200" height="400" />
+</p>
+
+<p align="center">
+<img src="https://user-images.githubusercontent.com/59579790/127693618-c3a59aca-30b7-41e4-ae8a-e8aec51328d7.png" width="200" height="400" />
+</p>
+
+
+<p align="center">
+<img src="https://user-images.githubusercontent.com/59579790/127693656-10318996-8464-4958-bc9c-edf69cd1dd42.png" width="200" height="400" />
+</p>
+
+<p align="center">
+<img src="https://user-images.githubusercontent.com/59579790/127693701-bb4483ec-b090-4a69-91cf-b392df1470a5.png" width="200" height="400" />
+</p>
+
+
+
+
+
