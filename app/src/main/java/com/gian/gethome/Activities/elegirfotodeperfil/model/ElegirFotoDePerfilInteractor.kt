@@ -61,12 +61,11 @@ class ElegirFotoDePerfilInteractor {
 
 
     fun setActivityResultData(imageUriRef: Uri?, requestCode: Int, resultCode: Int, data: Intent?, listener: onElegirFotoDePerfilListener, context: ElegirFotoDePerfilActivity) {
-        if (requestCode == PICK_IMAGE && resultCode == AppCompatActivity.RESULT_OK) {
-            imageUri  = imageUriRef
+        if (requestCode == PICK_IMAGE && resultCode == -1) {
             imageUri = data?.data
-            startCrop(imageUri!!, context)
+            startCrop(data?.data!!, context)
         }else{
-            if(requestCode == UCrop.REQUEST_CROP){
+            if(requestCode == UCrop.REQUEST_CROP && resultCode == -1){
                 val imageUriResultCrop = UCrop.getOutput(data!!)
                 listener.onSetImageProfile(imageUriResultCrop)
             }

@@ -20,6 +20,7 @@ import com.google.firebase.database.*
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.squareup.picasso.Picasso
+import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.activity_elegir_foto_de_perfil.*
 
 
@@ -45,6 +46,9 @@ class ElegirFotoDePerfilActivity : AppCompatActivity(),ElegirFotoDePerfilView {
         mFirebaseAuth = FirebaseAuth.getInstance()
         mStorageRef = FirebaseStorage.getInstance().
         getReference("UsersProfilePictures" + "/" + mFirebaseAuth.currentUser?.uid)
+        binding.deleteImg.setOnClickListener {
+
+        }
     }
 
     fun Continuar(view: View?) {
@@ -93,7 +97,7 @@ class ElegirFotoDePerfilActivity : AppCompatActivity(),ElegirFotoDePerfilView {
     }
 
     override fun onSetImageProfile(imageUri: Uri) {
-        Picasso.get().load(imageUri).into(profile)
+        Picasso.get().load(imageUri).fit().into(binding.profile)
     }
 
     override fun noFileSelected() {

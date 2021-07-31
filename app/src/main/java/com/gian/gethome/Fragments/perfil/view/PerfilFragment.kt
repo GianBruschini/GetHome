@@ -1,12 +1,17 @@
 package com.gian.gethome.Fragments.perfil.view
 
+import android.annotation.SuppressLint
+import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.gian.gethome.Activities.homeactivity.view.HomeActivity
@@ -19,10 +24,11 @@ import com.gian.gethome.databinding.FragmentMiPerfilBinding
 import com.gian.gethome.databinding.FragmentPublicarAnimalBinding
 import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
+import kotlinx.android.synthetic.main.dialog_deleteacc_layout.*
 
 class PerfilFragment: Fragment(R.layout.fragment_mi_perfil),PerfilView,View.OnClickListener {
     private var binding: FragmentMiPerfilBinding?=null
-
+    private var dialog: Dialog? = null
     private val presenter = PerfilPresenter(this, PerfilInteractor())
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentMiPerfilBinding.inflate(inflater)
@@ -34,6 +40,9 @@ class PerfilFragment: Fragment(R.layout.fragment_mi_perfil),PerfilView,View.OnCl
 
     private fun initializeValuesOnClick() {
         binding!!.buttonDelete.setOnClickListener(this)
+        dialog?.setContentView(R.layout.dialog_deleteacc_layout)
+        dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
     }
 
     private fun getUserNameFromDB() {
@@ -63,11 +72,29 @@ class PerfilFragment: Fragment(R.layout.fragment_mi_perfil),PerfilView,View.OnCl
         startActivity(intent)
     }
 
+    @SuppressLint("CutPasteId")
     override fun onClick(v: View?) {
         when(v!!.id){
             R.id.buttonDelete -> {
-                presenter.deleteAccount()
+                showAlertDialog()
+
             }
+        }
+    }
+
+    private fun showAlertDialog() {
+        dialog = Dialog(requireContext())
+        dialog?.setContentView(R.layout.dialog_deleteacc_layout)
+        dialog?.setCancelable(false)
+        dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        dialog?.show()
+        val yesDelate: ImageView = dialog!!.findViewById(R.id.yesDelate)
+        val noDelate: ImageView = dialog!!.findViewById(R.id.noDelate)
+        yesDelate.setOnClickListener {
+            presenter.deleteAccount()
+        }
+        noDelate.setOnClickListener {
+            dialog?.dismiss()
         }
     }
 

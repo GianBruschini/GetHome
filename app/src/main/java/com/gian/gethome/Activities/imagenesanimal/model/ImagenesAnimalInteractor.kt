@@ -65,6 +65,7 @@ class ImagenesAnimalInteractor {
 
     fun setImageViewResult(resultCode: Int, data: Intent, requestCode: Int, listener: onImagenesAnimalListener, context: ImagenesAnimalActivity) {
 
+
         if(requestCode in 0..4){
             numberImg= requestCode
         }
