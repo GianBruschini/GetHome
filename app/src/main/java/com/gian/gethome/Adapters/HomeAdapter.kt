@@ -5,10 +5,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.gian.gethome.Clases.AnimalAdapterData
-import com.gian.gethome.Fragments.HomeFragment
+import com.gian.gethome.Fragments.likes.view.LikesFragment
+import com.gian.gethome.Fragments.mispublicaciones.view.MisPublicacionesFragment
 import com.gian.gethome.R
 import com.squareup.picasso.Picasso
 import java.util.*
@@ -21,7 +22,7 @@ class HomeAdapter(private var mData: ArrayList<AnimalAdapterData>): RecyclerView
         fun onitemClick(position: Int)
     }
 
-    fun setOnItemClickListener(listener: OnItemClickListener?) {
+    fun setOnItemClickListener(listener: OnItemClickListener) {
         mListener = listener
     }
 
@@ -48,11 +49,7 @@ class HomeAdapter(private var mData: ArrayList<AnimalAdapterData>): RecyclerView
         Picasso.get().
         load(currentItem.imageURL).
         placeholder(R.drawable.progress_animation).
-
         into(holder.fotoAnimal)
-
-
-
     }
 
     override fun getItemCount(): Int {

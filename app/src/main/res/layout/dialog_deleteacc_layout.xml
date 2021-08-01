@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:gravity="center"
+    android:padding="10dp"
+    android:orientation="vertical">
+
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="260dp"
+        android:layout_height="230dp"
+        android:layout_gravity="center"
+        app:cardCornerRadius="30dp"
+        app:cardBackgroundColor="#009688"
+        >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textQuestion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/montserrat_medium"
+                android:gravity="center"
+                android:layout_marginTop="60dp"
+                android:textColor="#fff"
+                android:textSize="16sp"
+                android:text="Desea eliminar su cuenta y la información relacionada permanentemente?">
+
+            </TextView>
+
+            <LinearLayout
+                android:layout_below="@id/textQuestion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="50dp"
+                android:gravity="center"
+                android:layout_centerHorizontal="true">
+
+                <ImageView
+                    android:id="@+id/yesDelate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_checked"
+                    android:layout_marginRight="30dp"
+
+                    >
+
+                </ImageView>
+
+                <ImageView
+                    android:id="@+id/noDelate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_cancel"
+                    >
+
+                </ImageView>
+
+
+
+            </LinearLayout>
+
+
+
+        </RelativeLayout>
+
+    </androidx.cardview.widget.CardView>
+
+
+
+</LinearLayout>

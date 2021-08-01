@@ -13,7 +13,6 @@
         app:cardBackgroundColor="@color/backgroundGray"
         android:elevation="10dp"
         >
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -37,13 +36,14 @@
                 android:textColor="#000000"
                 android:textColorHint="#9FA3AC"
                 android:textSize="12sp"
+                android:elevation="5dp"
                 />
 
-
             <HorizontalScrollView
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="130dp"
-                android:scrollbars="none">
+                android:scrollbars="none"
+                >
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -56,14 +56,15 @@
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:layout_marginStart="140dp">
 
                         <androidx.cardview.widget.CardView
                             android:id="@+id/cardGato"
                             android:layout_width="50dp"
                             android:layout_height="50dp"
                             android:background="#473D3D"
-                            app:cardCornerRadius="20dp"
+                            app:cardCornerRadius="10dp"
                             android:elevation="20dp">
 
                             <ImageView
@@ -90,9 +91,6 @@
 
                     </LinearLayout>
 
-
-
-
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -103,8 +101,8 @@
                             android:layout_width="50dp"
                             android:layout_height="50dp"
                             android:background="#473D3D"
-                            android:layout_marginStart="18dp"
-                            app:cardCornerRadius="20dp"
+                            android:layout_marginStart="13dp"
+                            app:cardCornerRadius="10dp"
                             android:elevation="20dp">
 
                             <ImageView
@@ -127,7 +125,7 @@
                             android:textSize="11sp"
                             android:fontFamily="@font/montserrat_medium"
                             android:layout_gravity="center_horizontal"
-                            android:layout_marginLeft="9dp">
+                            android:layout_marginLeft="6dp">
 
                         </TextView>
 
@@ -145,8 +143,8 @@
                             android:layout_width="50dp"
                             android:layout_height="50dp"
                             android:background="#473D3D"
-                            android:layout_marginStart="18dp"
-                            app:cardCornerRadius="20dp"
+                            android:layout_marginStart="13dp"
+                            app:cardCornerRadius="10dp"
                             android:elevation="20dp">
 
                             <ImageView
@@ -167,7 +165,7 @@
                             android:text="Conejos"
                             android:layout_marginTop="9dp"
                             android:textSize="11sp"
-                            android:layout_marginLeft="9dp"
+                            android:layout_marginStart="6dp"
                             android:fontFamily="@font/montserrat_medium"
                             android:layout_gravity="center_horizontal">
 
@@ -187,8 +185,8 @@
                             android:layout_width="50dp"
                             android:layout_height="50dp"
                             android:background="#473D3D"
-                            android:layout_marginLeft="18dp"
-                            app:cardCornerRadius="20dp"
+                            android:layout_marginStart="13dp"
+                            app:cardCornerRadius="10dp"
                             android:elevation="10dp">
 
                             <ImageView
@@ -209,7 +207,7 @@
                             android:text="Loros"
                             android:layout_marginTop="9dp"
                             android:textSize="11sp"
-                            android:layout_marginLeft="9dp"
+                            android:layout_marginStart="6dp"
                             android:fontFamily="@font/montserrat_medium"
                             android:layout_gravity="center_horizontal">
 
@@ -228,8 +226,8 @@
                             android:layout_width="50dp"
                             android:layout_height="50dp"
                             android:background="#473D3D"
-                            android:layout_marginLeft="18dp"
-                            app:cardCornerRadius="20dp"
+                            android:layout_marginStart="13dp"
+                            app:cardCornerRadius="10dp"
                             android:elevation="20dp">
 
                             <ImageView
@@ -250,13 +248,93 @@
                             android:text="Tortugas"
                             android:layout_marginTop="9dp"
                             android:textSize="11sp"
-                            android:layout_marginLeft="9dp"
+                            android:layout_marginStart="8dp"
                             android:fontFamily="@font/montserrat_medium"
                             android:layout_gravity="center_horizontal">
 
                         </TextView>
 
                     </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <androidx.cardview.widget.CardView
+                            android:id="@+id/cardBird"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:background="#473D3D"
+                            android:layout_marginStart="13dp"
+                            app:cardCornerRadius="10dp"
+                            android:elevation="20dp">
+
+                            <ImageView
+                                android:id="@+id/bird"
+                                android:layout_width="30dp"
+                                android:layout_height="match_parent"
+                                android:src="@drawable/bird"
+                                android:layout_gravity="center"
+                                >
+                            </ImageView>
+                        </androidx.cardview.widget.CardView>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Bird"
+                            android:layout_marginTop="9dp"
+                            android:textSize="11sp"
+                            android:layout_marginStart="6dp"
+                            android:fontFamily="@font/montserrat_medium"
+                            android:layout_gravity="center_horizontal">
+
+                        </TextView>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <androidx.cardview.widget.CardView
+                            android:id="@+id/cardMouse"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:background="#473D3D"
+                            android:layout_marginStart="13dp"
+                            app:cardCornerRadius="10dp"
+                            android:elevation="20dp">
+
+                            <ImageView
+                                android:id="@+id/mouse"
+                                android:layout_width="30dp"
+                                android:layout_height="match_parent"
+                                android:src="@drawable/mouse"
+                                android:layout_gravity="center"
+                                >
+
+                            </ImageView>
+
+                        </androidx.cardview.widget.CardView>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Mouse"
+                            android:layout_marginTop="9dp"
+                            android:textSize="11sp"
+                            android:layout_marginLeft="6dp"
+                            android:fontFamily="@font/montserrat_medium"
+                            android:layout_gravity="center_horizontal">
+
+                        </TextView>
+
+                    </LinearLayout>
+
+
 
 
                     <LinearLayout
@@ -269,8 +347,8 @@
                             android:layout_width="50dp"
                             android:layout_height="50dp"
                             android:background="#473D3D"
-                            android:layout_marginLeft="18dp"
-                            app:cardCornerRadius="20dp"
+                            android:layout_marginStart="13dp"
+                            app:cardCornerRadius="10dp"
                             android:elevation="20dp">
 
                             <ImageView
@@ -291,13 +369,15 @@
                             android:text="Todo"
                             android:layout_marginTop="9dp"
                             android:textSize="11sp"
-                            android:layout_marginLeft="9dp"
+                            android:layout_marginStart="6dp"
                             android:fontFamily="@font/montserrat_medium"
                             android:layout_gravity="center_horizontal">
 
                         </TextView>
 
                     </LinearLayout>
+
+
 
                 </LinearLayout>
 

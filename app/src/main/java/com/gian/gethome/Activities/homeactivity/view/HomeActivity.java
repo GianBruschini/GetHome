@@ -40,6 +40,7 @@ import com.gian.gethome.BuildConfig;
 import com.gian.gethome.Clases.CommonUtilsJava;
 import com.gian.gethome.Fragments.HomeFragment;
 import com.gian.gethome.Fragments.likes.view.LikesFragment;
+import com.gian.gethome.Fragments.mispublicaciones.view.MisPublicacionesFragment;
 import com.gian.gethome.Fragments.perfil.view.PerfilFragment;
 import com.gian.gethome.Fragments.PublicarAnimalFragment;
 import com.gian.gethome.MainActivity;
@@ -89,7 +90,8 @@ public class HomeActivity extends AppCompatActivity implements DrawerAdapter.OnI
     private static final int POS_LIKES = 1;
     private static final int POS_PERFIL = 2;
     private static final int POS_AGREGAR = 3;
-    private static final int POS_LOGOUT = 5;
+    private static final int POS_MISPUBS = 4;
+    private static final int POS_LOGOUT = 6;
     private String[] screenTitles;
     private Drawable[] screenIcons;
     private SlidingRootNav slidingRootNav;
@@ -151,6 +153,7 @@ public class HomeActivity extends AppCompatActivity implements DrawerAdapter.OnI
                 createItemFor(POS_LIKES),
                 createItemFor(POS_PERFIL),
                 createItemFor(POS_AGREGAR),
+                createItemFor(POS_MISPUBS),
                 new SpaceItem(90),
                 createItemFor(POS_LOGOUT)));
         adapter.setListener(this);
@@ -397,6 +400,9 @@ public class HomeActivity extends AppCompatActivity implements DrawerAdapter.OnI
                 break;
             case POS_AGREGAR:
                 setFragment(new PublicarAnimalFragment());
+                break;
+            case POS_MISPUBS:
+                setFragment(new MisPublicacionesFragment());
                 break;
             case POS_LOGOUT:
                 SharedPreferences.Editor editor = getSharedPreferences("prefCheckUser", MODE_PRIVATE).edit();

@@ -6,9 +6,9 @@
         <item>Mis likes</item>
         <item>Mi perfil</item>
         <item>Publicar animal</item>
+        <item>Mis Publicaciones</item>
         <item />
         <item>Cerrar sesión</item>
-
     </string-array>
 
     <array name="ld_activityScreenIcons">
@@ -16,6 +16,7 @@
         <item>@drawable/ic_baseline_favorite_24</item>
         <item>@drawable/ic_perfil</item>
         <item>@drawable/ic_agregar</item>
+        <item>@drawable/ic_publicacion</item>
         <item>0</item>
         <item>@drawable/ic_baseline_logout_24</item>
     </array>
