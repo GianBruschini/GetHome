@@ -1,21 +1,16 @@
 package com.gian.gethome.Fragments.mispublicaciones.view
 
-import android.app.Dialog
 import android.content.Intent
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.gian.gethome.Activities.editanimal.view.EditAnimalActivity
-import com.gian.gethome.Adapters.HomeAdapter
 import com.gian.gethome.Adapters.MisPubsAdapter
 import com.gian.gethome.Clases.Animal
 import com.gian.gethome.Clases.AnimalAdapterData
@@ -23,15 +18,14 @@ import com.gian.gethome.Fragments.mispublicaciones.interfaces.MisPublicacionesVi
 import com.gian.gethome.Fragments.mispublicaciones.model.MisPublicacionesInteractor
 import com.gian.gethome.Fragments.mispublicaciones.presenter.MisPublicacionesPresenter
 import com.gian.gethome.R
-
-import java.util.ArrayList
+import java.util.*
 
 class MisPublicacionesFragment: Fragment(), MisPublicacionesView,MisPubsAdapter.OnItemClickListener {
     private lateinit var recyclerLikes: RecyclerView
     private var mlist: ArrayList<AnimalAdapterData> = arrayListOf()
     private lateinit var textoEmpty: TextView
     private lateinit var adapter: MisPubsAdapter
-    private var dialog: Dialog? = null
+
     private lateinit var animal:AnimalAdapterData
     private val presenter= MisPublicacionesPresenter(this, MisPublicacionesInteractor())
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -63,7 +57,7 @@ class MisPublicacionesFragment: Fragment(), MisPublicacionesView,MisPubsAdapter.
                 animal.animalKey,
                 animal.sexo,
                 animal.pais,
-                animal.provincia,animal.cantAnimales))
+                animal.provincia, animal.cantAnimales))
         adapter = MisPubsAdapter(mlist)
         val gridLayoutManager = GridLayoutManager(context, 2, GridLayoutManager.VERTICAL, false)
         recyclerLikes.layoutManager = gridLayoutManager
@@ -96,9 +90,10 @@ class MisPublicacionesFragment: Fragment(), MisPublicacionesView,MisPubsAdapter.
 
     override fun onEditClick(position: Int) {
         presenter.giveMeTheAnimalAt(position)
-        val intent= Intent(activity,EditAnimalActivity::class.java)
-        intent.putExtra("animalKey",animal.animalKey)
+        val intent= Intent(activity, EditAnimalActivity::class.java)
+        intent.putExtra("animalKey", animal.animalKey)
         startActivity(intent)
+
         /*dialog = Dialog(requireContext())
         dialog?.setContentView(R.layout.dialog_deleteacc_layout)
         dialog?.setCancelable(false)
@@ -116,6 +111,8 @@ class MisPublicacionesFragment: Fragment(), MisPublicacionesView,MisPubsAdapter.
          */
 
     }
+
+
 
 
 }

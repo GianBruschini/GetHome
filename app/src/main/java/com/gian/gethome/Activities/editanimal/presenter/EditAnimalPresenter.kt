@@ -32,4 +32,8 @@ class EditAnimalPresenter(val editAnimalView: EditAnimalView,
                 edad,descripcion,whatsapp,phone,mail,instagram,animalKey,sexo)
 
     }
+
+    fun deleteAnimalFromDB(animalKey: String) {
+        editAnimalInteractor.deleteAnimalFromDB(animalKey)
+    }
 }

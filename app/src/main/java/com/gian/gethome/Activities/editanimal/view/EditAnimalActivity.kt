@@ -1,15 +1,23 @@
 package com.gian.gethome.Activities.editanimal.view
 
 import android.app.Dialog
-import androidx.appcompat.app.AppCompatActivity
+import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.widget.ArrayAdapter
+import android.widget.ImageView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import com.gian.gethome.Activities.editanimal.Interfaces.EditAnimalView
 import com.gian.gethome.Activities.editanimal.model.EditAnimalInteractor
 import com.gian.gethome.Activities.editanimal.presenter.EditAnimalPresenter
+import com.gian.gethome.Activities.homeactivity.view.HomeActivity
 import com.gian.gethome.Clases.Animal
 import com.gian.gethome.Clases.CommonUtils
+import com.gian.gethome.Fragments.HomeFragment
+import com.gian.gethome.Fragments.mispublicaciones.view.MisPublicacionesFragment
 import com.gian.gethome.R
 import com.gian.gethome.databinding.ActivityEditAnimalBinding
 import java.util.*
@@ -18,6 +26,7 @@ class EditAnimalActivity : AppCompatActivity(),EditAnimalView {
     private lateinit var binding:ActivityEditAnimalBinding
     private lateinit var animalKey:String
     private var loadingDialog: Dialog? = null
+    private var dialog: Dialog? = null
     private val presenter = EditAnimalPresenter(this, EditAnimalInteractor())
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,15 +42,28 @@ class EditAnimalActivity : AppCompatActivity(),EditAnimalView {
         binding.botonEditar.setOnClickListener {
 
             presenter.editAnimalFromDB(binding.spinnerTipoAnimal.selectedItem.toString(),
-            binding.nombreAnimal.text.toString(),binding.cantAnimales.text.toString(),
-            binding.spinnerSexoAnimal.selectedItem.toString(),
-            binding.transitoCheckBox.isChecked.toString(),binding.spinnerAct.selectedItem.toString(),
-            binding.descripcionAnimal.text.toString(),binding.whatsppNumber.text.toString(),
-            binding.phoneNumber.text.toString(),binding.mail.text.toString(),
-                    binding.instagram.text.toString(),animalKey)
+                    binding.nombreAnimal.text.toString(), binding.cantAnimales.text.toString(),
+                    binding.spinnerSexoAnimal.selectedItem.toString(),
+                    binding.transitoCheckBox.isChecked.toString(), binding.spinnerAct.selectedItem.toString(),
+                    binding.descripcionAnimal.text.toString(), binding.whatsppNumber.text.toString(),
+                    binding.phoneNumber.text.toString(), binding.mail.text.toString(),
+                    binding.instagram.text.toString(), animalKey)
         }
         binding.botonEliminar.setOnClickListener {
-
+            dialog = Dialog(this)
+            dialog?.setContentView(R.layout.dialog_deleteacc_layout)
+            dialog?.setCancelable(false)
+            dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            dialog?.show()
+            val yesDelate: ImageView = dialog!!.findViewById(R.id.yesDelate)
+            val noDelate: ImageView = dialog!!.findViewById(R.id.noDelate)
+            yesDelate.setOnClickListener {
+                presenter.deleteAnimalFromDB(animalKey)
+                startActivity(Intent(this,HomeActivity::class.java))
+            }
+            noDelate.setOnClickListener {
+                dialog?.dismiss()
+            }
         }
     }
 
@@ -88,18 +110,23 @@ class EditAnimalActivity : AppCompatActivity(),EditAnimalView {
         Timer().schedule(object : TimerTask() {
             override fun run() {
                 hideProgressDialog()
-                finish()
+                setFragment(MisPublicacionesFragment())
             }
         }, 1700)
 
     }
-
-
 
     fun hideProgressDialog() {
         loadingDialog?.let {
             if(it.isShowing)it.cancel()
 
         }
+    }
+
+    fun setFragment(fragment: Fragment?) {
+        val fragmentTransaction = supportFragmentManager.beginTransaction()
+        fragmentTransaction.replace(R.id.frame_layout, fragment!!)
+        fragmentTransaction.commit()
+        finish()
     }
 }

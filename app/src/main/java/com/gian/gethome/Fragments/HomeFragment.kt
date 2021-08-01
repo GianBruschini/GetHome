@@ -51,6 +51,8 @@ class HomeFragment: Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLis
     private lateinit var conejoImg:ImageView
     private lateinit var tortugaImg:ImageView
     private lateinit var todoImg:ImageView
+    private lateinit var roedorImg:ImageView
+    private lateinit var aveImg:ImageView
     private lateinit var texto_resultado:TextView
     private lateinit var buscador:EditText
     private lateinit var homeActivity: HomeActivity
@@ -160,11 +162,15 @@ class HomeFragment: Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLis
         loroImg = view.findViewById(R.id.loro)
         tortugaImg = view.findViewById(R.id.tortuga)
         todoImg = view.findViewById(R.id.all)
+        aveImg = view.findViewById(R.id.bird)
+        roedorImg = view.findViewById(R.id.mouse)
         gatoImg.setOnClickListener(this)
         perroImg.setOnClickListener(this)
         loroImg.setOnClickListener(this)
         conejoImg.setOnClickListener(this)
         tortugaImg.setOnClickListener(this)
+        aveImg.setOnClickListener(this)
+        roedorImg.setOnClickListener(this)
         todoImg.setOnClickListener(this)
 
         setOnClickImages()
@@ -212,6 +218,16 @@ class HomeFragment: Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLis
             clearListOfRecycler()
             setLoroImgselected()
             fillScreenWith("Loro")
+        }
+        aveImg.setOnClickListener {
+            clearListOfRecycler()
+            setAveImgselected()
+            fillScreenWith("Ave")
+        }
+        roedorImg.setOnClickListener {
+            clearListOfRecycler()
+            setRoedorImgselected()
+            fillScreenWith("Roedor")
         }
         todoImg.setOnClickListener {
             clearListOfRecycler()
@@ -315,6 +331,10 @@ class HomeFragment: Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLis
         tortugaImg.setColorFilter(Color.parseColor("#000000"))
         cardAll.setCardBackgroundColor(Color.parseColor("#ffffff"))
         todoImg.setColorFilter(Color.parseColor("#000000"))
+        cardBird.setCardBackgroundColor(Color.parseColor("#ffffff"))
+        aveImg.setColorFilter(Color.parseColor("#000000"))
+        cardMouse.setCardBackgroundColor(Color.parseColor("#ffffff"))
+        roedorImg.setColorFilter(Color.parseColor("#000000"))
     }
     private fun setPerroImgselected(){
         cardGato.setCardBackgroundColor(Color.parseColor("#ffffff"))
@@ -329,6 +349,10 @@ class HomeFragment: Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLis
         tortugaImg.setColorFilter(Color.parseColor("#000000"))
         cardAll.setCardBackgroundColor(Color.parseColor("#ffffff"))
         todoImg.setColorFilter(Color.parseColor("#000000"))
+        cardBird.setCardBackgroundColor(Color.parseColor("#ffffff"))
+        aveImg.setColorFilter(Color.parseColor("#000000"))
+        cardMouse.setCardBackgroundColor(Color.parseColor("#ffffff"))
+        roedorImg.setColorFilter(Color.parseColor("#000000"))
     }
     private fun setConejoImgselected(){
         cardGato.setCardBackgroundColor(Color.parseColor("#ffffff"))
@@ -343,6 +367,10 @@ class HomeFragment: Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLis
         tortugaImg.setColorFilter(Color.parseColor("#000000"))
         cardAll.setCardBackgroundColor(Color.parseColor("#ffffff"))
         todoImg.setColorFilter(Color.parseColor("#000000"))
+        cardBird.setCardBackgroundColor(Color.parseColor("#ffffff"))
+        aveImg.setColorFilter(Color.parseColor("#000000"))
+        cardMouse.setCardBackgroundColor(Color.parseColor("#ffffff"))
+        roedorImg.setColorFilter(Color.parseColor("#000000"))
     }
     private fun setLoroImgselected(){
         cardGato.setCardBackgroundColor(Color.parseColor("#ffffff"))
@@ -357,6 +385,10 @@ class HomeFragment: Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLis
         tortugaImg.setColorFilter(Color.parseColor("#000000"))
         cardAll.setCardBackgroundColor(Color.parseColor("#ffffff"))
         todoImg.setColorFilter(Color.parseColor("#000000"))
+        cardBird.setCardBackgroundColor(Color.parseColor("#ffffff"))
+        aveImg.setColorFilter(Color.parseColor("#000000"))
+        cardMouse.setCardBackgroundColor(Color.parseColor("#ffffff"))
+        roedorImg.setColorFilter(Color.parseColor("#000000"))
     }
     private fun setTortugaImgselected(){
         cardGato.setCardBackgroundColor(Color.parseColor("#ffffff"))
@@ -371,7 +403,50 @@ class HomeFragment: Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLis
         tortugaImg.setColorFilter(Color.parseColor("#ffffff"))
         cardAll.setCardBackgroundColor(Color.parseColor("#ffffff"))
         todoImg.setColorFilter(Color.parseColor("#000000"))
+        cardBird.setCardBackgroundColor(Color.parseColor("#ffffff"))
+        aveImg.setColorFilter(Color.parseColor("#000000"))
+        cardMouse.setCardBackgroundColor(Color.parseColor("#ffffff"))
+        roedorImg.setColorFilter(Color.parseColor("#000000"))
     }
+
+    private fun setAveImgselected() {
+        cardGato.setCardBackgroundColor(Color.parseColor("#ffffff"))
+        gatoImg.setColorFilter(Color.parseColor("#000000"))
+        cardPerro.setCardBackgroundColor(Color.parseColor("#ffffff"))
+        perroImg.setColorFilter(Color.parseColor("#000000"))
+        cardConejo.setCardBackgroundColor(Color.parseColor("#ffffff"))
+        conejoImg.setColorFilter(Color.parseColor("#000000"))
+        cardLoro.setCardBackgroundColor(Color.parseColor("#ffffff"))
+        loroImg.setColorFilter(Color.parseColor("#000000"))
+        cardTortuga.setCardBackgroundColor(Color.parseColor("#ffffff"))
+        tortugaImg.setColorFilter(Color.parseColor("#000000"))
+        cardAll.setCardBackgroundColor(Color.parseColor("#ffffff"))
+        todoImg.setColorFilter(Color.parseColor("#000000"))
+        cardBird.setCardBackgroundColor(Color.parseColor("#306060"))
+        aveImg.setColorFilter(Color.parseColor("#ffffff"))
+        cardMouse.setCardBackgroundColor(Color.parseColor("#ffffff"))
+        roedorImg.setColorFilter(Color.parseColor("#000000"))
+    }
+
+    private fun setRoedorImgselected() {
+        cardGato.setCardBackgroundColor(Color.parseColor("#ffffff"))
+        gatoImg.setColorFilter(Color.parseColor("#000000"))
+        cardPerro.setCardBackgroundColor(Color.parseColor("#ffffff"))
+        perroImg.setColorFilter(Color.parseColor("#000000"))
+        cardConejo.setCardBackgroundColor(Color.parseColor("#ffffff"))
+        conejoImg.setColorFilter(Color.parseColor("#000000"))
+        cardLoro.setCardBackgroundColor(Color.parseColor("#ffffff"))
+        loroImg.setColorFilter(Color.parseColor("#000000"))
+        cardTortuga.setCardBackgroundColor(Color.parseColor("#ffffff"))
+        tortugaImg.setColorFilter(Color.parseColor("#000000"))
+        cardAll.setCardBackgroundColor(Color.parseColor("#ffffff"))
+        todoImg.setColorFilter(Color.parseColor("#000000"))
+        cardBird.setCardBackgroundColor(Color.parseColor("#ffffff"))
+        aveImg.setColorFilter(Color.parseColor("#000000"))
+        cardMouse.setCardBackgroundColor(Color.parseColor("#306060"))
+        roedorImg.setColorFilter(Color.parseColor("#ffffff"))
+    }
+
     private fun setTodoImgselected() {
         cardGato.setCardBackgroundColor(Color.parseColor("#ffffff"))
         gatoImg.setColorFilter(Color.parseColor("#000000"))
@@ -385,6 +460,10 @@ class HomeFragment: Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLis
         tortugaImg.setColorFilter(Color.parseColor("#000000"))
         cardAll.setCardBackgroundColor(Color.parseColor("#306060"))
         todoImg.setColorFilter(Color.parseColor("#ffffff"))
+        cardBird.setCardBackgroundColor(Color.parseColor("#ffffff"))
+        aveImg.setColorFilter(Color.parseColor("#000000"))
+        cardMouse.setCardBackgroundColor(Color.parseColor("#ffffff"))
+        roedorImg.setColorFilter(Color.parseColor("#000000"))
     }
 
     override fun onitemClick(position: Int) {

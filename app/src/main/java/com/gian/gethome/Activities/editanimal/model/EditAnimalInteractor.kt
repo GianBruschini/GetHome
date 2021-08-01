@@ -67,4 +67,12 @@ class EditAnimalInteractor {
         child(animalKey).updateChildren(editAnimal)
         listener.onAnimalUpdated()
     }
+
+    fun deleteAnimalFromDB(animalKey: String) {
+        FirebaseDatabase.getInstance().reference.
+        child("Users").
+        child("Animales").
+        child(mFirebaseAuth.currentUser!!.uid).child(animalKey).removeValue()
+
+    }
 }
