@@ -31,7 +31,7 @@ In this application an MVP architecture was used and Firebase was used for the p
 
 
 <p align="center">
-<img src="https://user-images.githubusercontent.com/59579790/127693656-10318996-8464-4958-bc9c-edf69cd1dd42.png" width="200" height="400" />
+<img src="https://user-images.githubusercontent.com/59579790/127756520-ad15fbbb-8fa3-45fb-8e1e-5f7a4cb9162d.png" width="200" height="400" />
 </p>
 
 <p align="center">
