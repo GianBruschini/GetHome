@@ -58,10 +58,13 @@ class ImagenesAnimalPresenter(var imagenesAnimalView: ImagenesAnimalView?,
                          whatsapp: String,
                          phone: String,
                          mail: String,
-                         imagenesAnimalActivity: ImagenesAnimalActivity) {
+                         imagenesAnimalActivity: ImagenesAnimalActivity,
+                         facebook: String,
+                         instagram: String,
+                         cantAnimales: String) {
         imagenesAnimalInteractor.publicarAnimalDB(nombreAnimal
                 ,tipoAnimal,transitoUrgente,edadAnimal,descripcionAnimal,sexoAnimal
-        ,provincia,pais,whatsapp,phone,mail,this,imagenesAnimalActivity)
+        ,provincia,pais,whatsapp,phone,mail,this,imagenesAnimalActivity,facebook,instagram,cantAnimales)
     }
 
     fun onDestroy() {

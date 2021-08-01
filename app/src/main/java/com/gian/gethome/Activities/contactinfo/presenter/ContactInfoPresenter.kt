@@ -9,24 +9,24 @@ import com.gian.gethome.Clases.UserInfo
 class ContactInfoPresenter(var contactInfoView:ContactInfoView,
                            var contactInfoInteractor: ContactInfoInteractor):ContactInfoInteractor.onContactInfoListener {
 
-    fun detectUserInfo(idOwner:String){
-            contactInfoInteractor.detectuserInfo(idOwner,this)
+    fun detectUserInfo(idOwner: String, context: ContactInfoActivity){
+            contactInfoInteractor.detectuserInfo(idOwner,this,context)
     }
 
     fun makeWhatsappAction(animal: Animal, contactInfoActivity: ContactInfoActivity) {
-        contactInfoInteractor.makeWhatsappAction(animal,contactInfoActivity,this)
+        contactInfoInteractor.makeWhatsappAction(animal)
     }
 
     fun makeEmailAction(animal: Animal, contactInfoActivity: ContactInfoActivity) {
-        contactInfoInteractor.makeMailAction(animal,contactInfoActivity,this)
+        contactInfoInteractor.makeMailAction(animal)
     }
 
     fun makePhoneAction(animal: Animal, contactInfoActivity: ContactInfoActivity) {
-        contactInfoInteractor.makePhoneAction(animal,contactInfoActivity,this)
+        contactInfoInteractor.makePhoneAction(animal)
     }
 
     fun detectContactInfo(idOwner: String, animalKey: String) {
-            contactInfoInteractor.detectContactInfo(idOwner,animalKey,this)
+            contactInfoInteractor.detectContactInfo(idOwner,animalKey)
     }
 
 
@@ -58,6 +58,34 @@ class ContactInfoPresenter(var contactInfoView:ContactInfoView,
 
     override fun onNotWhatsappInstalled() {
         contactInfoView.notWhatsappInstalled()
+    }
+
+    override fun onDeleteWhatsapp() {
+        contactInfoView.deleteWhatsapp()
+    }
+
+    override fun onDeletePhone() {
+        contactInfoView.deletePhone()
+    }
+
+    override fun onDeleteMail() {
+        contactInfoView.deleteMail()
+    }
+
+    override fun onDeleteInstagram() {
+        contactInfoView.deleteInstagram()
+    }
+
+    override fun onDeleteFacebook() {
+        contactInfoView.deleteFacebook()
+    }
+
+    fun makeInstagramAction(animal: Animal) {
+        contactInfoInteractor.makeInstagramAction(animal)
+    }
+
+    fun makeFacebookAction(animal: Animal) {
+        contactInfoInteractor.makeFacebookAction(animal)
     }
 
 

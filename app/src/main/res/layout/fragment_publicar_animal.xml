@@ -56,6 +56,24 @@
                     android:layout_marginTop="20dp">
                 </EditText>
 
+                <EditText
+                    android:id="@+id/cantAnimales"
+                    android:layout_width="350dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/edittext_design"
+                    android:fontFamily="@font/dmsansregular"
+                    android:hint="Cantidad de animales"
+                    android:layout_gravity="center"
+                    android:elevation="5dp"
+                    android:inputType="number"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp"
+                    android:textColor="#000000"
+                    android:textColorHint="#9FA3AC"
+                    android:textSize="14sp"
+                    android:layout_marginTop="20dp">
+                </EditText>
+
 
 
                 <Spinner
@@ -123,10 +141,23 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="40dp"
+                    android:layout_marginStart="22dp"
+                    android:layout_marginTop="40dp"
                     android:text="Información de contacto:"
                     android:textSize="16sp"
                     android:fontFamily="@font/opensans_bold">
+
+                </TextView>
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="22dp"
+                    android:layout_marginTop="20dp"
+                    android:text="*Agregue al menos una opción de contacto"
+                    android:textSize="12sp"
+                    android:fontFamily="@font/montserrat_medium">
 
                 </TextView>
 
@@ -141,14 +172,13 @@
                     android:layout_gravity="center"
                     android:drawableRight="@drawable/ic_whatsapp"
                     android:elevation="5dp"
-                    android:inputType="textMultiLine"
+                    android:inputType="number"
                     android:paddingStart="12dp"
                     android:paddingEnd="12dp"
                     android:textColor="#000000"
                     android:textColorHint="#9FA3AC"
                     android:textSize="14sp"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginLeft="10dp">
+                    android:layout_marginTop="8dp">
                 </EditText>
 
                 <EditText
@@ -161,22 +191,14 @@
                     android:layout_gravity="center"
                     android:drawableRight="@drawable/ic_phone"
                     android:elevation="5dp"
-                    android:inputType="textMultiLine"
+                    android:inputType="number"
                     android:paddingStart="12dp"
                     android:paddingEnd="12dp"
                     android:textColor="#000000"
                     android:textColorHint="#9FA3AC"
                     android:textSize="14sp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginLeft="10dp">
+                    android:layout_marginTop="15dp">
                 </EditText>
-
-
-
-
-
-
-
 
                 <EditText
                     android:id="@+id/mail"
@@ -194,8 +216,47 @@
                     android:textColor="#000000"
                     android:textColorHint="#9FA3AC"
                     android:textSize="14sp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginLeft="10dp">
+                    android:layout_marginTop="15dp">
+                </EditText>
+
+
+                <EditText
+                    android:id="@+id/facebook"
+                    android:layout_width="350dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/edittext_design"
+                    android:fontFamily="@font/dmsansregular"
+                    android:hint="Facebook"
+                    android:visibility="gone"
+                    android:layout_gravity="center"
+                    android:drawableEnd="@drawable/ic_facebook"
+                    android:elevation="5dp"
+                    android:inputType="textMultiLine"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp"
+                    android:textColor="#000000"
+                    android:textColorHint="#9FA3AC"
+                    android:textSize="14sp"
+                    android:layout_marginTop="15dp">
+                </EditText>
+
+                <EditText
+                    android:id="@+id/instagram"
+                    android:layout_width="350dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/edittext_design"
+                    android:fontFamily="@font/dmsansregular"
+                    android:hint="Instagram"
+                    android:layout_gravity="center"
+                    android:drawableEnd="@drawable/ic_instagram"
+                    android:elevation="5dp"
+                    android:inputType="textMultiLine"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp"
+                    android:textColor="#000000"
+                    android:textColorHint="#9FA3AC"
+                    android:textSize="14sp"
+                    android:layout_marginTop="15dp">
                 </EditText>
 
                 <androidx.appcompat.widget.AppCompatButton

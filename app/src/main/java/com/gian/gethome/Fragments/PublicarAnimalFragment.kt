@@ -71,6 +71,8 @@ class PublicarAnimalFragment: Fragment(R.layout.fragment_publicar_animal) {
                 RegexTemplate.TELEPHONE, "Tiene que indicar un número válido de Whatsapp")
         awesomeValidation.addValidation(binding?.phoneNumber,
                 RegexTemplate.TELEPHONE, "Tiene que indicar un número válido de teléfono")
+        awesomeValidation.addValidation(binding?.cantAnimales,
+                RegexTemplate.NOT_EMPTY, "Tiene que indicar la cantidad de animales a publicar")
 
 
         validateSpinnerTipoAnimal()
@@ -80,13 +82,15 @@ class PublicarAnimalFragment: Fragment(R.layout.fragment_publicar_animal) {
         if(awesomeValidation.validate()){
             if(binding?.whatsppNumber?.text.toString().isEmpty() &&
                     binding?.phoneNumber?.text.toString().isEmpty() &&
-
-                    binding?.mail?.text.toString().isEmpty()){
+                    binding?.mail?.text.toString().isEmpty()
+                    && binding?.facebook?.text.toString().isEmpty()
+                    && binding?.instagram?.text.toString().isEmpty()){
                 Toast.makeText(context, "Debe indicar al menos un dato de contacto", Toast.LENGTH_LONG).show()
 
             }else{
                 val intent = Intent(context, ImagenesAnimalActivity::class.java)
                 intent.putExtra("nombreAnimal", nombreAnimal)
+                intent.putExtra("cantAnimales", binding?.cantAnimales?.text.toString())
                 intent.putExtra("tipoAnimal", tipoAnimal)
                 intent.putExtra("sexoAnimal", sexoAnimal)
                 intent.putExtra("transitoUrgente", transitoUrgente.toString())
@@ -97,6 +101,8 @@ class PublicarAnimalFragment: Fragment(R.layout.fragment_publicar_animal) {
                 intent.putExtra("Whatsapp", binding?.whatsppNumber?.text.toString())
                 intent.putExtra("Phone", binding?.phoneNumber?.text.toString())
                 intent.putExtra("Mail", binding?.mail?.text.toString())
+                intent.putExtra("Facebook", binding?.facebook?.text.toString())
+                intent.putExtra("Instagram", binding?.instagram?.text.toString())
                 startActivity(intent)
             }
         }else{

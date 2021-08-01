@@ -17,13 +17,13 @@ import com.gian.gethome.Clases.CommonUtils
 import com.gian.gethome.databinding.ActivityImagenesAnimalBinding
 
 import com.squareup.picasso.Picasso
-import java.util.*
 
 
 class ImagenesAnimalActivity : AppCompatActivity(),ImagenesAnimalView {
     private lateinit var binding: ActivityImagenesAnimalBinding
     private lateinit var tipoAnimal:String
     private lateinit var nombreAnimal: String
+    private lateinit var cantAnimales:String
     private lateinit var sexoAnimal: String
     private lateinit var transitoUrgente: String
     private lateinit var edadAnimal:String
@@ -31,6 +31,8 @@ class ImagenesAnimalActivity : AppCompatActivity(),ImagenesAnimalView {
     private lateinit var whatsapp:String
     private lateinit var phone:String
     private lateinit var mail:String
+    private lateinit var facebook:String
+    private lateinit var instagram:String
     private lateinit var progressDialog: ProgressDialog
     private lateinit var pais:String
     private  lateinit var provincia:String
@@ -48,9 +50,7 @@ class ImagenesAnimalActivity : AppCompatActivity(),ImagenesAnimalView {
         getValues()
         setOnClickListenerAddButtons()
         setOnClickListenerDeleteButtons()
-
     }
-
 
     override fun hideProgressDialog() {
         //progressDialog.dismiss()
@@ -155,13 +155,16 @@ class ImagenesAnimalActivity : AppCompatActivity(),ImagenesAnimalView {
         whatsapp = intent.getStringExtra("Whatsapp").toString()
         phone = intent.getStringExtra("Phone").toString()
         mail = intent.getStringExtra("Mail").toString()
+        facebook = intent.getStringExtra("Facebook").toString()
+        instagram = intent.getStringExtra("Instagram").toString()
+        cantAnimales = intent.getStringExtra("cantAnimales").toString()
     }
 
     fun publicarAnimal(view: View) {
         presenter.publicarAnimalDB(nombreAnimal,
                 tipoAnimal,
                 transitoUrgente,
-                edadAnimal,descripcionAnimal,sexoAnimal,provincia,pais,whatsapp,phone,mail,this)
+                edadAnimal,descripcionAnimal,sexoAnimal,provincia,pais,whatsapp,phone,mail,this,facebook,instagram,cantAnimales)
 
     }
 

@@ -8,10 +8,13 @@ val nombre:String, val tipoAnimal:String, val transitoUrgente:String,val userIDo
                   val webPage:String,
                   val whatsapp:String,
                   val mail:String,
-                  val phone:String) {
+                  val phone:String,val cantAnimales:String) {
 
      constructor() : this("", "",
         "", "", "1",
-        "", "","","","","","","","","","","","","","","",""
+        "", "","","",
+             "","","","",
+             "","","","","",
+             "","","","",""
         )
 }

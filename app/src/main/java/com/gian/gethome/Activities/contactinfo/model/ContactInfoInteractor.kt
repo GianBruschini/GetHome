@@ -1,6 +1,7 @@
 package com.gian.gethome.Activities.contactinfo.model
 
 import android.Manifest
+import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -17,6 +18,8 @@ import com.google.firebase.database.ValueEventListener
 
 class ContactInfoInteractor {
     private val REQUEST_CALL = 1
+    private lateinit var context: ContactInfoActivity
+    private lateinit var listener: onContactInfoListener
     interface onContactInfoListener{
         fun onUserInfo(userInfo: UserInfo)
         fun onDatabaseError()
@@ -25,9 +28,19 @@ class ContactInfoInteractor {
         fun onNotWhatsappData()
         fun onNotPhonelData()
         fun onNotWhatsappInstalled()
+        fun onDeleteWhatsapp()
+        fun onDeletePhone()
+        fun onDeleteMail()
+        fun onDeleteInstagram()
+        fun onDeleteFacebook()
+
+
+
     }
 
-    fun detectuserInfo(idOwner:String,listener: ContactInfoPresenter){
+    fun detectuserInfo(idOwner: String, listener: ContactInfoPresenter, context: ContactInfoActivity){
+        this.context = context
+        this.listener = listener
         val databaseUserAccess = FirebaseDatabase.getInstance().
         reference.
         child("Users").
@@ -44,7 +57,7 @@ class ContactInfoInteractor {
         })
     }
 
-    fun detectContactInfo(idOwner: String,animalKey:String,listener: onContactInfoListener){
+    fun detectContactInfo(idOwner: String,animalKey:String){
         val databaseAnimalAccess = FirebaseDatabase.getInstance().
         reference.
         child("Users").
@@ -53,6 +66,7 @@ class ContactInfoInteractor {
         databaseAnimalAccess.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val animal: Animal = snapshot.getValue(Animal::class.java)!!
+                checkWhatInfoIsEmpty(animal)
                 listener.onPassAnimalData(animal)
             }
 
@@ -62,32 +76,50 @@ class ContactInfoInteractor {
         })
     }
 
-    fun makeWhatsappAction(animal: Animal,context:ContactInfoActivity,listener: onContactInfoListener){
+    private fun checkWhatInfoIsEmpty(animal: Animal) {
+        if(animal.whatsapp.isEmpty()){
+            listener.onDeleteWhatsapp()
+        }
+        if(animal.phone.isEmpty()){
+            listener.onDeletePhone()
+        }
+        if(animal.mail.isEmpty()){
+            listener.onDeleteMail()
+        }
+        if(animal.instagram.isEmpty()){
+            listener.onDeleteInstagram()
+        }
+        if(animal.facebook.isEmpty()){
+            listener.onDeleteFacebook()
+        }
+    }
+
+    fun makeWhatsappAction(animal: Animal){
         if (animal.whatsapp.isNotEmpty()) {
-            sendWhatsappMessage(animal,context,listener)
+            sendWhatsappMessage(animal)
         } else {
             listener.onNotWhatsappData()
         }
     }
 
-    fun makeMailAction(animal: Animal, context: ContactInfoActivity,listener: onContactInfoListener) {
+    fun makeMailAction(animal: Animal) {
         if (animal.mail.isNotEmpty()) {
-            openEmail(context)
+            openEmail(animal)
         }else{
 
             listener.onNotMailData()
         }
     }
 
-    fun makePhoneAction(animal: Animal, context: ContactInfoActivity,listener: onContactInfoListener) {
+    fun makePhoneAction(animal: Animal) {
         if (animal.phone.isNotEmpty()) {
-            makePhoneCall(animal,context)
+            makePhoneCall(animal)
         } else {
             listener.onNotPhonelData()
         }
     }
 
-    private fun makePhoneCall(animal: Animal, context: ContactInfoActivity) {
+    private fun makePhoneCall(animal: Animal) {
         if (ContextCompat.checkSelfPermission(context,
                         Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(context, arrayOf(Manifest.permission.CALL_PHONE), REQUEST_CALL)
@@ -99,15 +131,17 @@ class ContactInfoInteractor {
 
     }
 
-
-    private fun openEmail(context: ContactInfoActivity) {
-        val emailIntent = Intent(Intent.ACTION_SEND)
+    private fun openEmail(animal: Animal) {
+        val emailIntent = Intent(Intent.ACTION_SENDTO)
         emailIntent.type = "text/plain"
-        context.startActivity(emailIntent)
+        val uriText:String = "mailto:" + Uri.encode(animal.mail)
+        val uri:Uri = Uri.parse(uriText)
+        emailIntent.data = uri
+        context.startActivity(Intent.createChooser(emailIntent,animal.mail))
     }
 
-    private fun sendWhatsappMessage(animal: Animal, context: ContactInfoActivity, listener: onContactInfoListener) {
-        val installed: Boolean = isAppInstalled("com.whatsapp",context)
+    private fun sendWhatsappMessage(animal: Animal) {
+        val installed: Boolean = isAppInstalled("com.whatsapp")
         if (installed) {
             val intent = Intent(Intent.ACTION_VIEW)
             intent.data = Uri.parse("http://api.whatsapp.com/send?phone=" +
@@ -121,7 +155,7 @@ class ContactInfoInteractor {
     }
 
 
-    private fun isAppInstalled(s: String, context: ContactInfoActivity): Boolean {
+    private fun isAppInstalled(s: String): Boolean {
         val packageManager = context.packageManager
         var isInstalled: Boolean
         try {
@@ -132,6 +166,30 @@ class ContactInfoInteractor {
             e.printStackTrace()
         }
         return isInstalled
+    }
+
+    fun makeInstagramAction(animal: Animal) {
+        val uri:Uri= Uri.parse("https://instagram.com/"+animal.instagram)
+        val insagram= Intent (Intent.ACTION_VIEW,uri)
+        insagram.setPackage("com.instagram.android")
+        try {
+            context.startActivity(insagram)
+        }catch (e: ActivityNotFoundException){
+            context.startActivity(Intent(Intent.ACTION_VIEW,
+                    Uri.parse("https://instagram.com/"+animal.instagram)))
+        }
+    }
+
+    fun makeFacebookAction(animal: Animal) {
+
+        try {
+            val intent= Intent (Intent.ACTION_VIEW,Uri.parse("fb://page/"+animal.facebook))
+            context.startActivity(intent)
+        }catch (e: ActivityNotFoundException){
+            val intent= Intent (Intent.ACTION_VIEW,
+                    Uri.parse("https://facebook.com/"+animal.facebook))
+            context.startActivity(intent)
+        }
     }
 
 

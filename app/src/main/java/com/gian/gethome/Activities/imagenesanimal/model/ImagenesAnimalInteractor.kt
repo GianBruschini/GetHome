@@ -153,7 +153,8 @@ class ImagenesAnimalInteractor {
                          pais: String,
                          whatsapp: String,
                          phone: String,
-                         mail: String, listener: onImagenesAnimalListener, context: ImagenesAnimalActivity) {
+                         mail: String, listener: onImagenesAnimalListener, context: ImagenesAnimalActivity,
+                         facebook: String, instagram: String, cantAnimales: String) {
         var todosNull:Boolean = false;
         var cont:Int = 0;
         for (item in arrayUrisNulls.indices){
@@ -166,7 +167,10 @@ class ImagenesAnimalInteractor {
         }
         if(!todosNull){
             listener.onShowProgressDialog()
-            storeValuesOnDatabase(nombreAnimal, tipoAnimal, transitoUrgente, edadAnimal, descripcionAnimal, sexoAnimal, provincia, pais, whatsapp, phone,  mail, listener, context)
+            storeValuesOnDatabase(nombreAnimal, tipoAnimal, transitoUrgente,
+                    edadAnimal, descripcionAnimal, sexoAnimal,
+                    provincia, pais, whatsapp, phone,
+                    mail, listener, context,facebook,instagram,cantAnimales)
         }else{
             listener.onAddAtLeastOneImage()
         }
@@ -183,7 +187,10 @@ class ImagenesAnimalInteractor {
                                       pais: String,
                                       whatsapp: String,
                                       phone: String,
-                                      mail: String, listener: onImagenesAnimalListener, context: ImagenesAnimalActivity) {
+                                      mail: String, listener: onImagenesAnimalListener,
+                                      context: ImagenesAnimalActivity,
+                                      facebook: String, instagram: String,
+                                      cantAnimales: String) {
         mFirebaseAuth = FirebaseAuth.getInstance()
         val currentUser: FirebaseUser = mFirebaseAuth.currentUser!!
         val userId = currentUser.uid
@@ -204,6 +211,9 @@ class ImagenesAnimalInteractor {
         crearUser["whatsapp"] = whatsapp
         crearUser["phone"] = phone
         crearUser["mail"] = mail
+        crearUser["facebook"] = facebook
+        crearUser["instagram"] = instagram
+        crearUser["cantAnimales"] = cantAnimales
         FirebaseDatabase.getInstance().reference.
         child("Users").
         child("Animales").

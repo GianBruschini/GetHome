@@ -12,4 +12,12 @@ interface ContactInfoView {
     fun notMailData()
     fun notPhoneData()
     fun notWhatsappInstalled()
+    fun deleteWhatsapp()
+    fun deletePhone()
+    fun deleteMail()
+    fun deleteInstagram()
+    fun deleteFacebook()
+
+
+
 }

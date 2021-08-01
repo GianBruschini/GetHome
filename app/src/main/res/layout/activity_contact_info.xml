@@ -102,6 +102,7 @@
         android:layout_below="@id/cardViewName"
         >
         <LinearLayout
+            android:id="@+id/linearLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal"
@@ -130,6 +131,27 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_email"
+                android:layout_gravity="center"
+                android:layout_marginStart="20dp"
+                >
+            </ImageView>
+
+            <ImageView
+                android:id="@+id/facebook"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_facebook"
+                android:layout_gravity="center"
+                android:layout_marginStart="20dp"
+                >
+            </ImageView>
+
+
+            <ImageView
+                android:id="@+id/instagram"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_instagram"
                 android:layout_gravity="center"
                 android:layout_marginStart="20dp"
                 >

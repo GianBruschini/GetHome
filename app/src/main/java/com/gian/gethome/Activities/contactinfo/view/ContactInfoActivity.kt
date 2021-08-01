@@ -1,15 +1,9 @@
 package com.gian.gethome.Activities.contactinfo.view
 
-import android.Manifest
-import android.content.Intent
-import android.content.pm.PackageManager
-import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import com.gian.gethome.Activities.contactinfo.interfaces.ContactInfoView
 import com.gian.gethome.Activities.contactinfo.model.ContactInfoInteractor
 import com.gian.gethome.Activities.contactinfo.presenter.ContactInfoPresenter
@@ -31,8 +25,8 @@ class ContactInfoActivity : AppCompatActivity(),ContactInfoView {
         binding = ActivityContactInfoBinding.inflate(layoutInflater)
         setContentView(binding.root)
         getValues()
-        presenter.detectUserInfo(idOwner)
-        presenter.detectContactInfo(idOwner,animalKey)
+        presenter.detectUserInfo(idOwner,this)
+        presenter.detectContactInfo(idOwner, animalKey)
 
     }
 
@@ -57,17 +51,29 @@ class ContactInfoActivity : AppCompatActivity(),ContactInfoView {
                 Toast.LENGTH_SHORT).show()
     }
 
-    override fun makeViewActions(animal:Animal) {
+    override fun makeViewActions(animal: Animal) {
+
+
         binding.whatsapp.setOnClickListener {
-            presenter.makeWhatsappAction(animal,this)
+            presenter.makeWhatsappAction(animal, this)
         }
         binding.mail.setOnClickListener {
-            presenter.makeEmailAction(animal,this)
+            presenter.makeEmailAction(animal, this)
         }
         binding.phone.setOnClickListener {
-            presenter.makePhoneAction(animal,this)
+            presenter.makePhoneAction(animal, this)
         }
+        binding.facebook.setOnClickListener {
+            presenter.makeFacebookAction(animal)
+        }
+
+        binding.instagram.setOnClickListener {
+            presenter.makeInstagramAction(animal)
+        }
+
+
     }
+
 
     override fun notWhatsappData() {
         Toast.makeText(baseContext,
@@ -91,6 +97,26 @@ class ContactInfoActivity : AppCompatActivity(),ContactInfoView {
         Toast.makeText(baseContext,
                 "No tienes whatsapp instalado!",
                 Toast.LENGTH_SHORT).show()
+    }
+
+    override fun deleteWhatsapp() {
+        binding.whatsapp.visibility = View.GONE
+    }
+
+    override fun deletePhone() {
+        binding.phone.visibility = View.GONE
+    }
+
+    override fun deleteMail() {
+        binding.mail.visibility = View.GONE
+    }
+
+    override fun deleteInstagram() {
+        binding.instagram.visibility = View.GONE
+    }
+
+    override fun deleteFacebook() {
+        binding.facebook.visibility = View.GONE
     }
 
 
