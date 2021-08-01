@@ -22,6 +22,9 @@ class MisPublicacionesInteractor {
         fun onSetTextoEmptyVisible()
         fun onDataBaseError()
         fun onNotifyPubDeleted(position: Int)
+        fun passAnimalAt(animalAdapterData: AnimalAdapterData)
+
+
 
 
     }
@@ -53,7 +56,7 @@ class MisPublicacionesInteractor {
                                 animal.animalKey,
                                 animal.sexo,
                                 animal.pais,
-                                animal.provincia))
+                                animal.provincia,animal.cantAnimales))
                         listener.onPassAnimalData(animal, imagenNotNull)
 
                     }
@@ -94,6 +97,10 @@ class MisPublicacionesInteractor {
         child(mFirebaseAuth.currentUser!!.uid).child(mlist[position].animalKey).removeValue()
         listener.onNotifyPubDeleted(position)
 
+    }
+
+    fun searchAnimalAt(position: Int) {
+        listener.passAnimalAt(mlist[position])
     }
 
 }

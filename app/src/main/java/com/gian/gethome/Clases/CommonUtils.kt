@@ -21,4 +21,18 @@ object  CommonUtils {
 
         }
     }
+
+    fun showCheckDialog(context: Context): Dialog {
+        val progressDialog = Dialog(context)
+
+        progressDialog.let {
+            it.show()
+            it.window?.setBackgroundDrawable(Color.TRANSPARENT.toDrawable())
+            it.setContentView(R.layout.check_animated)
+            it.setCancelable(false)
+            it.setCanceledOnTouchOutside(false)
+            return it
+
+        }
+    }
 }

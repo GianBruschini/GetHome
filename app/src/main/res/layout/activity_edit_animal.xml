@@ -1,0 +1,294 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/relativePublicarAnimal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".Fragments.PublicarAnimalFragment"
+    android:gravity="center">
+
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:elevation="10dp"
+        >
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="60dp"
+                android:orientation="vertical">
+
+
+                <Spinner
+                    android:id="@+id/spinnerTipoAnimal"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="30dp">
+
+                </Spinner>
+
+                <EditText
+                    android:id="@+id/nombreAnimal"
+                    android:layout_width="350dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/edittext_design"
+                    android:fontFamily="@font/dmsansregular"
+                    android:hint="Nombre del animal"
+                    android:layout_gravity="center"
+                    android:elevation="5dp"
+                    android:inputType="textMultiLine"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp"
+                    android:textColor="#000000"
+                    android:textColorHint="#9FA3AC"
+                    android:textSize="14sp"
+                    android:layout_marginTop="20dp">
+                </EditText>
+
+                <EditText
+                    android:id="@+id/cantAnimales"
+                    android:layout_width="350dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/edittext_design"
+                    android:fontFamily="@font/dmsansregular"
+                    android:hint="Cantidad de animales"
+                    android:layout_gravity="center"
+                    android:elevation="5dp"
+                    android:inputType="number"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp"
+                    android:textColor="#000000"
+                    android:textColorHint="#9FA3AC"
+                    android:textSize="14sp"
+                    android:layout_marginTop="20dp">
+                </EditText>
+
+
+
+                <Spinner
+                    android:id="@+id/spinnerSexoAnimal"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="25dp"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginStart="30dp">
+
+                </Spinner>
+
+
+                <CheckBox
+                    android:id="@+id/transitoCheckBox"
+                    android:layout_width="250dp"
+                    android:layout_height="40dp"
+                    android:fontFamily="@font/dmsansregular"
+                    android:text="Transito urgente"
+                    android:elevation="5dp"
+                    android:inputType="text"
+                    android:paddingStart="5dp"
+                    android:textColor="#000000"
+                    android:textColorHint="#9FA3AC"
+                    android:textSize="14sp"
+                    android:layout_marginTop="25dp"
+                    android:layout_marginLeft="30dp"
+                    android:paddingLeft="5dp"
+                    android:layout_marginStart="30dp"
+                    tools:ignore="RtlSymmetry">
+                </CheckBox>
+
+                <Spinner
+                    android:id="@+id/spinnerAct"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="25dp"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginStart="30dp">
+                </Spinner>
+
+                <EditText
+                    android:id="@+id/descripcionAnimal"
+                    android:layout_width="350dp"
+                    android:layout_height="100dp"
+                    android:minLines="1"
+                    android:maxLines="6"
+                    android:background="@drawable/description_design"
+                    android:fontFamily="@font/dmsansregular"
+                    android:hint="Inserte una descripción"
+                    android:gravity="top"
+                    android:layout_gravity="center"
+                    android:elevation="5dp"
+                    android:ems="10"
+                    android:scrollbars="vertical"
+                    android:inputType="textMultiLine"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp"
+                    android:textColor="#000000"
+                    android:textColorHint="#9FA3AC"
+                    android:textSize="14sp"
+                    android:layout_marginTop="20dp">
+                </EditText>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="22dp"
+                    android:layout_marginTop="40dp"
+                    android:text="Información de contacto:"
+                    android:textSize="16sp"
+                    android:fontFamily="@font/opensans_bold">
+
+                </TextView>
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="22dp"
+                    android:layout_marginTop="20dp"
+                    android:text="*Agregue al menos una opción de contacto"
+                    android:textSize="12sp"
+                    android:fontFamily="@font/montserrat_medium">
+
+                </TextView>
+
+
+                <EditText
+                    android:id="@+id/whatsppNumber"
+                    android:layout_width="350dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/edittext_design"
+                    android:fontFamily="@font/dmsansregular"
+                    android:hint="Numero de Whatsapp"
+                    android:layout_gravity="center"
+                    android:drawableRight="@drawable/ic_whatsapp"
+                    android:elevation="5dp"
+                    android:inputType="number"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp"
+                    android:textColor="#000000"
+                    android:textColorHint="#9FA3AC"
+                    android:textSize="14sp"
+                    android:layout_marginTop="8dp">
+                </EditText>
+
+                <EditText
+                    android:id="@+id/phoneNumber"
+                    android:layout_width="350dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/edittext_design"
+                    android:fontFamily="@font/dmsansregular"
+                    android:hint="Teléfono"
+                    android:layout_gravity="center"
+                    android:drawableRight="@drawable/ic_phone"
+                    android:elevation="5dp"
+                    android:inputType="number"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp"
+                    android:textColor="#000000"
+                    android:textColorHint="#9FA3AC"
+                    android:textSize="14sp"
+                    android:layout_marginTop="15dp">
+                </EditText>
+
+                <EditText
+                    android:id="@+id/mail"
+                    android:layout_width="350dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/edittext_design"
+                    android:fontFamily="@font/dmsansregular"
+                    android:hint="Email"
+                    android:layout_gravity="center"
+                    android:drawableRight="@drawable/ic_email"
+                    android:elevation="5dp"
+                    android:inputType="textMultiLine"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp"
+                    android:textColor="#000000"
+                    android:textColorHint="#9FA3AC"
+                    android:textSize="14sp"
+                    android:layout_marginTop="15dp">
+                </EditText>
+
+
+                <EditText
+                    android:id="@+id/facebook"
+                    android:layout_width="350dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/edittext_design"
+                    android:fontFamily="@font/dmsansregular"
+                    android:hint="Facebook"
+                    android:visibility="gone"
+                    android:layout_gravity="center"
+                    android:drawableEnd="@drawable/ic_facebook"
+                    android:elevation="5dp"
+                    android:inputType="textMultiLine"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp"
+                    android:textColor="#000000"
+                    android:textColorHint="#9FA3AC"
+                    android:textSize="14sp"
+                    android:layout_marginTop="15dp">
+                </EditText>
+
+                <EditText
+                    android:id="@+id/instagram"
+                    android:layout_width="350dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/edittext_design"
+                    android:fontFamily="@font/dmsansregular"
+                    android:hint="Instagram"
+                    android:layout_gravity="center"
+                    android:drawableEnd="@drawable/ic_instagram"
+                    android:elevation="5dp"
+                    android:inputType="textMultiLine"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp"
+                    android:textColor="#000000"
+                    android:textColorHint="#9FA3AC"
+                    android:textSize="14sp"
+                    android:layout_marginTop="15dp">
+                </EditText>
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/botonEditar"
+                    android:layout_width="200dp"
+                    android:layout_height="45dp"
+                    android:fontFamily="@font/montserrat_medium"
+                    android:text="Editar Animal"
+                    android:textColor="#fff"
+                    android:background="@drawable/button_design"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginBottom="25dp"
+                    android:layout_gravity="center"/>
+
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/botonEliminar"
+                    android:layout_width="200dp"
+                    android:layout_height="45dp"
+                    android:fontFamily="@font/montserrat_medium"
+                    android:text="Eliminar animal"
+                    android:textColor="#fff"
+                    android:background="@drawable/button_design"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginBottom="25dp"
+                    android:layout_gravity="center"/>
+            </LinearLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+
+    </androidx.cardview.widget.CardView>
+
+
+</RelativeLayout>
+

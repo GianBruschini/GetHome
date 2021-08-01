@@ -11,4 +11,5 @@ data class AnimalAdapterData(var nombre: String,
                              var animalKey:String,
                              var sexo:String,
                              var pais:String,
-                             var provincia:String)
+                             var provincia:String,
+                             var cantAnimales:String)

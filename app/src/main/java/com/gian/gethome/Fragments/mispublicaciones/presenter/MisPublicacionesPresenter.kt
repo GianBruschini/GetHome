@@ -1,6 +1,7 @@
 package com.gian.gethome.Fragments.mispublicaciones.presenter
 
 import com.gian.gethome.Clases.Animal
+import com.gian.gethome.Clases.AnimalAdapterData
 import com.gian.gethome.Fragments.mispublicaciones.interfaces.MisPublicacionesView
 import com.gian.gethome.Fragments.mispublicaciones.model.MisPublicacionesInteractor
 
@@ -30,7 +31,15 @@ class MisPublicacionesPresenter(var misPublicacionesView: MisPublicacionesView,
         misPublicacionesView.notifyPubDeleted(position)
     }
 
+    override fun passAnimalAt(animalAdapterData: AnimalAdapterData) {
+        misPublicacionesView.getMyAnimalAtPosition(animalAdapterData)
+    }
+
     fun deleteAnimalFromDB(position: Int) {
         misPublicacionesInteractor.deleteAnimalFromDB(position)
+    }
+
+    fun giveMeTheAnimalAt(position: Int) {
+        misPublicacionesInteractor.searchAnimalAt(position)
     }
 }

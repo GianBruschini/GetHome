@@ -79,7 +79,7 @@ class LikesFragment: Fragment(), HomeAdapter.OnItemClickListener {
                                             animal.animalKey,
                                             animal.sexo,
                                             animal.pais,
-                                            animal.provincia))
+                                            animal.provincia,animal.cantAnimales))
                                     adapter = HomeAdapter(mlist)
                                     val gridLayoutManager = GridLayoutManager(context, 1, GridLayoutManager.VERTICAL, false)
                                     recyclerLikes.layoutManager = gridLayoutManager

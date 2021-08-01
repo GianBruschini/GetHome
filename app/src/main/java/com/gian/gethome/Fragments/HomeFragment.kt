@@ -106,7 +106,7 @@ class HomeFragment: Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLis
                                     animal.animalKey,
                                     animal.sexo,
                                     animal.pais,
-                                    animal.provincia))
+                                    animal.provincia,animal.cantAnimales))
 
                             adapter = HomeAdapter(mlist)
                             val gridLayoutManager = GridLayoutManager(context, 1, GridLayoutManager.VERTICAL, false)
@@ -255,7 +255,8 @@ class HomeFragment: Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLis
                                             imagenNotNull,
                                             animal.edad, animal.fechaDePublicacion, animal.descripcion,
                                             animal.transitoUrgente,
-                                            animal.userIDowner, animal.animalKey, animal.sexo, animal.pais, animal.provincia))
+                                            animal.userIDowner, animal.animalKey, animal.sexo,
+                                            animal.pais, animal.provincia,animal.cantAnimales))
 
 
                                     adapter = HomeAdapter(mlist)
