@@ -21,7 +21,7 @@ import com.gian.gethome.R
 import java.util.*
 
 class MisPublicacionesFragment: Fragment(), MisPublicacionesView,MisPubsAdapter.OnItemClickListener {
-    private lateinit var recyclerLikes: RecyclerView
+    private lateinit var recyclerMisPubs: RecyclerView
     private var mlist: ArrayList<AnimalAdapterData> = arrayListOf()
     private lateinit var textoEmpty: TextView
     private lateinit var adapter: MisPubsAdapter
@@ -33,7 +33,7 @@ class MisPublicacionesFragment: Fragment(), MisPublicacionesView,MisPubsAdapter.
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.fragment_mis_likes, container, false)
+        val view = inflater.inflate(R.layout.fragment_mispubs, container, false)
         getValues(view)
         presenter.getMyPubsData()
         return view
@@ -41,7 +41,7 @@ class MisPublicacionesFragment: Fragment(), MisPublicacionesView,MisPubsAdapter.
     }
 
     private fun getValues(view: View) {
-        recyclerLikes = view.findViewById(R.id.recyclerview_likes)
+        recyclerMisPubs = view.findViewById(R.id.recyclerview_misPubs)
         textoEmpty = view.findViewById(R.id.texto_aviso)
     }
 
@@ -57,17 +57,17 @@ class MisPublicacionesFragment: Fragment(), MisPublicacionesView,MisPubsAdapter.
                 animal.animalKey,
                 animal.sexo,
                 animal.pais,
-                animal.provincia, animal.cantAnimales))
+                animal.provincia, animal.cantAnimales,""))
         adapter = MisPubsAdapter(mlist)
         val gridLayoutManager = GridLayoutManager(context, 2, GridLayoutManager.VERTICAL, false)
-        recyclerLikes.layoutManager = gridLayoutManager
-        recyclerLikes.setHasFixedSize(true)
-        recyclerLikes.adapter = adapter
+        recyclerMisPubs.layoutManager = gridLayoutManager
+        recyclerMisPubs.setHasFixedSize(true)
+        recyclerMisPubs.adapter = adapter
         adapter.setOnItemClickListener(this)
     }
 
     override fun notifyDataChanged() {
-        recyclerLikes.adapter?.notifyDataSetChanged()
+        recyclerMisPubs.adapter?.notifyDataSetChanged()
     }
 
     override fun setTextViewVisible() {

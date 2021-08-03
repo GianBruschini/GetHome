@@ -116,6 +116,10 @@ public class HomeActivity extends AppCompatActivity implements DrawerAdapter.OnI
     private int seEjecuto=0;
     private FirebaseAuth mFirebaseAuth;
     private Dialog loadingDialog;
+    private String latitude;
+    private String longitude;
+    private TextView latitudeTxt;
+    private TextView longitudeTxt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -129,6 +133,8 @@ public class HomeActivity extends AppCompatActivity implements DrawerAdapter.OnI
         fotoPerfil = findViewById(R.id.fotoPerfil);
         provincia = findViewById(R.id.provincia);
         pais = findViewById(R.id.pais);
+        latitudeTxt = findViewById(R.id.latitudeTxt);
+        longitudeTxt = findViewById(R.id.longitudeTxt);
         mFirebaseAuth = FirebaseAuth.getInstance();
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -229,10 +235,9 @@ public class HomeActivity extends AppCompatActivity implements DrawerAdapter.OnI
                 pais.setText(addresses.get(0).getCountryName());
                 provincia.setText(chainProv);
                 if(seEjecuto==1){
-                    Bundle bundle = new Bundle();
-                    bundle.putString("Pais",pais.getText().toString());
-                    bundle.putString("Provincia",provincia.getText().toString());
-                    setFragmentWithBundle(new HomeFragment(),bundle);
+                    latitudeTxt.setText(String.valueOf(addresses.get(0).getLatitude()));
+                    longitudeTxt.setText(String.valueOf(addresses.get(0).getLongitude()));
+                    setFragment(new HomeFragment());
                     hideProgressDialog();
                 }
 
@@ -242,8 +247,6 @@ public class HomeActivity extends AppCompatActivity implements DrawerAdapter.OnI
             }
 
         }
-
-
     }
 
     @Override
@@ -399,7 +402,12 @@ public class HomeActivity extends AppCompatActivity implements DrawerAdapter.OnI
                 setFragment(new PerfilFragment());
                 break;
             case POS_AGREGAR:
-                setFragment(new PublicarAnimalFragment());
+                Bundle bundle = new Bundle();
+                bundle.putString("latitude",latitude);
+                bundle.putString("longitude",longitude);
+                PublicarAnimalFragment publicarAnimalFragment = new PublicarAnimalFragment();
+                publicarAnimalFragment.putBundle(bundle);
+                setFragment(publicarAnimalFragment);
                 break;
             case POS_MISPUBS:
                 setFragment(new MisPublicacionesFragment());

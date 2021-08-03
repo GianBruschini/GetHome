@@ -5,11 +5,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.gian.gethome.Clases.AnimalAdapterData
-import com.gian.gethome.Fragments.likes.view.LikesFragment
-import com.gian.gethome.Fragments.mispublicaciones.view.MisPublicacionesFragment
 import com.gian.gethome.R
 import com.squareup.picasso.Picasso
 import java.util.*
@@ -39,7 +36,8 @@ class HomeAdapter(private var mData: ArrayList<AnimalAdapterData>): RecyclerView
         val currentItem: AnimalAdapterData = mData[position]
         holder.nombreAnimal.text = currentItem.nombre
         holder.edadAnimal.text = currentItem.edad
-        val distance: String = currentItem.provincia + currentItem.pais
+        val distanceInKm: Double = 1.60934 * currentItem.distance.toDouble()
+        val distance = "A $distanceInKm km de distancia"
         holder.distance.text = distance
         when(currentItem.sexo){
             "Macho" -> Picasso.get().load(R.drawable.male).into(holder.genreIcon)
@@ -70,6 +68,27 @@ class HomeAdapter(private var mData: ArrayList<AnimalAdapterData>): RecyclerView
         }
     }
 
+
+    fun distance(lat1: Double, lon1: Double, lat2: Double, lon2: Double): Double {
+        val theta = lon1 - lon2
+        var dist = (Math.sin(deg2rad(lat1))
+                * Math.sin(deg2rad(lat2))
+                + (Math.cos(deg2rad(lat1))
+                * Math.cos(deg2rad(lat2))
+                * Math.cos(deg2rad(theta))))
+        dist = Math.acos(dist)
+        dist = rad2deg(dist)
+        dist = dist * 60 * 1.1515
+        return dist
+    }
+
+    private fun deg2rad(deg: Double): Double {
+        return deg * Math.PI / 180.0
+    }
+
+    private fun rad2deg(rad: Double): Double {
+        return rad * 180.0 / Math.PI
+    }
     inner class HomeViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
         val fotoAnimal: ImageView = itemView.findViewById(R.id.fotoAnimalImage)
         val nombreAnimal: TextView = itemView.findViewById(R.id.nombreAnimalText)

@@ -34,19 +34,27 @@ class PublicarAnimalFragment: Fragment(R.layout.fragment_publicar_animal) {
     private lateinit var pais: String
     private lateinit var provincia: String
     private lateinit var homeActivity: HomeActivity
+    private lateinit var latitude: String
+    private lateinit var longitude:String
 
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentPublicarAnimalBinding.inflate(inflater)
         initializeValues()
+        getBundleFromHomeActivity()
         settingSpinner()
         settingOnClickListenerBotonContinuar()
         return binding!!.root
     }
 
-    private fun initializeValues() {
+    private fun getBundleFromHomeActivity() {
+        //latitude = activity?.intent?.getStringExtra("latitude").toString()
+        //longitude = activity?.intent?.getStringExtra("longitude").toString()
 
+    }
+
+    private fun initializeValues() {
         awesomeValidation = AwesomeValidation(ValidationStyle.BASIC)
         homeActivity = (activity as HomeActivity?)!!
         pais= homeActivity.pais.text.toString()
@@ -103,6 +111,8 @@ class PublicarAnimalFragment: Fragment(R.layout.fragment_publicar_animal) {
                 intent.putExtra("Mail", binding?.mail?.text.toString())
                 intent.putExtra("Facebook", binding?.facebook?.text.toString())
                 intent.putExtra("Instagram", binding?.instagram?.text.toString())
+                intent.putExtra("latitude", latitude)
+                intent.putExtra("longitude",longitude)
                 startActivity(intent)
             }
         }else{
@@ -187,6 +197,12 @@ class PublicarAnimalFragment: Fragment(R.layout.fragment_publicar_animal) {
     }
 
 
+
+    fun putBundle(bundle: Bundle) {
+            latitude=bundle.getString("latitude").toString()
+            longitude=bundle.getString("longitude").toString()
+
+    }
 
 
 }

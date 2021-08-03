@@ -38,6 +38,8 @@ class ImagenesAnimalActivity : AppCompatActivity(),ImagenesAnimalView {
     private  lateinit var provincia:String
     private  lateinit var formatted:String
     private var loadingDialog: Dialog? = null
+    private lateinit var latitude: String
+    private lateinit var longitude:String
 
     private val presenter = ImagenesAnimalPresenter(this, ImagenesAnimalInteractor())
 
@@ -158,13 +160,19 @@ class ImagenesAnimalActivity : AppCompatActivity(),ImagenesAnimalView {
         facebook = intent.getStringExtra("Facebook").toString()
         instagram = intent.getStringExtra("Instagram").toString()
         cantAnimales = intent.getStringExtra("cantAnimales").toString()
+        latitude = intent.getStringExtra("latitude").toString()
+        longitude = intent.getStringExtra("longitude").toString()
+
+
     }
 
     fun publicarAnimal(view: View) {
         presenter.publicarAnimalDB(nombreAnimal,
                 tipoAnimal,
                 transitoUrgente,
-                edadAnimal,descripcionAnimal,sexoAnimal,provincia,pais,whatsapp,phone,mail,this,facebook,instagram,cantAnimales)
+                edadAnimal,descripcionAnimal,sexoAnimal,
+                provincia,pais,whatsapp,phone,mail,
+                this,facebook,instagram,cantAnimales,latitude,longitude)
 
     }
 

@@ -23,10 +23,6 @@ class MisPublicacionesInteractor {
         fun onDataBaseError()
         fun onNotifyPubDeleted(position: Int)
         fun passAnimalAt(animalAdapterData: AnimalAdapterData)
-
-
-
-
     }
 
 
@@ -56,7 +52,7 @@ class MisPublicacionesInteractor {
                                 animal.animalKey,
                                 animal.sexo,
                                 animal.pais,
-                                animal.provincia,animal.cantAnimales))
+                                animal.provincia,animal.cantAnimales,""))
                         listener.onPassAnimalData(animal, imagenNotNull)
 
                     }
@@ -64,9 +60,7 @@ class MisPublicacionesInteractor {
                 } else {
                     listener.onSetTextoEmptyVisible()
                 }
-
             }
-
 
             override fun onCancelled(error: DatabaseError) {
                 listener.onDataBaseError()

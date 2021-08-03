@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.gian.gethome.Activities.animaldetalle.view.AnimalDetalleActivity
+import com.gian.gethome.Activities.homeactivity.view.HomeActivity
 import com.gian.gethome.Adapters.HomeAdapter
 import com.gian.gethome.Clases.Animal
 import com.gian.gethome.Clases.AnimalAdapterData
@@ -20,7 +21,9 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import kotlinx.android.synthetic.main.activity_home.*
 import java.util.ArrayList
+import kotlin.properties.Delegates
 
 class LikesFragment: Fragment(), HomeAdapter.OnItemClickListener {
     private lateinit var mFirebaseAuth: FirebaseAuth
@@ -29,6 +32,10 @@ class LikesFragment: Fragment(), HomeAdapter.OnItemClickListener {
     private lateinit var imagenNotNull:String
     private lateinit var textoEmpty: TextView
     private lateinit var adapter:HomeAdapter
+    private lateinit var homeActivity:HomeActivity
+    private lateinit var latitude:String
+    private lateinit var longitude:String
+    private var distance by Delegates.notNull<Double>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,6 +50,9 @@ class LikesFragment: Fragment(), HomeAdapter.OnItemClickListener {
     }
 
     private fun getValues(view: View) {
+        homeActivity = (activity as HomeActivity?)!!
+        latitude = homeActivity.latitudeTxt.text.toString()
+        longitude = homeActivity.longitudeTxt.text.toString()
         recyclerLikes = view.findViewById(R.id.recyclerview_likes)
         textoEmpty = view.findViewById(R.id.texto_aviso)
     }
@@ -68,6 +78,10 @@ class LikesFragment: Fragment(), HomeAdapter.OnItemClickListener {
                             override fun onDataChange(snapshotInner: DataSnapshot) {
                                     val animal: Animal = snapshotInner.getValue(Animal::class.java)!!
                                     imagenNotNull = checkWhatImageIsNotNull(animal)
+                                    adapter = HomeAdapter(mlist)
+                                    distance = adapter.distance(latitude.toDouble(),
+                                            longitude.toDouble(),animal.latitude.toDouble(),
+                                            animal.longitude.toDouble())
                                     mlist.add(AnimalAdapterData(animal.nombre,
                                             animal.tipoAnimal,
                                             imagenNotNull,
@@ -79,8 +93,7 @@ class LikesFragment: Fragment(), HomeAdapter.OnItemClickListener {
                                             animal.animalKey,
                                             animal.sexo,
                                             animal.pais,
-                                            animal.provincia,animal.cantAnimales))
-                                    adapter = HomeAdapter(mlist)
+                                            animal.provincia,animal.cantAnimales,distance.toString()))
                                     val gridLayoutManager = GridLayoutManager(context, 1, GridLayoutManager.VERTICAL, false)
                                     recyclerLikes.layoutManager = gridLayoutManager
                                     recyclerLikes.setHasFixedSize(true)

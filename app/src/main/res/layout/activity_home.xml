@@ -65,6 +65,20 @@
             android:layout_toRightOf="@id/provincia"
             android:textSize="17sp"
             android:layout_toEndOf="@id/provincia" />
+        <TextView
+            android:id="@+id/latitudeTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:visibility="gone"
+            />
+        <TextView
+            android:id="@+id/longitudeTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:visibility="gone"
+             />
 
 
 

@@ -56,12 +56,17 @@ class HomeFragment: Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLis
     private lateinit var texto_resultado:TextView
     private lateinit var buscador:EditText
     private lateinit var homeActivity: HomeActivity
+    private lateinit var latitude:String
+    private lateinit var longitude:String
+    private var distance by Delegates.notNull<Double>()
     private var size by Delegates.notNull<Int>()
+
     private var listEmpty:MutableList<AnimalAdapterData> = mutableListOf()
 
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        getHomeActivityBundle()
         val view = inflater.inflate(R.layout.fragment_home, container, false)
         cardView = view.findViewById(R.id.cardViewHome)
         getCountryAndProvinceFromHomeActivity()
@@ -69,6 +74,12 @@ class HomeFragment: Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLis
         makeActionEditText()
         setAllAnimalsSelected(view)
         return view
+    }
+
+    private fun getHomeActivityBundle() {
+        //longitude = arguments?.getString("longitude").toString()
+        //latitude = arguments?.getString("latitude").toString()
+
     }
 
     private fun setAllAnimalsSelected(view: View) {
@@ -82,6 +93,8 @@ class HomeFragment: Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLis
         homeActivity = (activity as HomeActivity?)!!
         provincia = homeActivity.provincia.text.toString()
         pais = homeActivity.pais.text.toString()
+        latitude = homeActivity.latitudeTxt.text.toString()
+        longitude = homeActivity.longitudeTxt.text.toString()
     }
 
 
@@ -96,6 +109,10 @@ class HomeFragment: Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLis
                         val animal: Animal = snap.getValue(Animal::class.java)!!
                         if (animal.provincia == provincia && animal.pais == pais) {
                             imagenNotNull = checkWhatImageIsNotNull(animal)
+                            adapter = HomeAdapter(mlist)
+                            distance = adapter.distance(latitude.toDouble(),
+                                    longitude.toDouble(),animal.latitude.toDouble(),
+                                    animal.longitude.toDouble())
                             mlist.add(AnimalAdapterData(
                                     animal.nombre,
                                     animal.tipoAnimal,
@@ -108,9 +125,7 @@ class HomeFragment: Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLis
                                     animal.animalKey,
                                     animal.sexo,
                                     animal.pais,
-                                    animal.provincia,animal.cantAnimales))
-
-                            adapter = HomeAdapter(mlist)
+                                    animal.provincia, animal.cantAnimales,distance.toString()))
                             val gridLayoutManager = GridLayoutManager(context, 1, GridLayoutManager.VERTICAL, false)
                             myRecycler.layoutManager = gridLayoutManager
                             myRecycler.setHasFixedSize(true)
@@ -266,16 +281,19 @@ class HomeFragment: Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLis
                             if (animal.provincia == provincia && animal.pais == pais) {
 
                                 imagenNotNull = checkWhatImageIsNotNull(animal)
-                                if(imagenNotNull != ""){
+                                if (imagenNotNull != "") {
+                                    adapter = HomeAdapter(mlist)
+                                    distance = adapter.distance(latitude.toDouble(),
+                                            longitude.toDouble(),animal.latitude.toDouble(),
+                                            animal.longitude.toDouble())
                                     mlist.add(AnimalAdapterData(animal.nombre, animal.tipoAnimal,
                                             imagenNotNull,
                                             animal.edad, animal.fechaDePublicacion, animal.descripcion,
                                             animal.transitoUrgente,
                                             animal.userIDowner, animal.animalKey, animal.sexo,
-                                            animal.pais, animal.provincia,animal.cantAnimales))
+                                            animal.pais, animal.provincia, animal.cantAnimales,
+                                            distance.toString()))
 
-
-                                    adapter = HomeAdapter(mlist)
                                     val gridLayoutManager = GridLayoutManager(context, 1, GridLayoutManager.VERTICAL, false)
                                     myRecycler.layoutManager = gridLayoutManager
                                     myRecycler.setHasFixedSize(true)
@@ -496,7 +514,7 @@ class HomeFragment: Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLis
             }
 
             override fun afterTextChanged(editable: Editable) {
-                if(editable.toString().isNotEmpty()){
+                if (editable.toString().isNotEmpty()) {
                     filter(editable.toString())
                 }
             }
@@ -517,5 +535,11 @@ class HomeFragment: Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLis
         if(this::adapter.isInitialized){
             adapter.filterList(filteredList)
         }
+    }
+
+    fun putBundle(bundle: Bundle) {
+        //latitude=bundle.getString("latitude").toString()
+        //longitude=bundle.getString("longitude").toString()
+
     }
 }

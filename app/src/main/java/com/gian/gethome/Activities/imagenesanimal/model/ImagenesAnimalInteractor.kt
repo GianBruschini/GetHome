@@ -154,7 +154,7 @@ class ImagenesAnimalInteractor {
                          whatsapp: String,
                          phone: String,
                          mail: String, listener: onImagenesAnimalListener, context: ImagenesAnimalActivity,
-                         facebook: String, instagram: String, cantAnimales: String) {
+                         facebook: String, instagram: String, cantAnimales: String, latitude: String, longitude: String) {
         var todosNull:Boolean = false;
         var cont:Int = 0;
         for (item in arrayUrisNulls.indices){
@@ -170,7 +170,7 @@ class ImagenesAnimalInteractor {
             storeValuesOnDatabase(nombreAnimal, tipoAnimal, transitoUrgente,
                     edadAnimal, descripcionAnimal, sexoAnimal,
                     provincia, pais, whatsapp, phone,
-                    mail, listener, context,facebook,instagram,cantAnimales)
+                    mail, listener, context,facebook,instagram,cantAnimales,latitude,longitude)
         }else{
             listener.onAddAtLeastOneImage()
         }
@@ -190,7 +190,9 @@ class ImagenesAnimalInteractor {
                                       mail: String, listener: onImagenesAnimalListener,
                                       context: ImagenesAnimalActivity,
                                       facebook: String, instagram: String,
-                                      cantAnimales: String) {
+                                      cantAnimales: String,
+                                      latitude: String,
+                                      longitude: String) {
         mFirebaseAuth = FirebaseAuth.getInstance()
         val currentUser: FirebaseUser = mFirebaseAuth.currentUser!!
         val userId = currentUser.uid
@@ -214,6 +216,8 @@ class ImagenesAnimalInteractor {
         crearUser["facebook"] = facebook
         crearUser["instagram"] = instagram
         crearUser["cantAnimales"] = cantAnimales
+        crearUser["latitude"] = latitude
+        crearUser["longitude"] = longitude
         FirebaseDatabase.getInstance().reference.
         child("Users").
         child("Animales").
