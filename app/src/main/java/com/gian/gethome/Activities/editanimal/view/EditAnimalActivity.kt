@@ -16,7 +16,6 @@ import com.gian.gethome.Activities.editanimal.presenter.EditAnimalPresenter
 import com.gian.gethome.Activities.homeactivity.view.HomeActivity
 import com.gian.gethome.Clases.Animal
 import com.gian.gethome.Clases.CommonUtils
-import com.gian.gethome.Fragments.HomeFragment
 import com.gian.gethome.Fragments.mispublicaciones.view.MisPublicacionesFragment
 import com.gian.gethome.R
 import com.gian.gethome.databinding.ActivityEditAnimalBinding
@@ -25,6 +24,7 @@ import java.util.*
 class EditAnimalActivity : AppCompatActivity(),EditAnimalView {
     private lateinit var binding:ActivityEditAnimalBinding
     private lateinit var animalKey:String
+    private lateinit var animalUrlImage:String
     private var loadingDialog: Dialog? = null
     private var dialog: Dialog? = null
     private val presenter = EditAnimalPresenter(this, EditAnimalInteractor())
@@ -34,6 +34,7 @@ class EditAnimalActivity : AppCompatActivity(),EditAnimalView {
         setContentView(binding.root)
         setLogicButtons()
         animalKey = intent.getStringExtra("animalKey").toString()
+        animalUrlImage = intent.getStringExtra("animalUrlImage").toString()
         presenter.retrieveDataFromDB(animalKey)
 
     }
@@ -51,14 +52,14 @@ class EditAnimalActivity : AppCompatActivity(),EditAnimalView {
         }
         binding.botonEliminar.setOnClickListener {
             dialog = Dialog(this)
-            dialog?.setContentView(R.layout.dialog_deleteacc_layout)
+            dialog?.setContentView(R.layout.dialog_deletepub_layout)
             dialog?.setCancelable(false)
             dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
             dialog?.show()
             val yesDelate: ImageView = dialog!!.findViewById(R.id.yesDelate)
             val noDelate: ImageView = dialog!!.findViewById(R.id.noDelate)
             yesDelate.setOnClickListener {
-                presenter.deleteAnimalFromDB(animalKey)
+                presenter.deleteAnimalFromDB(animalKey,animalUrlImage)
                 startActivity(Intent(this,HomeActivity::class.java))
             }
             noDelate.setOnClickListener {

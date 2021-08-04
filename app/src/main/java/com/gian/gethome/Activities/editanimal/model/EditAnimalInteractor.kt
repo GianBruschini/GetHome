@@ -6,7 +6,10 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import java.util.HashMap
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
+import java.util.*
+
 
 class EditAnimalInteractor {
     private lateinit var mFirebaseAuth:FirebaseAuth
@@ -68,11 +71,13 @@ class EditAnimalInteractor {
         listener.onAnimalUpdated()
     }
 
-    fun deleteAnimalFromDB(animalKey: String) {
+    fun deleteAnimalFromDB(animalKey: String, animalUrlImage: String) {
+        val mFirebaseStorage = FirebaseStorage.getInstance()
         FirebaseDatabase.getInstance().reference.
         child("Users").
         child("Animales").
         child(mFirebaseAuth.currentUser!!.uid).child(animalKey).removeValue()
-
+        val photoRef: StorageReference = mFirebaseStorage.getReferenceFromUrl(animalUrlImage)
+        photoRef.delete()
     }
 }

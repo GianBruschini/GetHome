@@ -46,11 +46,8 @@ class ElegirFotoDePerfilActivity : AppCompatActivity(),ElegirFotoDePerfilView {
         mFirebaseAuth = FirebaseAuth.getInstance()
         mStorageRef = FirebaseStorage.getInstance().
         getReference("UsersProfilePictures" + "/" + mFirebaseAuth.currentUser?.uid)
-        binding.deleteImg.setOnClickListener {
 
-        }
     }
-
     fun Continuar(view: View?) {
         if (profile.drawable != null) {
             presenter.uploadImageProfile(profile.drawable, mStorageRef, this)
@@ -97,7 +94,7 @@ class ElegirFotoDePerfilActivity : AppCompatActivity(),ElegirFotoDePerfilView {
     }
 
     override fun onSetImageProfile(imageUri: Uri) {
-        Picasso.get().load(imageUri).fit().into(binding.profile)
+        Picasso.get().load(imageUri).into(binding.profile)
     }
 
     override fun noFileSelected() {

@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginVertical="-5dp"
-
     >
 
     <FrameLayout
@@ -15,23 +14,38 @@
         <androidx.cardview.widget.CardView
             android:id="@+id/cardView1"
             android:layout_width="170dp"
+
             android:layout_height="190dp"
             app:cardElevation="10dp"
             app:cardCornerRadius="10dp"
             android:layout_marginBottom="25dp"
             android:layout_marginStart="21dp"
-
             >
 
-            <ImageView
-                android:id="@+id/fotoAnimalImage"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scaleType="centerCrop"
-                android:src="@drawable/dog">
-            </ImageView>
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/fotoAnimalImage"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/dog">
+                </ImageView>
+
+                <ImageView
+                    android:id="@+id/esTransitoUrgente"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="130dp"
+                    android:layout_marginTop="10dp"
+                    android:visibility="invisible"
+                    android:src="@drawable/ic_senal_de_advertencia" />
 
 
+
+            </RelativeLayout>
 
         </androidx.cardview.widget.CardView>
 

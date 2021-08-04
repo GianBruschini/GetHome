@@ -33,7 +33,7 @@ class EditAnimalPresenter(val editAnimalView: EditAnimalView,
 
     }
 
-    fun deleteAnimalFromDB(animalKey: String) {
-        editAnimalInteractor.deleteAnimalFromDB(animalKey)
+    fun deleteAnimalFromDB(animalKey: String, animalUrlImage: String) {
+        editAnimalInteractor.deleteAnimalFromDB(animalKey,animalUrlImage)
     }
 }

@@ -123,8 +123,6 @@ class ImagenesAnimalInteractor {
 
     }
 
-
-
     private fun setImageViewWith(numberImageView: Int, data: Intent, listener: onImagenesAnimalListener, context: ImagenesAnimalActivity) {
         imageUri = data.data
         if(imageUri!=null){

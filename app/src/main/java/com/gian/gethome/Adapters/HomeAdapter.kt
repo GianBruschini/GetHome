@@ -30,9 +30,6 @@ class HomeAdapter(private var mData: ArrayList<AnimalAdapterData>): RecyclerView
     }
 
     override fun onBindViewHolder(holder: HomeViewHolder, position: Int) {
-        for(item in mData.indices){
-            println("El size es del home " + " " + mData.size)
-        }
         val currentItem: AnimalAdapterData = mData[position]
         holder.nombreAnimal.text = currentItem.nombre
         holder.edadAnimal.text = currentItem.edad
@@ -43,7 +40,10 @@ class HomeAdapter(private var mData: ArrayList<AnimalAdapterData>): RecyclerView
             "Macho" -> Picasso.get().load(R.drawable.male).into(holder.genreIcon)
             "Hembra" -> Picasso.get().load(R.drawable.female).into(holder.genreIcon)
         }
-
+        when(currentItem.transitoUrgente){
+            "true"-> holder.esTransitoUrgente.visibility = View.VISIBLE
+            "false"->holder.esTransitoUrgente.visibility = View.INVISIBLE
+        }
         Picasso.get().
         load(currentItem.imageURL).
         placeholder(R.drawable.progress_animation).
@@ -95,6 +95,7 @@ class HomeAdapter(private var mData: ArrayList<AnimalAdapterData>): RecyclerView
         val edadAnimal: TextView = itemView.findViewById(R.id.edadText)
         val genreIcon: ImageView = itemView.findViewById(R.id.iconGenre)
         val distance: TextView = itemView.findViewById(R.id.distanceText)
+        val esTransitoUrgente: ImageView = itemView.findViewById(R.id.esTransitoUrgente)
 
         init {
             itemView.setOnClickListener {

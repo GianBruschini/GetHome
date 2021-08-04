@@ -14,7 +14,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.GetHome">
-        <activity android:name=".Activities.editanimal.view.EditAnimalActivity"></activity>
+        <activity android:name=".Activities.configcuenta.view.ConfigCuentaActivity"></activity>
+        <activity android:name=".Activities.editanimal.view.EditAnimalActivity" />
         <activity android:name=".Activities.mispublicaciones.view.MisPublicacionesActivity" />
         <activity android:name=".Activities.contactinfo.view.ContactInfoActivity" />
         <activity android:name=".Activities.animaldetalle.view.AnimalDetalleActivity" />

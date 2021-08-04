@@ -62,21 +62,26 @@ class ElegirFotoDePerfilInteractor {
 
     fun setActivityResultData(imageUriRef: Uri?, requestCode: Int, resultCode: Int, data: Intent?, listener: onElegirFotoDePerfilListener, context: ElegirFotoDePerfilActivity) {
         if (requestCode == PICK_IMAGE && resultCode == -1) {
-            imageUri = data?.data
-            startCrop(data?.data!!, context)
-        }else{
+            if (data != null) {
+                imageUri = data.data
+                listener.onSetImageProfile(imageUri)
+            }
+
+        }/*else{
             if(requestCode == UCrop.REQUEST_CROP && resultCode == -1){
                 val imageUriResultCrop = UCrop.getOutput(data!!)
-                listener.onSetImageProfile(imageUriResultCrop)
+
+
             }
         }
+        */
     }
 
 
     fun startCrop(uri: Uri, context: ElegirFotoDePerfilActivity){
         var destinationFile:String =SAMPLE_CROPPED_IMG_NAME
         destinationFile += ".jpg"
-        val uCrop = UCrop.of(uri, Uri.fromFile(File(FacebookSdk.getCacheDir(), destinationFile)))
+        var uCrop = UCrop.of(uri, Uri.fromFile(File(FacebookSdk.getCacheDir(), destinationFile)))
         uCrop.withAspectRatio(1F, 1F)
         //uCrop.withAspectRatio(3F,4F)
         //uCrop.useSourceImageAspectRatio()

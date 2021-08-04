@@ -30,7 +30,7 @@
                 android:layout_marginTop="60dp"
                 android:textColor="#fff"
                 android:textSize="16sp"
-                android:text="Desea eliminar la publicación seleccionada?">
+                android:text="Desea eliminar permanentemente esta publicación?">
 
             </TextView>
 

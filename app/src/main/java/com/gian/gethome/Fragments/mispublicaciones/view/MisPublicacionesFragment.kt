@@ -92,6 +92,7 @@ class MisPublicacionesFragment: Fragment(), MisPublicacionesView,MisPubsAdapter.
         presenter.giveMeTheAnimalAt(position)
         val intent= Intent(activity, EditAnimalActivity::class.java)
         intent.putExtra("animalKey", animal.animalKey)
+        intent.putExtra("animalUrlImage", animal.imageURL)
         startActivity(intent)
 
         /*dialog = Dialog(requireContext())

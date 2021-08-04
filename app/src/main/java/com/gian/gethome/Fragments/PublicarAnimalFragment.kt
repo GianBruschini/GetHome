@@ -59,6 +59,8 @@ class PublicarAnimalFragment: Fragment(R.layout.fragment_publicar_animal) {
         homeActivity = (activity as HomeActivity?)!!
         pais= homeActivity.pais.text.toString()
         provincia = homeActivity.provincia.text.toString()
+        latitude = homeActivity.latitudeTxt.text.toString()
+        longitude = homeActivity.longitudeTxt.text.toString()
     }
 
 
@@ -199,8 +201,8 @@ class PublicarAnimalFragment: Fragment(R.layout.fragment_publicar_animal) {
 
 
     fun putBundle(bundle: Bundle) {
-            latitude=bundle.getString("latitude").toString()
-            longitude=bundle.getString("longitude").toString()
+            //latitude=bundle.getString("latitude").toString()
+            //longitude=bundle.getString("longitude").toString()
 
     }
 
