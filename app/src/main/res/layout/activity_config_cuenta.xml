@@ -1,9 +1,107 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Activities.configcuenta.view.ConfigCuentaActivity">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <ImageView
+        android:id="@+id/backButton"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_margin="20dp"
+        android:src="@drawable/ic_baseline_arrow_back_24">
+    </ImageView>
+
+    <FrameLayout
+        android:id="@+id/frame"
+        android:layout_width="180dp"
+        android:layout_height="180dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="150dp"
+        >
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/profile"
+            android:layout_width="180dp"
+            android:layout_height="180dp"
+            android:src="@drawable/background_pet1"
+            app:civ_border_width="2dp"
+            app:civ_border_color="@color/black">
+        </de.hdodenhof.circleimageview.CircleImageView>
+
+        <ImageView
+            android:id="@+id/editButton"
+            android:layout_width="40dp"
+            android:layout_height="30dp"
+            android:src="@drawable/ic_mano"
+            android:layout_marginTop="120dp"
+            android:layout_marginStart="110dp">
+        </ImageView>
+
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/perfil"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginBottom="10dp"
+        android:text="Nombre de contacto"
+        android:textSize="16sp"
+        android:fontFamily="@font/montserrat_medium"
+        android:layout_below="@id/frame"
+        >
+    </TextView>
+
+    <EditText
+        android:id="@+id/nombrePerfil"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_below="@id/perfil"
+        android:layout_marginStart="20sp"
+        android:ems="10"
+        android:layout_centerHorizontal="true"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/custom_input"
+        android:drawableStart="@drawable/ic_perfil"
+        android:padding="12dp"
+        android:hint="Nombre de contacto"
+        android:inputType="textEmailAddress"
+        android:textSize="14sp"
+        >
+    </EditText>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/botonGuardar"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/montserrat_medium"
+        android:textColor="#ffff"
+        android:text="Guardar"
+        android:textStyle="bold"
+        android:layout_below="@id/nombrePerfil"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp"
+        android:background="@drawable/button_design">
+
+    </androidx.appcompat.widget.AppCompatButton>
+
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/botonEliminarCuenta"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/montserrat_medium"
+        android:textColor="#ffff"
+        android:text="Eliminar cuenta"
+        android:textStyle="bold"
+        android:layout_below="@id/botonGuardar"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/button_design">
+
+    </androidx.appcompat.widget.AppCompatButton>
+
+</RelativeLayout>

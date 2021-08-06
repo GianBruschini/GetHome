@@ -15,5 +15,13 @@ class ConfigCuentaActivity : AppCompatActivity(),ConfigCuentaView {
         super.onCreate(savedInstanceState)
         binding = ActivityConfigCuentaBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        setLogicToButtons()
+
+    }
+
+    private fun setLogicToButtons() {
+        binding.backButton.setOnClickListener {
+            finish()
+        }
     }
 }

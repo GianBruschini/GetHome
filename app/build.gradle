@@ -3,6 +3,7 @@
     apply plugin: 'com.google.gms.google-services'
     apply plugin: 'kotlin-android'
     apply plugin: 'kotlin-android-extensions'
+    apply plugin: 'com.google.firebase.crashlytics'
 
 
 
@@ -70,6 +71,9 @@ dependencies {
     implementation 'com.google.firebase:firebase-storage:19.2.1'
     implementation 'com.google.firebase:firebase-database-ktx:20.0.0'
     implementation 'com.google.firebase:firebase-database:20.0.0'
+    //Firebase Crashlitycs
+    implementation 'com.google.firebase:firebase-crashlytics-ktx'
+    implementation 'com.google.firebase:firebase-analytics-ktx'
     //Facebook firebase
     implementation 'com.facebook.android:facebook-android-sdk:[4,5)'
     //ButterKnife

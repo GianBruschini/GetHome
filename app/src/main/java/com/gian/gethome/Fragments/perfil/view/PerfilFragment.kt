@@ -14,6 +14,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import com.gian.gethome.Activities.configcuenta.view.ConfigCuentaActivity
 import com.gian.gethome.Activities.homeactivity.view.HomeActivity
 import com.gian.gethome.Fragments.perfil.interfaces.PerfilView
 import com.gian.gethome.Fragments.perfil.model.PerfilInteractor
@@ -39,10 +40,9 @@ class PerfilFragment: Fragment(R.layout.fragment_mi_perfil),PerfilView,View.OnCl
     }
 
     private fun initializeValuesOnClick() {
-        binding!!.buttonDelete.setOnClickListener(this)
+        binding!!.buttonConfiguracion.setOnClickListener(this)
         dialog?.setContentView(R.layout.dialog_deleteacc_layout)
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-
     }
 
     private fun getUserNameFromDB() {
@@ -75,9 +75,9 @@ class PerfilFragment: Fragment(R.layout.fragment_mi_perfil),PerfilView,View.OnCl
     @SuppressLint("CutPasteId")
     override fun onClick(v: View?) {
         when(v!!.id){
-            R.id.buttonDelete -> {
-                showAlertDialog()
-
+            R.id.buttonConfiguracion -> {
+                navigateTo(Intent(requireContext(),ConfigCuentaActivity::class.java))
+                //showAlertDialog()
             }
         }
     }

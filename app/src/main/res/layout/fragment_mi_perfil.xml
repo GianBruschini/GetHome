@@ -28,11 +28,11 @@
         android:text="Username"/>
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/buttonDelete"
+        android:id="@+id/buttonConfiguracion"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_below="@id/userName"
-        android:text="Borrar cuenta"
+        android:text="Configuración"
         android:textColor="#ffff"
         android:layout_centerHorizontal="true"
         android:background="@drawable/button_design"

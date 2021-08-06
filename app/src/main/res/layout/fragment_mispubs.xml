@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:textSize="20sp"
-        android:text="Todavía nos has hecho publicaciones"
+        android:text="Todavía no has hecho publicaciones"
         android:fontFamily="@font/montserrat_medium"
         android:visibility="gone"
         android:gravity="center">
