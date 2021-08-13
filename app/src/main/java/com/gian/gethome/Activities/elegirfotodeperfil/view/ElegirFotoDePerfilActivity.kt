@@ -1,8 +1,8 @@
 package com.gian.gethome.Activities.elegirfotodeperfil.view
 
 import android.app.Dialog
-import android.app.ProgressDialog
 import android.content.Intent
+import android.graphics.drawable.Drawable.ConstantState
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
@@ -13,14 +13,15 @@ import com.gian.gethome.Activities.elegirfotodeperfil.model.ElegirFotoDePerfilIn
 import com.gian.gethome.Activities.elegirfotodeperfil.presenter.ElegirFotoDePerfilPresenter
 import com.gian.gethome.Activities.homeactivity.view.HomeActivity
 import com.gian.gethome.Clases.CommonUtils
-import com.gian.gethome.Clases.CommonUtilsJava
+import com.gian.gethome.R
 import com.gian.gethome.databinding.ActivityElegirFotoDePerfilBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.squareup.picasso.Picasso
-import de.hdodenhof.circleimageview.CircleImageView
+import com.theartofdev.edmodo.cropper.CropImage
+import com.theartofdev.edmodo.cropper.CropImageView
 import kotlinx.android.synthetic.main.activity_elegir_foto_de_perfil.*
 
 
@@ -50,9 +51,10 @@ class ElegirFotoDePerfilActivity : AppCompatActivity(),ElegirFotoDePerfilView {
 
     }
     fun Continuar(view: View?) {
-        if (profile.drawable != null) {
+        val constantStateDrawableA: ConstantState = profile.drawable.constantState!!
+        val constantStateDrawableB: ConstantState? = resources.getDrawable(R.drawable.background_pet1).constantState
+        if (constantStateDrawableA != constantStateDrawableB) {
             presenter.uploadImageProfile(profile.drawable, mStorageRef, this)
-
         } else {
             Toast.makeText(this, "Seleccione una foto de perfil", Toast.LENGTH_SHORT).show()
         }
@@ -60,17 +62,18 @@ class ElegirFotoDePerfilActivity : AppCompatActivity(),ElegirFotoDePerfilView {
 
     private fun openOptionsImage() {
         selectImage.setOnClickListener {
-            val gallery = Intent()
-            gallery.type = "image/*"
-            gallery.action = Intent.ACTION_GET_CONTENT
-            startActivityForResult(Intent.createChooser(gallery, "Select Picture"), PICK_IMAGE)
+            CropImage.activity()
+                    .setGuidelines(CropImageView.Guidelines.ON)
+                    .start(this);
         }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        presenter.setActivityResultData(imageUri, requestCode, resultCode, data, this)
-
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+            val result = CropImage.getActivityResult(data)
+            presenter.retrieveUri(result, resultCode)
+        }
     }
     override fun navigateToHomeActivity() {
         navigateTo(Intent(this@ElegirFotoDePerfilActivity, HomeActivity::class.java))
@@ -118,6 +121,14 @@ class ElegirFotoDePerfilActivity : AppCompatActivity(),ElegirFotoDePerfilView {
         intent.putExtra("drawableProfile", imageURL)
         startActivity(intent)
         finish()
+    }
+
+    override fun showImageCrop(resultUri: Uri) {
+        profile.setImageURI(resultUri)
+    }
+
+    override fun showErrorRetrievingImageUri(error: Exception?) {
+
     }
 
     override fun onDestroy() {

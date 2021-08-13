@@ -13,6 +13,8 @@ interface ElegirFotoDePerfilView {
     fun showProgressDialog()
     fun hideProgressDialog()
     fun startActivityWithImageURL(imageURL: String)
+    fun showImageCrop(resultUri: Uri)
+    fun showErrorRetrievingImageUri(error: Exception?)
 
 
 

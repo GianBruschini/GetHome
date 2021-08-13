@@ -22,8 +22,6 @@ class EditAnimalInteractor {
         fun onAnimalUpdated()
 
     }
-
-
     fun retrieveDataFromDB(listener: onEditAnimalInteractor, animalKey: String) {
         this.listener = listener
         mFirebaseAuth = FirebaseAuth.getInstance()

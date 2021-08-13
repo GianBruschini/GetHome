@@ -24,9 +24,6 @@ class PerfilPresenter(var perfilView: PerfilView?, var perfilInteractor: PerfilI
         perfilInteractor.getUserNameFromDB(this)
     }
 
-    fun deleteAccount() {
-        perfilInteractor.deleteAccount(this)
-    }
 
     fun onDestroy() {
         perfilView = null

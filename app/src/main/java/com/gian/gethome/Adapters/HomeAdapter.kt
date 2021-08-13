@@ -33,8 +33,9 @@ class HomeAdapter(private var mData: ArrayList<AnimalAdapterData>): RecyclerView
         val currentItem: AnimalAdapterData = mData[position]
         holder.nombreAnimal.text = currentItem.nombre
         holder.edadAnimal.text = currentItem.edad
-        val distanceInKm: Double = 1.60934 * currentItem.distance.toDouble()
-        val distance = "A $distanceInKm km de distancia"
+        val distanceInKm: Double =  1.60934 * currentItem.distance.toDouble()
+
+        val distance = "A ${distanceInKm.toInt()} km de distancia"
         holder.distance.text = distance
         when(currentItem.sexo){
             "Macho" -> Picasso.get().load(R.drawable.male).into(holder.genreIcon)

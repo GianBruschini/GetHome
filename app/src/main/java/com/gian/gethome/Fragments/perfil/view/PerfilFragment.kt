@@ -77,26 +77,11 @@ class PerfilFragment: Fragment(R.layout.fragment_mi_perfil),PerfilView,View.OnCl
         when(v!!.id){
             R.id.buttonConfiguracion -> {
                 navigateTo(Intent(requireContext(),ConfigCuentaActivity::class.java))
-                //showAlertDialog()
             }
         }
     }
 
-    private fun showAlertDialog() {
-        dialog = Dialog(requireContext())
-        dialog?.setContentView(R.layout.dialog_deleteacc_layout)
-        dialog?.setCancelable(false)
-        dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        dialog?.show()
-        val yesDelate: ImageView = dialog!!.findViewById(R.id.yesDelate)
-        val noDelate: ImageView = dialog!!.findViewById(R.id.noDelate)
-        yesDelate.setOnClickListener {
-            presenter.deleteAccount()
-        }
-        noDelate.setOnClickListener {
-            dialog?.dismiss()
-        }
-    }
+
 
     override fun onDestroy() {
         presenter.onDestroy()

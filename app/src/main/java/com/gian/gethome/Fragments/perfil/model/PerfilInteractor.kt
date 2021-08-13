@@ -10,8 +10,6 @@ import com.google.firebase.storage.StorageReference
 
 class PerfilInteractor {
     private lateinit var mFirebaseAuth:FirebaseAuth
-    private lateinit var mStorageReference: StorageReference
-    private lateinit var user: FirebaseUser
 
 
     interface onPerfilInteractorListener{
@@ -38,46 +36,23 @@ class PerfilInteractor {
     }
 
     fun getUserNameFromDB(listener: onPerfilInteractorListener) {
-        listener.onSetUserName(mFirebaseAuth.currentUser?.displayName.toString())
-    }
-
-    fun deleteAccount(listener: onPerfilInteractorListener) {
-        val user = mFirebaseAuth.currentUser
-        user?.delete()
-        deleteAllOcurrences(listener)
-    }
-
-    private fun deleteAllOcurrences(listener: onPerfilInteractorListener) {
-        val deleteOcurrencesFromAnimales = FirebaseDatabase.getInstance().
+        val profileUserName = FirebaseDatabase.getInstance().
         reference.child("Users").
-        child("Animales").
+        child("Person").
         child(mFirebaseAuth.currentUser!!.uid)
-        deleteOcurrencesFromAnimales.removeValue()
+                .child("userName")
+        profileUserName.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                val userName = dataSnapshot.value as String?
+                listener.onSetUserName(userName.toString())
+            }
 
-        val deleteOcurrencesFromPerson = FirebaseDatabase
-                .getInstance().
-                reference.
-                child("Users").child("Person")
-                .child(mFirebaseAuth.currentUser!!.uid)
-        deleteOcurrencesFromPerson.removeValue()
-
-        mStorageReference = FirebaseStorage.getInstance().getReference("UsersProfilePictures" + "/" + mFirebaseAuth.currentUser!!.uid)
-        val storageReferenceUserProfile = FirebaseStorage.getInstance().reference.
-        child("UsersProfilePictures").child(mFirebaseAuth.currentUser!!.uid)
-        storageReferenceUserProfile.delete()
-
-
-        mStorageReference = FirebaseStorage.getInstance().getReference("UploadsAnimals" + "/" + mFirebaseAuth.currentUser!!.uid)
-        val storageReferenceUploadAnimals = FirebaseStorage.getInstance().reference.
-        child("UploadsAnimals").child(mFirebaseAuth.currentUser!!.uid)
-        storageReferenceUploadAnimals.delete()
-
-        user = mFirebaseAuth.currentUser!!
-        user.delete().addOnSuccessListener {
-            mFirebaseAuth.signOut()
-        }
-
-        listener.onAccountDeleted()
+            override fun onCancelled(databaseError: DatabaseError) {}
+        })
 
     }
+
+
+
+
 }

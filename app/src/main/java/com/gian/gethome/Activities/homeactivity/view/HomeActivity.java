@@ -170,11 +170,35 @@ public class HomeActivity extends AppCompatActivity implements DrawerAdapter.OnI
         list.setAdapter(adapter);
 
         TextView txt = slidingRootNav.getLayout().getChildAt(0).findViewById(R.id.nombrePerfilDrawer);
-        txt.setText(mFirebaseAuth.getCurrentUser().getDisplayName());
+        setUserName(txt);
+        //txt.setText(mFirebaseAuth.getCurrentUser().getDisplayName());
         setFotoPerfil();
 
         //adapter.setSelected(POS_HOME);
 
+    }
+
+    private void setUserName(TextView txt) {
+        DatabaseReference profilePicture =
+                FirebaseDatabase.getInstance().
+                        getReference().
+                        child("Users").
+                        child("Person").
+                        child(mFirebaseAuth.getCurrentUser().getUid())
+                        .child("userName");
+        profilePicture.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String userName = (String) dataSnapshot.getValue();
+                txt.setText(userName);
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     private void showProgressDialog() {
@@ -217,7 +241,6 @@ public class HomeActivity extends AppCompatActivity implements DrawerAdapter.OnI
         mLocationRequest.setInterval(UPDATE_INTERVAL_IN_MILLISECONDS);
         mLocationRequest.setFastestInterval(FASTEST_UPDATE_INTERVAL_IN_MILLISECONDS);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-
         LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder();
         builder.addLocationRequest(mLocationRequest);
         mLocationSettingsRequest = builder.build();

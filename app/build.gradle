@@ -118,6 +118,8 @@ dependencies {
     implementation 'com.github.yalantis:ucrop:2.2.6-native'
     //Shimmer effect
     implementation 'com.facebook.shimmer:shimmer:0.1.0@aar'
+    //Crop theartofdev
+    api 'com.theartofdev.edmodo:android-image-cropper:2.8.+'
 
 
 

@@ -1,27 +1,23 @@
 package com.gian.gethome.Activities.elegirfotodeperfil.model
 
-import android.content.Intent
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.webkit.MimeTypeMap
-import androidx.appcompat.app.AppCompatActivity
-import com.facebook.FacebookSdk
 import com.gian.gethome.Activities.elegirfotodeperfil.view.ElegirFotoDePerfilActivity
-import com.gian.gethome.R
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.*
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.StorageTask
-import com.yalantis.ucrop.UCrop
-import java.io.File
-import java.io.IOException
+import com.theartofdev.edmodo.cropper.CropImage
 
 class ElegirFotoDePerfilInteractor {
     private lateinit var mAuth:FirebaseAuth
-    private val PICK_IMAGE: Int = 1
     private var imageUri: Uri? = null
     private var mUploadTask: StorageTask<*>? = null
-    private val SAMPLE_CROPPED_IMG_NAME:String = "Sample"
+    private lateinit var listener:onElegirFotoDePerfilListener
 
 
     interface onElegirFotoDePerfilListener{
@@ -34,9 +30,12 @@ class ElegirFotoDePerfilInteractor {
         fun onShowProgressDialog()
         fun onHideProgressDialog()
         fun startActivityWithImageURL(imageURL: String)
+        fun passImageUri(resultUri: Uri)
+        fun passErrorRetrievingImageUri(error: Exception?)
     }
 
     fun checkIfUserIsSetInDb(listener: onElegirFotoDePerfilListener) {
+        this.listener = listener
         mAuth = FirebaseAuth.getInstance()
         if (mAuth.currentUser != null) {
             val ref = FirebaseDatabase.getInstance().reference.child("Users").
@@ -60,61 +59,12 @@ class ElegirFotoDePerfilInteractor {
     }
 
 
-    fun setActivityResultData(imageUriRef: Uri?, requestCode: Int, resultCode: Int, data: Intent?, listener: onElegirFotoDePerfilListener, context: ElegirFotoDePerfilActivity) {
-        if (requestCode == PICK_IMAGE && resultCode == -1) {
-            if (data != null) {
-                imageUri = data.data
-                listener.onSetImageProfile(imageUri)
-            }
-
-        }/*else{
-            if(requestCode == UCrop.REQUEST_CROP && resultCode == -1){
-                val imageUriResultCrop = UCrop.getOutput(data!!)
-
-
-            }
-        }
-        */
-    }
-
-
-    fun startCrop(uri: Uri, context: ElegirFotoDePerfilActivity){
-        var destinationFile:String =SAMPLE_CROPPED_IMG_NAME
-        destinationFile += ".jpg"
-        var uCrop = UCrop.of(uri, Uri.fromFile(File(FacebookSdk.getCacheDir(), destinationFile)))
-        uCrop.withAspectRatio(1F, 1F)
-        //uCrop.withAspectRatio(3F,4F)
-        //uCrop.useSourceImageAspectRatio()
-        //uCrop.withAspectRatio(2F,3F)
-        //uCrop.withAspectRatio(16F,9F)
-
-        uCrop.withMaxResultSize(450, 450)
-        uCrop.withOptions(getCropOption(context))
-        uCrop.start(context)
-    }
-
-    fun getCropOption(context: ElegirFotoDePerfilActivity): UCrop.Options{
-        val options = UCrop.Options()
-        options.setCompressionQuality(70)
-        //options.setCompressionFormat(Bitmap.CompressFormat.PNG)
-        //options.setCompressionFormat(Bitmap.CompressFormat.PNG)
-
-        options.setHideBottomControls(false)
-        options.setFreeStyleCropEnabled(true)
-
-        options.setStatusBarColor(context.resources.getColor(R.color.purple_200))
-        options.setToolbarColor(context.resources.getColor(R.color.gray))
-        options.setToolbarTitle("Recortar imagen")
-        return options
-
-    }
 
     fun checkAndUpload(profile: Drawable?, mStorageRef: StorageReference?,
-                       listener: onElegirFotoDePerfilListener,
                        context: ElegirFotoDePerfilActivity) {
         if (profile != null) {
             listener.onShowProgressDialog()
-            uploadPicture(mStorageRef,context,listener)
+            uploadPicture(mStorageRef, context)
         } else {
             listener.onFotoPerfilNull()
         }
@@ -126,15 +76,15 @@ class ElegirFotoDePerfilInteractor {
         return mime.getExtensionFromMimeType(cR.getType(uri))
     }
 
-    private fun uploadPicture(mStorageRef: StorageReference?, context: ElegirFotoDePerfilActivity, listener: onElegirFotoDePerfilListener) {
+    private fun uploadPicture(mStorageRef: StorageReference?, context: ElegirFotoDePerfilActivity) {
         if (imageUri != null) {
             val fileReference = mStorageRef!!.child(System.currentTimeMillis()
-                    .toString() + "." + getFileExtension(imageUri!!,context))
+                    .toString() + "." + getFileExtension(imageUri!!, context))
             mUploadTask = fileReference.putFile(imageUri!!)
                     .addOnSuccessListener {
                         fileReference.downloadUrl.addOnSuccessListener { uri ->
                             val model = Model(uri.toString())
-                            storeValuesFirebase(model.imageURL,listener)
+                            storeValuesFirebase(model.imageURL)
                         }
                     }
                     .addOnFailureListener { e ->  }
@@ -144,7 +94,7 @@ class ElegirFotoDePerfilInteractor {
     }
 
 
-    private fun storeValuesFirebase(imageURL: String, listener: onElegirFotoDePerfilListener) {
+    private fun storeValuesFirebase(imageURL: String) {
         val crearUser: HashMap<String, Any> = HashMap()
         crearUser["imageURL"] = imageURL
         crearUser["userName"] = mAuth.currentUser?.displayName.toString()
@@ -156,6 +106,16 @@ class ElegirFotoDePerfilInteractor {
         listener.startActivityWithImageURL(imageURL)
         listener.onHideProgressDialog()
 
+    }
+
+    fun retrieveImageResult(result: CropImage.ActivityResult?, resultCode: Int) {
+        if (resultCode == -1) {
+            val resultUri: Uri = result!!.uri
+            imageUri = resultUri
+            listener.passImageUri(resultUri)
+        } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+            listener.passErrorRetrievingImageUri(result?.error)
+        }
     }
 
 }

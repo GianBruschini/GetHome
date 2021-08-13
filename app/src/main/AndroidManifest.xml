@@ -6,6 +6,8 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -14,7 +16,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.GetHome">
-        <activity android:name=".Activities.configcuenta.view.ConfigCuentaActivity"></activity>
+        <activity android:name=".Activities.configcuenta.view.ConfigCuentaActivity" />
         <activity android:name=".Activities.editanimal.view.EditAnimalActivity" />
         <activity android:name=".Activities.mispublicaciones.view.MisPublicacionesActivity" />
         <activity android:name=".Activities.contactinfo.view.ContactInfoActivity" />
@@ -63,6 +65,9 @@
             android:name="com.yalantis.ucrop.UCropActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
+            android:theme="@style/Base.Theme.AppCompat" />
     </application>
 
 </manifest>

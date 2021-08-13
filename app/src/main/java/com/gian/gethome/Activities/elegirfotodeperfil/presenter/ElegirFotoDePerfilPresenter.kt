@@ -7,6 +7,7 @@ import com.gian.gethome.Activities.elegirfotodeperfil.interfaces.ElegirFotoDePer
 import com.gian.gethome.Activities.elegirfotodeperfil.model.ElegirFotoDePerfilInteractor
 import com.gian.gethome.Activities.elegirfotodeperfil.view.ElegirFotoDePerfilActivity
 import com.google.firebase.storage.StorageReference
+import com.theartofdev.edmodo.cropper.CropImage
 
 class ElegirFotoDePerfilPresenter(var elegirFotoDePerfilView: ElegirFotoDePerfilView?,
                                   var elegirFotoDePerfilInteractor: ElegirFotoDePerfilInteractor):ElegirFotoDePerfilInteractor.onElegirFotoDePerfilListener {
@@ -52,15 +53,25 @@ class ElegirFotoDePerfilPresenter(var elegirFotoDePerfilView: ElegirFotoDePerfil
         elegirFotoDePerfilView?.startActivityWithImageURL(imageURL)
     }
 
-    fun setActivityResultData(imageUri: Uri?, requestCode: Int, resultCode: Int, data: Intent?, context: ElegirFotoDePerfilActivity) {
-        elegirFotoDePerfilInteractor.setActivityResultData(imageUri, requestCode, resultCode, data,this,context)
-    }
+
 
     fun uploadImageProfile(drawable: Drawable?, mStorageRef: StorageReference?, elegirFotoDePerfilActivity: ElegirFotoDePerfilActivity) {
-        elegirFotoDePerfilInteractor.checkAndUpload(drawable,mStorageRef,this,elegirFotoDePerfilActivity)
+        elegirFotoDePerfilInteractor.checkAndUpload(drawable,mStorageRef,elegirFotoDePerfilActivity)
     }
 
     fun onDestroy() {
         elegirFotoDePerfilView = null //muy importante
+    }
+
+    override fun passImageUri(resultUri: Uri) {
+        elegirFotoDePerfilView?.showImageCrop(resultUri)
+    }
+
+    override fun passErrorRetrievingImageUri(error: Exception?) {
+        elegirFotoDePerfilView?.showErrorRetrievingImageUri(error)
+    }
+
+    fun retrieveUri(result: CropImage.ActivityResult?, resultCode: Int) {
+        elegirFotoDePerfilInteractor?.retrieveImageResult(result,resultCode)
     }
 }
