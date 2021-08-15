@@ -1,5 +1,9 @@
 package com.gian.gethome.Adapters
 
+import android.graphics.Bitmap
+import android.media.ExifInterface
+import android.media.ExifInterface.ORIENTATION_NORMAL
+import android.media.ExifInterface.TAG_ORIENTATION
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,7 +13,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.gian.gethome.Clases.AnimalAdapterData
 import com.gian.gethome.R
 import com.squareup.picasso.Picasso
+import java.io.IOException
 import java.util.*
+
 
 class HomeAdapter(private var mData: ArrayList<AnimalAdapterData>): RecyclerView.Adapter<HomeAdapter.HomeViewHolder>() {
 
@@ -42,14 +48,45 @@ class HomeAdapter(private var mData: ArrayList<AnimalAdapterData>): RecyclerView
             "Hembra" -> Picasso.get().load(R.drawable.female).into(holder.genreIcon)
         }
         when(currentItem.transitoUrgente){
-            "true"-> holder.esTransitoUrgente.visibility = View.VISIBLE
-            "false"->holder.esTransitoUrgente.visibility = View.INVISIBLE
+            "true" -> holder.esTransitoUrgente.visibility = View.VISIBLE
+            "false" -> holder.esTransitoUrgente.visibility = View.INVISIBLE
         }
-        Picasso.get().
+
+        handleImageOrientation(currentItem.imageURL, holder)
+        /*Picasso.get().
         load(currentItem.imageURL).
         placeholder(R.drawable.progress_animation).
         into(holder.fotoAnimal)
+
+         */
+
+
     }
+
+    private fun handleImageOrientation(currentPhotoPath: String, holder: HomeViewHolder) {
+        var rotation = 0f
+        try {
+            val exifInterface: ExifInterface = ExifInterface(currentPhotoPath)
+            val orientation = exifInterface.getAttributeInt(TAG_ORIENTATION, ORIENTATION_NORMAL)
+            when (orientation) {
+                ExifInterface.ORIENTATION_ROTATE_90 -> {
+                    rotation = -90f
+                }
+                ExifInterface.ORIENTATION_ROTATE_180 -> {
+                    rotation = -180f
+                }
+                ExifInterface.ORIENTATION_ROTATE_270 -> {
+                    rotation = 90f
+                }
+            }
+
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+        Picasso.get().load(currentPhotoPath).placeholder(R.drawable.progress_animation)
+                .into(holder.fotoAnimal)
+    }
+
 
     override fun getItemCount(): Int {
         return mData.size

@@ -2,8 +2,12 @@ package com.gian.gethome.Fragments
 
 import android.app.ProgressDialog
 import android.content.Intent
+import android.graphics.Bitmap
 import android.graphics.Color
+import android.media.ExifInterface
+import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
@@ -16,6 +20,7 @@ import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.load.resource.bitmap.TransformationUtils.rotateImage
 import com.gian.gethome.Activities.animaldetalle.view.AnimalDetalleActivity
 import com.gian.gethome.Activities.homeactivity.view.HomeActivity
 import com.gian.gethome.Adapters.HomeAdapter
@@ -26,6 +31,8 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.fragment_home.*
+import java.io.File
+import java.io.IOException
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.properties.Delegates
@@ -109,9 +116,10 @@ class HomeFragment: Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLis
                         val animal: Animal = snap.getValue(Animal::class.java)!!
                         if (animal.provincia == provincia && animal.pais == pais) {
                             imagenNotNull = checkWhatImageIsNotNull(animal)
+
                             adapter = HomeAdapter(mlist)
                             distance = adapter.distance(latitude.toDouble(),
-                                    longitude.toDouble(),animal.latitude.toDouble(),
+                                    longitude.toDouble(), animal.latitude.toDouble(),
                                     animal.longitude.toDouble())
                             mlist.add(AnimalAdapterData(
                                     animal.nombre,
@@ -125,7 +133,7 @@ class HomeFragment: Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLis
                                     animal.animalKey,
                                     animal.sexo,
                                     animal.pais,
-                                    animal.provincia, animal.cantAnimales,distance.toString()))
+                                    animal.provincia, animal.cantAnimales, distance.toString()))
                             val gridLayoutManager = GridLayoutManager(context, 1, GridLayoutManager.VERTICAL, false)
                             myRecycler.layoutManager = gridLayoutManager
                             myRecycler.setHasFixedSize(true)
@@ -140,6 +148,8 @@ class HomeFragment: Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLis
                     texto_resultado.visibility = View.VISIBLE
                 }
             }
+
+
 
             private fun checkWhatImageIsNotNull(animal: Animal): String {
                 if (animal.imagen1 != "null") {
@@ -284,7 +294,7 @@ class HomeFragment: Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLis
                                 if (imagenNotNull != "") {
                                     adapter = HomeAdapter(mlist)
                                     distance = adapter.distance(latitude.toDouble(),
-                                            longitude.toDouble(),animal.latitude.toDouble(),
+                                            longitude.toDouble(), animal.latitude.toDouble(),
                                             animal.longitude.toDouble())
                                     mlist.add(AnimalAdapterData(animal.nombre, animal.tipoAnimal,
                                             imagenNotNull,

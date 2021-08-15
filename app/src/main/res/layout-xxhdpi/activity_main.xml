@@ -22,9 +22,9 @@
         android:text="Encuentra a tu \nmejor compañero"
         android:lineSpacingExtra="-4dp"
         android:textColor="@color/white"
-        android:layout_marginTop="342dp"
+        android:layout_marginTop="410dp"
         android:layout_marginLeft="40dp"
-        android:fontFamily="@font/dmsansbold"
+        android:fontFamily="@font/montserrat_semibold"
         android:textSize="30sp"
         />
 
@@ -37,29 +37,27 @@
         android:textColor="@color/white"
         android:layout_marginTop="10dp"
         android:layout_marginLeft="40dp"
-        android:fontFamily="@font/dmsansregular"
-        android:textSize="18sp"
+        android:fontFamily="@font/montserrat_medium"
+        android:textSize="15sp"
         >
 
     </TextView>
-
-
-
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/sign_in_button"
         android:background="@drawable/registrarsegmailbutton"
         android:drawableLeft="@drawable/ic_gmail_icon"
-        android:layout_marginTop="95dp"
-        android:layout_width="215dp"
+        android:layout_marginTop="80dp"
+        android:layout_width="300dp"
         android:layout_height="37.4dp"
-        android:paddingLeft="22dp"
-        android:paddingRight="35dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="45dp"
         android:paddingTop="11dp"
-        android:paddingBottom="10dp"
+        android:paddingBottom="9dp"
         android:layout_below="@id/texto2"
         android:layout_centerHorizontal="true"
         android:text="Inicia sesión con gmail"
+        android:fontFamily="@font/montserrat_semibold"
         android:textAllCaps="false"
         android:textColor="#020202"
         android:textSize="12sp"
@@ -77,18 +75,19 @@
         android:drawableStart="@drawable/ic_facebook"
         android:textAllCaps="false"
         android:text="Inicia sesión con Facebook"
+        android:fontFamily="@font/montserrat_semibold"
         android:textSize="12sp"
         android:textColor="#ffff"
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
-        android:layout_width="215dp"
+        android:layout_width="300dp"
         android:layout_height="37.4dp"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="10dp"
         android:layout_marginBottom="30dp" />
-    
+
     <LinearLayout
         android:id="@+id/dotsLayout"
         android:layout_width="match_parent"

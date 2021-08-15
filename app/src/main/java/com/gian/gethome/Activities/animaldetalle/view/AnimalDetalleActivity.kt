@@ -119,7 +119,7 @@ class AnimalDetalleActivity : AppCompatActivity(),AnimalDetalleView {
     }
 
     override fun setNombreYfoto(userInfo: UserInfo) {
-        Picasso.get().load(userInfo.imageURL).placeholder(R.drawable.progress_animation).fit().into(profileImage)
+        Picasso.get().load(userInfo.imageURL).placeholder(R.drawable.progress_animation).into(profileImage)
         nameOwner.text = userInfo.userName
     }
 

@@ -59,7 +59,6 @@ class ElegirFotoDePerfilInteractor {
     }
 
 
-
     fun checkAndUpload(profile: Drawable?, mStorageRef: StorageReference?,
                        context: ElegirFotoDePerfilActivity) {
         if (profile != null) {

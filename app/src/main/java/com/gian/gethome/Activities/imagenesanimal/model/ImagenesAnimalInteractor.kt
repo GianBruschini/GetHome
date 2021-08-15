@@ -16,6 +16,8 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.StorageTask
+import com.theartofdev.edmodo.cropper.CropImage
+import com.theartofdev.edmodo.cropper.CropImageView
 import com.yalantis.ucrop.UCrop
 import java.io.File
 import java.text.SimpleDateFormat
@@ -63,64 +65,38 @@ class ImagenesAnimalInteractor {
 
     }
 
-    fun setImageViewResult(resultCode: Int, data: Intent, requestCode: Int, listener: onImagenesAnimalListener, context: ImagenesAnimalActivity) {
-
+    fun setImageViewResult(resultCode: Int, data: Intent, requestCode: Int,
+                           listener: onImagenesAnimalListener, context: ImagenesAnimalActivity) {
 
         if(requestCode in 0..4){
             numberImg= requestCode
         }
 
-        if(resultCode == -1 && requestCode>= 0 && requestCode <=4){
-            when(requestCode){
-                1 -> setImageViewWith(0, data, listener, context)
-                2 -> setImageViewWith(1, data, listener, context)
-                3 -> setImageViewWith(2, data, listener, context)
-                4 -> setImageViewWith(3, data, listener, context)
-            }
-        }else{
-            if(requestCode == UCrop.REQUEST_CROP && resultCode == -1){
-                var imageUriResultCrop = UCrop.getOutput(data)
-                if(imageUriResultCrop!=null){
-                    when(numberImg){
-                        1 -> imageList[0].setImageURI(imageUriResultCrop)
-                        2 -> imageList[1].setImageURI(imageUriResultCrop)
-                        3 -> imageList[2].setImageURI(imageUriResultCrop)
-                        4 -> imageList[3].setImageURI(imageUriResultCrop)
-                    }
+        when (requestCode) {
+            1 -> setImageViewWith(0, data, listener, context)
+            2 -> setImageViewWith(1, data, listener, context)
+            3 -> setImageViewWith(2, data, listener, context)
+            4 -> setImageViewWith(3, data, listener, context)
+
+            CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE -> {
+                val result = CropImage.getActivityResult(data)
+                when(numberImg){
+                    1 -> imageList[0].setImageURI(result.uri)
+                    2 -> imageList[1].setImageURI(result.uri)
+                    3 -> imageList[2].setImageURI(result.uri)
+                    4 -> imageList[3].setImageURI(result.uri)
+                }
+                if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+
                 }
             }
         }
     }
 
     fun startCrop(uri: Uri, context: ImagenesAnimalActivity){
-        var destinationFile:String =SAMPLE_CROPPED_IMG_NAME
-        destinationFile += ".jpg"
-        var uCrop = UCrop.of(uri, Uri.fromFile(File(getCacheDir(), destinationFile)))
-        uCrop.withAspectRatio(1F, 1F)
-        //uCrop.withAspectRatio(3F,4F)
-        //uCrop.useSourceImageAspectRatio()
-        //uCrop.withAspectRatio(2F,3F)
-        //uCrop.withAspectRatio(16F,9F)
-
-        uCrop.withMaxResultSize(450, 450)
-        uCrop.withOptions(getCropOption(context))
-        uCrop.start(context)
-    }
-
-    fun getCropOption(context: ImagenesAnimalActivity):UCrop.Options{
-        var options = UCrop.Options()
-        options.setCompressionQuality(70)
-        //options.setCompressionFormat(Bitmap.CompressFormat.PNG)
-        //options.setCompressionFormat(Bitmap.CompressFormat.PNG)
-
-        options.setHideBottomControls(false)
-        options.setFreeStyleCropEnabled(true)
-
-        options.setStatusBarColor(context.resources.getColor(R.color.purple_200))
-        options.setToolbarColor(context.resources.getColor(R.color.gray))
-        options.setToolbarTitle("Recortar imagen")
-        return options
-
+        CropImage.activity(uri)
+                .setGuidelines(CropImageView.Guidelines.ON)
+                .start(context)
     }
 
     private fun setImageViewWith(numberImageView: Int, data: Intent, listener: onImagenesAnimalListener, context: ImagenesAnimalActivity) {
@@ -129,8 +105,6 @@ class ImagenesAnimalInteractor {
             startCrop(imageUri!!, context)
             arrayUrisNulls[numberImageView]=imageUri
         }
-
-
         //arrayUris.add(imageUri!!)
         //listener.setImageSelected(imageUri, imageList[numberImageView])
     }

@@ -5,6 +5,7 @@ import android.app.ProgressDialog
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import android.view.View
 import android.widget.ImageView
 import android.widget.Toast
@@ -40,6 +41,7 @@ class ImagenesAnimalActivity : AppCompatActivity(),ImagenesAnimalView {
     private var loadingDialog: Dialog? = null
     private lateinit var latitude: String
     private lateinit var longitude:String
+    private val GALLERY_REQUEST_CODE = 1234
 
     private val presenter = ImagenesAnimalPresenter(this, ImagenesAnimalInteractor())
 
@@ -129,20 +131,17 @@ class ImagenesAnimalActivity : AppCompatActivity(),ImagenesAnimalView {
     }
 
     private fun openImageOptions(requestCode: Int) {
-        
         val gallery = Intent()
         gallery.type = "image/*"
         gallery.action = Intent.ACTION_GET_CONTENT
         startActivityForResult(Intent.createChooser(gallery, "Seleccione una imagen"), requestCode)
     }
 
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if(data!=null){
             presenter.setImageViewWith(resultCode,data,requestCode,this)
         }
-
     }
 
     private fun getValues() {
