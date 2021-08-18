@@ -66,7 +66,7 @@ class ImagenesAnimalPresenter(var imagenesAnimalView: ImagenesAnimalView?,
                          longitude: String) {
         imagenesAnimalInteractor.publicarAnimalDB(nombreAnimal
                 ,tipoAnimal,transitoUrgente,edadAnimal,descripcionAnimal,sexoAnimal
-        ,provincia,pais,whatsapp,phone,
+                ,provincia,pais,whatsapp,phone,
                 mail,this,imagenesAnimalActivity,
                 facebook,instagram,cantAnimales,latitude,longitude)
     }

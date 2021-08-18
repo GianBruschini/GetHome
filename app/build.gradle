@@ -120,6 +120,12 @@ dependencies {
     implementation 'com.facebook.shimmer:shimmer:0.1.0@aar'
     //Crop theartofdev
     api 'com.theartofdev.edmodo:android-image-cropper:2.8.+'
+    //Permisssion
+    implementation 'io.github.ParkSangGwon:tedpermission:2.3.0'
+    //coroutines
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.1"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.1"
+    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.3.1'
 
 
 

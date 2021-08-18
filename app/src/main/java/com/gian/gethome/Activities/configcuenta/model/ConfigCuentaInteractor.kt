@@ -38,9 +38,6 @@ class ConfigCuentaInteractor {
             fun onHideProgressDialog()
             fun onShowProgressDialog()
 
-
-
-
     }
 
 

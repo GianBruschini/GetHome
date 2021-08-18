@@ -6,6 +6,7 @@ import android.content.Intent
 import android.net.Uri
 import android.webkit.MimeTypeMap
 import android.widget.ImageView
+import androidx.core.net.toFile
 import com.facebook.FacebookSdk.getCacheDir
 import com.gian.gethome.Activities.elegirfotodeperfil.model.Model
 import com.gian.gethome.Activities.imagenesanimal.view.ImagenesAnimalActivity
@@ -19,6 +20,7 @@ import com.google.firebase.storage.StorageTask
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
 import com.yalantis.ucrop.UCrop
+import kotlinx.coroutines.Dispatchers
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
@@ -81,10 +83,22 @@ class ImagenesAnimalInteractor {
             CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE -> {
                 val result = CropImage.getActivityResult(data)
                 when(numberImg){
-                    1 -> imageList[0].setImageURI(result.uri)
-                    2 -> imageList[1].setImageURI(result.uri)
-                    3 -> imageList[2].setImageURI(result.uri)
-                    4 -> imageList[3].setImageURI(result.uri)
+                    1 ->{
+                        imageList[0].setImageURI(result.uri)
+                        arrayUrisNulls[0]=result.uri
+                    }
+                    2 ->{
+                        imageList[1].setImageURI(result.uri)
+                        arrayUrisNulls[1]=result.uri
+                    }
+                    3 ->{
+                        imageList[2].setImageURI(result.uri)
+                        arrayUrisNulls[2]=result.uri
+                    }
+                    4 -> {
+                        imageList[3].setImageURI(result.uri)
+                        arrayUrisNulls[3]=result.uri
+                    }
                 }
                 if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
 
@@ -99,15 +113,17 @@ class ImagenesAnimalInteractor {
                 .start(context)
     }
 
-    private fun setImageViewWith(numberImageView: Int, data: Intent, listener: onImagenesAnimalListener, context: ImagenesAnimalActivity) {
+    private  fun setImageViewWith(numberImageView: Int, data: Intent, listener: onImagenesAnimalListener, context: ImagenesAnimalActivity) {
         imageUri = data.data
         if(imageUri!=null){
             startCrop(imageUri!!, context)
-            arrayUrisNulls[numberImageView]=imageUri
+
         }
         //arrayUris.add(imageUri!!)
         //listener.setImageSelected(imageUri, imageList[numberImageView])
     }
+
+
 
     fun setImageInNull(posImage: Int) {
         imageList[posImage].setImageDrawable(null)
