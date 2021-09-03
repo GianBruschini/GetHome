@@ -38,7 +38,6 @@ class ElegirFotoDePerfilActivity : AppCompatActivity(),ElegirFotoDePerfilView {
         super.onCreate(savedInstanceState)
         binding = ActivityElegirFotoDePerfilBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         presenter.checkIfUserIsSetInDB()
         initializeValues()
         openOptionsImage()

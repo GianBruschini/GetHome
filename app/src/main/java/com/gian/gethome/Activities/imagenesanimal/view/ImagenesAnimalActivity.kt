@@ -90,9 +90,7 @@ class ImagenesAnimalActivity : AppCompatActivity(),ImagenesAnimalView {
                 Toast.LENGTH_SHORT).show()
     }
 
-    override fun navigateToHome() {
-        val intent = Intent(this, HomeActivity::class.java)
-        startActivity(intent)
+    override fun navigateTo() {
         finish()
     }
 

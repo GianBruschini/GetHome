@@ -28,7 +28,7 @@ class ImagenesAnimalPresenter(var imagenesAnimalView: ImagenesAnimalView?,
     }
 
     override fun navigateToHome() {
-        imagenesAnimalView?.navigateToHome()
+        imagenesAnimalView?.navigateTo()
     }
 
     fun setLocalDate() {

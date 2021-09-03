@@ -3,6 +3,8 @@
     <string name="ErrorSpinnerTipoAnimalMensaje">Debe seleccionar un tipo de animal</string>
     <string name="ErrorSpinnerSexoAnimalMensaje">Debe seleccionar el sexo</string>
     <string name="ErrorSpinnerEdadAnimalMensaje">Debe seleccionar una edad</string>
+    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">
+        AIzaSyCVnbzzwTK9jbf5bQe_MO9FzbkiNGkYP1g </string>
 
     <string name="Continuar">Habilitar</string>
     <string name="Salir">Salir</string>

@@ -2,12 +2,8 @@ package com.gian.gethome.Fragments
 
 import android.app.ProgressDialog
 import android.content.Intent
-import android.graphics.Bitmap
 import android.graphics.Color
-import android.media.ExifInterface
-import android.net.Uri
 import android.os.Bundle
-import android.provider.MediaStore
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
@@ -20,19 +16,18 @@ import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.load.resource.bitmap.TransformationUtils.rotateImage
 import com.gian.gethome.Activities.animaldetalle.view.AnimalDetalleActivity
 import com.gian.gethome.Activities.homeactivity.view.HomeActivity
+import com.gian.gethome.Activities.openmap.view.OpenMapActivity
 import com.gian.gethome.Adapters.HomeAdapter
 import com.gian.gethome.Clases.Animal
 import com.gian.gethome.Clases.AnimalAdapterData
 import com.gian.gethome.R
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.fragment_home.*
-import java.io.File
-import java.io.IOException
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.properties.Delegates
@@ -67,9 +62,7 @@ class HomeFragment: Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLis
     private lateinit var longitude:String
     private var distance by Delegates.notNull<Double>()
     private var size by Delegates.notNull<Int>()
-
     private var listEmpty:MutableList<AnimalAdapterData> = mutableListOf()
-
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -150,7 +143,6 @@ class HomeFragment: Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLis
             }
 
 
-
             private fun checkWhatImageIsNotNull(animal: Animal): String {
                 if (animal.imagen1 != "null") {
                     return animal.imagen1
@@ -176,6 +168,13 @@ class HomeFragment: Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLis
     }
 
     private fun settingValues(view: View) {
+        val openMap:FloatingActionButton = view.findViewById(R.id.openMap)
+        openMap.setOnClickListener {
+            val intent = Intent(context, OpenMapActivity::class.java)
+            intent.putExtra("currentLatitude", latitude)
+            intent.putExtra("currentLongitude", longitude)
+            startActivity(intent)
+        }
         myRecycler = view.findViewById(R.id.myRecycler)
         texto_resultado = view.findViewById(R.id.texto_resultados)
         buscador = view.findViewById(R.id.buscador)
@@ -547,9 +546,8 @@ class HomeFragment: Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLis
         }
     }
 
-    fun putBundle(bundle: Bundle) {
-        //latitude=bundle.getString("latitude").toString()
-        //longitude=bundle.getString("longitude").toString()
 
-    }
+
+
+
 }

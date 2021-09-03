@@ -6,11 +6,11 @@ import android.content.Intent
 import android.net.Uri
 import android.webkit.MimeTypeMap
 import android.widget.ImageView
-import androidx.core.net.toFile
-import com.facebook.FacebookSdk.getCacheDir
+import com.amazonaws.auth.BasicAWSCredentials
+import com.amazonaws.services.rekognition.AmazonRekognition
+import com.amazonaws.services.rekognition.AmazonRekognitionClient
 import com.gian.gethome.Activities.elegirfotodeperfil.model.Model
 import com.gian.gethome.Activities.imagenesanimal.view.ImagenesAnimalActivity
-import com.gian.gethome.R
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.FirebaseDatabase
@@ -19,9 +19,6 @@ import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.StorageTask
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
-import com.yalantis.ucrop.UCrop
-import kotlinx.coroutines.Dispatchers
-import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.properties.Delegates
@@ -40,7 +37,6 @@ class ImagenesAnimalInteractor {
     private var cont: Int = 0
     private var esIgual: Boolean = false
     private var numberImg by Delegates.notNull<Int>()
-
     private val SAMPLE_CROPPED_IMG_NAME:String = "Sample"
 
 
@@ -82,22 +78,22 @@ class ImagenesAnimalInteractor {
 
             CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE -> {
                 val result = CropImage.getActivityResult(data)
-                when(numberImg){
-                    1 ->{
+                when (numberImg) {
+                    1 -> {
                         imageList[0].setImageURI(result.uri)
-                        arrayUrisNulls[0]=result.uri
+                        arrayUrisNulls[0] = result.uri
                     }
-                    2 ->{
+                    2 -> {
                         imageList[1].setImageURI(result.uri)
-                        arrayUrisNulls[1]=result.uri
+                        arrayUrisNulls[1] = result.uri
                     }
-                    3 ->{
+                    3 -> {
                         imageList[2].setImageURI(result.uri)
-                        arrayUrisNulls[2]=result.uri
+                        arrayUrisNulls[2] = result.uri
                     }
                     4 -> {
                         imageList[3].setImageURI(result.uri)
-                        arrayUrisNulls[3]=result.uri
+                        arrayUrisNulls[3] = result.uri
                     }
                 }
                 if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
@@ -158,7 +154,7 @@ class ImagenesAnimalInteractor {
             storeValuesOnDatabase(nombreAnimal, tipoAnimal, transitoUrgente,
                     edadAnimal, descripcionAnimal, sexoAnimal,
                     provincia, pais, whatsapp, phone,
-                    mail, listener, context,facebook,instagram,cantAnimales,latitude,longitude)
+                    mail, listener, context, facebook, instagram, cantAnimales, latitude, longitude)
         }else{
             listener.onAddAtLeastOneImage()
         }
@@ -315,5 +311,12 @@ class ImagenesAnimalInteractor {
         val setImage4 = FirebaseDatabase.getInstance()
                 .reference.child("Users").child("Animales").child(currentUser.uid).child(key).child("imagen4")
         setImage4.setValue("null")
+    }
+
+
+    private fun instantiateRekognition(){
+        val rekognitionClient: AmazonRekognition =
+                AmazonRekognitionClient(BasicAWSCredentials("", ""))
+
     }
 }

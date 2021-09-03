@@ -10,16 +10,19 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import com.gian.gethome.Activities.editanimal.Interfaces.EditAnimalView
 import com.gian.gethome.Activities.editanimal.model.EditAnimalInteractor
 import com.gian.gethome.Activities.editanimal.presenter.EditAnimalPresenter
 import com.gian.gethome.Activities.homeactivity.view.HomeActivity
 import com.gian.gethome.Clases.Animal
 import com.gian.gethome.Clases.CommonUtils
+import com.gian.gethome.Fragments.HomeFragment
 import com.gian.gethome.Fragments.mispublicaciones.view.MisPublicacionesFragment
 import com.gian.gethome.R
 import com.gian.gethome.databinding.ActivityEditAnimalBinding
 import java.util.*
+
 
 class EditAnimalActivity : AppCompatActivity(),EditAnimalView {
     private lateinit var binding:ActivityEditAnimalBinding
@@ -28,6 +31,7 @@ class EditAnimalActivity : AppCompatActivity(),EditAnimalView {
     private var loadingDialog: Dialog? = null
     private var dialog: Dialog? = null
     private val presenter = EditAnimalPresenter(this, EditAnimalInteractor())
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityEditAnimalBinding.inflate(layoutInflater)
@@ -36,12 +40,11 @@ class EditAnimalActivity : AppCompatActivity(),EditAnimalView {
         animalKey = intent.getStringExtra("animalKey").toString()
         animalUrlImage = intent.getStringExtra("animalUrlImage").toString()
         presenter.retrieveDataFromDB(animalKey)
-
     }
 
     private fun setLogicButtons() {
-        binding.botonEditar.setOnClickListener {
 
+        binding.botonEditar.setOnClickListener {
             presenter.editAnimalFromDB(binding.spinnerTipoAnimal.selectedItem.toString(),
                     binding.nombreAnimal.text.toString(), binding.cantAnimales.text.toString(),
                     binding.spinnerSexoAnimal.selectedItem.toString(),
@@ -50,6 +53,7 @@ class EditAnimalActivity : AppCompatActivity(),EditAnimalView {
                     binding.phoneNumber.text.toString(), binding.mail.text.toString(),
                     binding.instagram.text.toString(), animalKey)
         }
+
         binding.botonEliminar.setOnClickListener {
             dialog = Dialog(this)
             dialog?.setContentView(R.layout.dialog_deletepub_layout)
@@ -59,12 +63,15 @@ class EditAnimalActivity : AppCompatActivity(),EditAnimalView {
             val yesDelate: ImageView = dialog!!.findViewById(R.id.yesDelate)
             val noDelate: ImageView = dialog!!.findViewById(R.id.noDelate)
             yesDelate.setOnClickListener {
-                presenter.deleteAnimalFromDB(animalKey,animalUrlImage)
-                startActivity(Intent(this,HomeActivity::class.java))
+                presenter.deleteAnimalFromDB(animalKey, animalUrlImage)
+                finish()
             }
             noDelate.setOnClickListener {
                 dialog?.dismiss()
             }
+        }
+        binding.backButton.setOnClickListener {
+            finish()
         }
     }
 
@@ -111,10 +118,15 @@ class EditAnimalActivity : AppCompatActivity(),EditAnimalView {
         Timer().schedule(object : TimerTask() {
             override fun run() {
                 hideProgressDialog()
-                setFragment(MisPublicacionesFragment())
+                finish()
             }
         }, 1700)
 
+    }
+
+    private fun navigateTo(intent: Intent) {
+        startActivity(intent)
+        finish()
     }
 
     fun hideProgressDialog() {

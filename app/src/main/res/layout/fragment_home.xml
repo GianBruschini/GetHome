@@ -245,7 +245,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Tortugas"
+                            android:text="Tortuga"
                             android:layout_marginTop="9dp"
                             android:textSize="11sp"
                             android:layout_marginStart="8dp"
@@ -323,7 +323,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Mouse"
+                            android:text="Roedor"
                             android:layout_marginTop="9dp"
                             android:textSize="11sp"
                             android:layout_marginLeft="6dp"
@@ -416,5 +416,15 @@
             android:visibility="gone"/>
 
     </androidx.cardview.widget.CardView>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/openMap"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:src="@drawable/ic_map"
+        android:layout_margin="30dp">
+    </com.google.android.material.floatingactionbutton.FloatingActionButton>
 
 </RelativeLayout>

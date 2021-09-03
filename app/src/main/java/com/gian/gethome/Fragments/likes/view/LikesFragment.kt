@@ -153,7 +153,6 @@ class LikesFragment: Fragment(), HomeAdapter.OnItemClickListener {
         intent.putExtra("sexoAnimal", animalClicked.sexo)
         intent.putExtra("Provincia", animalClicked.provincia)
         intent.putExtra("Pais", animalClicked.pais)
-
         startActivity(intent)
     }
 

@@ -14,8 +14,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.SharedPreferences;
@@ -29,15 +31,23 @@ import android.os.Bundle;
 import android.os.Looper;
 import android.provider.Settings;
 import android.util.Log;
+import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.amazonaws.auth.BasicAWSCredentials;
+import com.amazonaws.services.rekognition.AmazonRekognition;
+import com.amazonaws.services.rekognition.AmazonRekognitionClient;
+import com.gian.gethome.Activities.openmap.view.OpenMapActivity;
 import com.gian.gethome.Adapters.DrawerAdapter;
 import com.gian.gethome.Adapters.DrawerItem;
 import com.gian.gethome.Adapters.SimpleItem;
 import com.gian.gethome.Adapters.SpaceItem;
 import com.gian.gethome.BuildConfig;
 import com.gian.gethome.Clases.CommonUtilsJava;
+import com.gian.gethome.Clases.Constants;
+import com.gian.gethome.Clases.LocationService;
 import com.gian.gethome.Fragments.HomeFragment;
 import com.gian.gethome.Fragments.likes.view.LikesFragment;
 import com.gian.gethome.Fragments.mispublicaciones.view.MisPublicacionesFragment;
@@ -58,6 +68,7 @@ import com.google.android.gms.location.LocationSettingsStatusCodes;
 import com.google.android.gms.location.SettingsClient;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -81,7 +92,6 @@ import java.util.List;
 import java.util.Locale;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-
 
 
 public class HomeActivity extends AppCompatActivity implements DrawerAdapter.OnItemSelectedListener {
@@ -108,12 +118,21 @@ public class HomeActivity extends AppCompatActivity implements DrawerAdapter.OnI
     private Location mCurrentLocation;
     private Boolean mRequestingLocationUpdates;
     private String mLastUpdateTime;
+    static HomeActivity instance;
+    LocationRequest locationRequest;
+
+    public static HomeActivity getInstance() {
+        return instance;
+    }
+
+    FusedLocationProviderClient fusedLocationProviderClient;
+
 
     private static final long UPDATE_INTERVAL_IN_MILLISECONDS = 10000;
     private static final long FASTEST_UPDATE_INTERVAL_IN_MILLISECONDS = 5000;
     private static final int REQUEST_CHECK_SETTINGS = 100;
     private DrawerAdapter adapter;
-    private int seEjecuto=0;
+    private int seEjecuto = 0;
     private FirebaseAuth mFirebaseAuth;
     private Dialog loadingDialog;
     private String latitude;
@@ -121,64 +140,141 @@ public class HomeActivity extends AppCompatActivity implements DrawerAdapter.OnI
     private TextView latitudeTxt;
     private TextView longitudeTxt;
 
+    private static final int REQUEST_CODE_LOCATION_PERMISSION = 1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        loadingDialog = new Dialog(this);
-        showProgressDialog();
-        SharedPreferences.Editor editor = getSharedPreferences("prefCheckUser", MODE_PRIVATE).edit();
-        editor.putInt("code", 1);
-        editor.apply();
-        fotoPerfil = findViewById(R.id.fotoPerfil);
-        provincia = findViewById(R.id.provincia);
-        pais = findViewById(R.id.pais);
-        latitudeTxt = findViewById(R.id.latitudeTxt);
-        longitudeTxt = findViewById(R.id.longitudeTxt);
-        mFirebaseAuth = FirebaseAuth.getInstance();
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
-        init();
-        startLocation();
+        instance = this;
+        Dexter.withActivity(this)
+                .withPermission(Manifest.permission.ACCESS_FINE_LOCATION)
+                .withListener(new PermissionListener() {
+                    @Override
+                    public void onPermissionGranted(PermissionGrantedResponse response) {
+                        loadingDialog = new Dialog(HomeActivity.this);
+                        showProgressDialog();
+                        startLocationService();
+                        SharedPreferences.Editor editor = getSharedPreferences("prefCheckUser", MODE_PRIVATE).edit();
+                        editor.putInt("code", 1);
+                        editor.apply();
+                        fotoPerfil = findViewById(R.id.fotoPerfil);
+                        provincia = findViewById(R.id.provincia);
+                        pais = findViewById(R.id.pais);
+                        latitudeTxt = findViewById(R.id.latitudeTxt);
+                        longitudeTxt = findViewById(R.id.longitudeTxt);
+                        mFirebaseAuth = FirebaseAuth.getInstance();
+                        Toolbar toolbar = findViewById(R.id.toolbar);
+                        setSupportActionBar(toolbar);
+                        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-        slidingRootNav = new SlidingRootNavBuilder(this)
-                .withToolbarMenuToggle(toolbar)
-                .withDragDistance(180)
-                .withRootViewScale(0.75f)
-                .withRootViewElevation(25)
-                .withMenuOpened(false)
-                .withContentClickableWhenMenuOpened(false)
-                .withSavedState(savedInstanceState)
-                .withMenuLayout(R.layout.drawer_menu)
-                .inject();
-        screenIcons = loadScreenIcons();
-        screenTitles = loadScreenTitles();
-        adapter = new DrawerAdapter(Arrays.asList(
-                createItemFor(POS_HOME).setChecked(true),
-                createItemFor(POS_LIKES),
-                createItemFor(POS_PERFIL),
-                createItemFor(POS_AGREGAR),
-                createItemFor(POS_MISPUBS),
-                new SpaceItem(90),
-                createItemFor(POS_LOGOUT)));
-        adapter.setListener(this);
+                        //init();
+                        //startLocation();
+                        slidingRootNav = new SlidingRootNavBuilder(HomeActivity.this)
+                                .withToolbarMenuToggle(toolbar)
+                                .withDragDistance(180)
+                                .withRootViewScale(0.75f)
+                                .withRootViewElevation(25)
+                                .withMenuOpened(false)
+                                .withContentClickableWhenMenuOpened(false)
+                                .withSavedState(savedInstanceState)
+                                .withMenuLayout(R.layout.drawer_menu)
+                                .inject();
+                        screenIcons = loadScreenIcons();
+                        screenTitles = loadScreenTitles();
+                        adapter = new DrawerAdapter(Arrays.asList(
+                                createItemFor(POS_HOME).setChecked(true),
+                                createItemFor(POS_LIKES),
+                                createItemFor(POS_PERFIL),
+                                createItemFor(POS_AGREGAR),
+                                createItemFor(POS_MISPUBS),
+                                new SpaceItem(90),
+                                createItemFor(POS_LOGOUT)));
+                        adapter.setListener(HomeActivity.this);
 
-        RecyclerView list = findViewById(R.id.drawer_list);
-        list.setNestedScrollingEnabled(false);
-        list.setLayoutManager(new LinearLayoutManager(this));
-        list.setAdapter(adapter);
+                        RecyclerView list = findViewById(R.id.drawer_list);
+                        list.setNestedScrollingEnabled(false);
+                        list.setLayoutManager(new LinearLayoutManager(HomeActivity.this));
+                        list.setAdapter(adapter);
 
-        TextView txt = slidingRootNav.getLayout().getChildAt(0).findViewById(R.id.nombrePerfilDrawer);
-        setUserName(txt);
-        //txt.setText(mFirebaseAuth.getCurrentUser().getDisplayName());
-        setFotoPerfil();
+                        TextView txt = slidingRootNav.getLayout().getChildAt(0).findViewById(R.id.nombrePerfilDrawer);
+                        setUserName(txt);
+                        //txt.setText(mFirebaseAuth.getCurrentUser().getDisplayName());
+                        setFotoPerfil();
 
-        //adapter.setSelected(POS_HOME);
+                        //adapter.setSelected(POS_HOME);
+                    }
 
+                    @Override
+                    public void onPermissionDenied(PermissionDeniedResponse response) {
+                        if (response.isPermanentlyDenied()) {
+                            openSettings();
+                            // open device settings when the permission is
+                            // denied permanently
+                            //openSettings();
+                        }
+                    }
+
+                    @Override
+                    public void onPermissionRationaleShouldBeShown(PermissionRequest permission, PermissionToken token) {
+                        token.continuePermissionRequest();
+                    }
+
+                }).check();
     }
 
+
+    public void setCountryAndProv(String countryName, String locality) {
+        String chainProv = locality+",";
+        provincia.setText(chainProv);
+        pais.setText(countryName);
+        hideProgressDialog();
+    }
+
+
+    public void setLatitudeAndLongitude(double latitude, double longitude) {
+        latitudeTxt.setText(String.valueOf(latitude));
+        longitudeTxt.setText(String.valueOf(longitude));
+        setFragment(new HomeFragment());
+        hideProgressDialog();
+    }
+
+
+    private boolean isLocationServiceRunning(){
+         ActivityManager activityManager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        if(activityManager != null){
+            for (ActivityManager.RunningServiceInfo service: activityManager.getRunningServices(Integer.MAX_VALUE)){
+                if(LocationService.class.getName().equals(service.service.getClassName())){
+                    if(service.foreground){
+                        return  true;
+                    }
+                }
+            }
+            return false;
+        }
+        return false;
+    }
+
+    private void startLocationService(){
+        if(!isLocationServiceRunning()){
+            Intent intent = new Intent(getApplicationContext(), LocationService.class);
+            intent.setAction("startLocationService");
+            startService(intent);
+
+        }
+    }
+
+    private void stopLocationService(){
+        if(isLocationServiceRunning()){
+            Intent intent = new Intent(getApplicationContext(),LocationService.class);
+            intent.setAction("stopLocationService");
+            startService(intent);
+        }
+    }
+
+
     private void setUserName(TextView txt) {
+
         DatabaseReference profilePicture =
                 FirebaseDatabase.getInstance().
                         getReference().
@@ -222,148 +318,8 @@ public class HomeActivity extends AppCompatActivity implements DrawerAdapter.OnI
         }
     }
 
-    private void init() {
-        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-        mSettingsClient = LocationServices.getSettingsClient(this);
-        mLocationCallback = new LocationCallback() {
-            @Override
-            public void onLocationResult(LocationResult locationResult) {
-                super.onLocationResult(locationResult);
-                // location is received
-                mCurrentLocation = locationResult.getLastLocation();
-                mLastUpdateTime = DateFormat.getTimeInstance().format(new Date());
-                updateLocationUI();
-            }
-        };
-        mRequestingLocationUpdates = false;
-
-        mLocationRequest = new LocationRequest();
-        mLocationRequest.setInterval(UPDATE_INTERVAL_IN_MILLISECONDS);
-        mLocationRequest.setFastestInterval(FASTEST_UPDATE_INTERVAL_IN_MILLISECONDS);
-        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-        LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder();
-        builder.addLocationRequest(mLocationRequest);
-        mLocationSettingsRequest = builder.build();
-    }
-
-    private void updateLocationUI() {
-        if (mCurrentLocation != null) {
-            seEjecuto++;
-            Geocoder geocoder;
-            List<Address> addresses;
-            geocoder = new Geocoder(this, Locale.getDefault());
-            try {
-                addresses = geocoder.getFromLocation(mCurrentLocation.getLatitude(),mCurrentLocation.getLongitude(),1);
-                String chainProv = addresses.get(0).getLocality()+",";
-                pais.setText(addresses.get(0).getCountryName());
-                provincia.setText(chainProv);
-                if(seEjecuto==1){
-                    latitudeTxt.setText(String.valueOf(addresses.get(0).getLatitude()));
-                    longitudeTxt.setText(String.valueOf(addresses.get(0).getLongitude()));
-                    setFragment(new HomeFragment());
-                    hideProgressDialog();
-                }
-
-            }catch (Exception e)
-            {
-                Toast.makeText(this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-
-        }
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        switch (requestCode) {
-            case REQUEST_CHECK_SETTINGS:
-                switch (resultCode) {
-                    case Activity.RESULT_OK:
-                        Log.e("TAG", "User agreed to make required location settings changes.");
-                        // Nothing to do. startLocationupdates() gets called in onResume again.
-                        break;
-                    case Activity.RESULT_CANCELED:
-                        Log.e("TAG", "User chose not to make required location settings changes.");
-                        mRequestingLocationUpdates = false;
-                        break;
-                }
-                break;
-        }
-    }
-
-    public void startLocation() {
-        Dexter.withActivity(this)
-                        .withPermission(Manifest.permission.ACCESS_FINE_LOCATION)
-                        .withListener(new PermissionListener() {
-                    @Override
-                    public void onPermissionGranted(PermissionGrantedResponse response) {
-                        mRequestingLocationUpdates = true;
-                        startLocationUpdates();
-                    }
-
-                    @Override
-                    public void onPermissionDenied(PermissionDeniedResponse response) {
-
-                        if (response.isPermanentlyDenied()) {
-                            openSettings();
-                            // open device settings when the permission is
-                            // denied permanently
-                            //openSettings();
-                        }
-                    }
-
-                    @Override
-                    public void onPermissionRationaleShouldBeShown(PermissionRequest permission, PermissionToken token) {
-                        token.continuePermissionRequest();
-                    }
-
-                }).check();
-    }
 
 
-    private void startLocationUpdates() {
-        mSettingsClient
-                .checkLocationSettings(mLocationSettingsRequest)
-                .addOnSuccessListener(this, new OnSuccessListener<LocationSettingsResponse>() {
-                    @SuppressLint("MissingPermission")
-                    @Override
-                    public void onSuccess(LocationSettingsResponse locationSettingsResponse) {
-                        Log.i("TAG", "All location settings are satisfied.");
-                        mFusedLocationClient.requestLocationUpdates(mLocationRequest,
-                                mLocationCallback, Looper.myLooper());
-
-                        updateLocationUI();
-
-                    }
-                })
-                .addOnFailureListener(this, new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        int statusCode = ((ApiException) e).getStatusCode();
-                        switch (statusCode) {
-                            case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
-                                Log.i("TAG", "Location settings are not satisfied. Attempting to upgrade " +
-                                        "location settings ");
-                                try {
-
-                                    ResolvableApiException rae = (ResolvableApiException) e;
-                                    rae.startResolutionForResult(HomeActivity.this, REQUEST_CHECK_SETTINGS);
-                                } catch (IntentSender.SendIntentException sie) {
-                                    Log.i("TAG", "PendingIntent unable to execute request.");
-                                }
-                                break;
-                            case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE:
-                                String errorMessage = "Location settings are inadequate, and cannot be " +
-                                        "fixed here. Fix in Settings.";
-                                Log.e("TAG", errorMessage);
-
-                                Toast.makeText(HomeActivity.this, errorMessage, Toast.LENGTH_LONG).show();
-                        }
-
-                        updateLocationUI();
-                    }
-                });
-    }
 
 
     private void openSettings() {
@@ -452,16 +408,12 @@ public class HomeActivity extends AppCompatActivity implements DrawerAdapter.OnI
 
     }
 
-    private void setFragmentWithBundle(Fragment fragment, Bundle bundle) {
-        fragment.setArguments(bundle);
-        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.frame_layout,fragment);
-        fragmentTransaction.commit();
-    }
+
 
     public void setFragment(Fragment fragment){
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.frame_layout,fragment);
+        fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
 
     }
@@ -485,7 +437,6 @@ public class HomeActivity extends AppCompatActivity implements DrawerAdapter.OnI
                 }
             });
         }
-
     }
 
 

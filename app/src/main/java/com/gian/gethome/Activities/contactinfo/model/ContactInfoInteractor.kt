@@ -33,9 +33,6 @@ class ContactInfoInteractor {
         fun onDeleteMail()
         fun onDeleteInstagram()
         fun onDeleteFacebook()
-
-
-
     }
 
     fun detectuserInfo(idOwner: String, listener: ContactInfoPresenter, context: ContactInfoActivity){

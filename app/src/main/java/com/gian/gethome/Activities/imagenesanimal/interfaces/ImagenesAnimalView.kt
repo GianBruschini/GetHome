@@ -9,7 +9,7 @@ interface ImagenesAnimalView {
     fun setLocalDate(date:String)
     fun setImageSelected(imageUri: Uri?, imageView: ImageView)
     fun addAtLeastOneImage()
-    fun navigateToHome()
+    fun navigateTo()
 
 
 

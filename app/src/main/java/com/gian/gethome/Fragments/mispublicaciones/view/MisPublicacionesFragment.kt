@@ -1,5 +1,6 @@
 package com.gian.gethome.Fragments.mispublicaciones.view
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -25,7 +26,6 @@ class MisPublicacionesFragment: Fragment(), MisPublicacionesView,MisPubsAdapter.
     private var mlist: ArrayList<AnimalAdapterData> = arrayListOf()
     private lateinit var textoEmpty: TextView
     private lateinit var adapter: MisPubsAdapter
-
     private lateinit var animal:AnimalAdapterData
     private val presenter= MisPublicacionesPresenter(this, MisPublicacionesInteractor())
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,6 +35,7 @@ class MisPublicacionesFragment: Fragment(), MisPublicacionesView,MisPubsAdapter.
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_mispubs, container, false)
         getValues(view)
+        recyclerMisPubs.adapter?.notifyDataSetChanged()
         presenter.getMyPubsData()
         return view
 
@@ -57,8 +58,8 @@ class MisPublicacionesFragment: Fragment(), MisPublicacionesView,MisPubsAdapter.
                 animal.animalKey,
                 animal.sexo,
                 animal.pais,
-                animal.provincia, animal.cantAnimales,""))
-        adapter = MisPubsAdapter(mlist)
+                animal.provincia, animal.cantAnimales, ""))
+        adapter = MisPubsAdapter(mlist, this)
         val gridLayoutManager = GridLayoutManager(context, 2, GridLayoutManager.VERTICAL, false)
         recyclerMisPubs.layoutManager = gridLayoutManager
         recyclerMisPubs.setHasFixedSize(true)
@@ -95,6 +96,8 @@ class MisPublicacionesFragment: Fragment(), MisPublicacionesView,MisPubsAdapter.
         intent.putExtra("animalUrlImage", animal.imageURL)
         startActivity(intent)
 
+
+
         /*dialog = Dialog(requireContext())
         dialog?.setContentView(R.layout.dialog_deleteacc_layout)
         dialog?.setCancelable(false)
@@ -112,6 +115,8 @@ class MisPublicacionesFragment: Fragment(), MisPublicacionesView,MisPubsAdapter.
          */
 
     }
+
+
 
 
 

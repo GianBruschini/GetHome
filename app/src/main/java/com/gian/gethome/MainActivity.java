@@ -66,14 +66,10 @@ public class MainActivity extends AppCompatActivity  {
     private FirebaseAuth mAuth;
     private int code;
     private LoginButton loginButton;
-
     private CallbackManager mCallBackManager;
     private FirebaseAuth.AuthStateListener authStateListener;
     private AccessTokenTracker accessTokenTracker;
     private Button facebookButton;
-
-
-
     @SuppressLint("NonConstantResourceId")
     @BindView(R.id.sliderPager)ViewPager sliderPager;
     @SuppressLint("NonConstantResourceId")
