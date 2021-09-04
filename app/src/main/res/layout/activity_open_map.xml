@@ -14,12 +14,4 @@
         android:name="com.google.android.gms.maps.SupportMapFragment">
     </fragment>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerInfoPets"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true">
-
-    </androidx.recyclerview.widget.RecyclerView>
-
 </RelativeLayout>

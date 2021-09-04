@@ -5,9 +5,9 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.os.Bundle
+import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.gian.gethome.Activities.animaldetalle.view.AnimalDetalleActivity
@@ -15,7 +15,6 @@ import com.gian.gethome.Activities.openmap.Model.Coordinates
 import com.gian.gethome.Activities.openmap.`interface`.OpenMapView
 import com.gian.gethome.Activities.openmap.interactor.OpenMapInteractor
 import com.gian.gethome.Activities.openmap.presenter.OpenMapPresenter
-import com.gian.gethome.Adapters.HomeAdapter
 import com.gian.gethome.Adapters.LocationInfoAdapter
 import com.gian.gethome.Clases.AnimalAdapterData
 import com.gian.gethome.R
@@ -24,22 +23,22 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
-import kotlinx.android.synthetic.main.activity_ubicacion.*
-import kotlinx.android.synthetic.main.drawer_menu.*
-import java.util.ArrayList
+import com.google.android.material.bottomsheet.BottomSheetDialog
+import java.util.*
 
 
-class OpenMapActivity : AppCompatActivity(), OnMapReadyCallback,OpenMapView,GoogleMap.OnMarkerClickListener, LocationInfoAdapter.OnItemClickListener {
+class OpenMapActivity : AppCompatActivity(), OnMapReadyCallback,OpenMapView, GoogleMap.OnMarkerClickListener, LocationInfoAdapter.OnItemClickListener {
     private lateinit var map:GoogleMap
     private lateinit var myCurrentLatitude:String
     private lateinit var myCurrentLongitude:String
     private val presenter = OpenMapPresenter(this, OpenMapInteractor())
-    private var listofMarkers:MutableList<Marker> = mutableListOf()
-    private lateinit var currentCoordinates: LatLng
     private lateinit var customMarker:Marker
     private lateinit var adapter: LocationInfoAdapter
     private lateinit var myRecycler: RecyclerView
     private var mlistOfAnimals: ArrayList<AnimalAdapterData> = arrayListOf()
+    private lateinit var dialog: BottomSheetDialog
+    private lateinit var marker:Marker
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,7 +52,12 @@ class OpenMapActivity : AppCompatActivity(), OnMapReadyCallback,OpenMapView,Goog
     private fun getValues() {
         myCurrentLatitude = intent.getStringExtra("currentLatitude").toString() //despues borrar
         myCurrentLongitude = intent.getStringExtra("currentLongitude").toString() //despues borrar
-        myRecycler = findViewById(R.id.recyclerInfoPets)
+        dialog = BottomSheetDialog(this, R.style.BottomShitDialogTheme)
+        val view = layoutInflater.inflate(R.layout.bottom_sheet_maps, null)
+        myRecycler = view.findViewById(R.id.recyclerInfoPets)
+        dialog.setCancelable(true)
+        dialog.setContentView(view)
+        dialog.dismissWithAnimation = true
     }
 
     private fun createFragment() {
@@ -69,25 +73,12 @@ class OpenMapActivity : AppCompatActivity(), OnMapReadyCallback,OpenMapView,Goog
 
     private fun createMarker(listOfCoordinates: MutableList<Coordinates>) {
         for(item in listOfCoordinates.indices){
-            makeMarker(
+            marker = makeMarker(
                     listOfCoordinates[item].latitude,
                     listOfCoordinates[item].longitude,
                     listOfCoordinates[item].idUserOwner,
                     R.drawable.ic_foot)
-            /*currentCoordinates = LatLng(listOfCoordinates[item].latitude.toDouble(),
-                    listOfCoordinates[item].longitude.toDouble())
-            customMarker= MarkerOptions().position(currentCoordinates).
-            icon(bitmapFromVector(this, R.drawable.ic_foot))
-            map.addMarker(customMarker)
-            map.animateCamera(CameraUpdateFactory.newLatLngZoom(currentCoordinates, 14f),
-                    1,
-                    null)
-            map.setOnMarkerClickListener{ myMarker ->
-                println("Hola, he clickeado el marker")
-                true
-            }
-
-             */
+            marker.snippet = listOfCoordinates[item].idUserOwner
         }
     }
 
@@ -99,12 +90,12 @@ class OpenMapActivity : AppCompatActivity(), OnMapReadyCallback,OpenMapView,Goog
                 1,
                 null)
 
-        customMarker = map.addMarker(MarkerOptions ()
-                .position(LatLng( latitude.toDouble(), longitude.toDouble()))
+        customMarker = map.addMarker(MarkerOptions()
+                .position(LatLng(latitude.toDouble(), longitude.toDouble()))
                 .title("Holaaa")
                 .snippet(idUserOwner)
                 .anchor(0.5f, 0.5f)
-                .icon(bitmapFromVector(this,icFoot)))
+                .icon(bitmapFromVector(this, icFoot)))
         return customMarker
     }
 
@@ -123,22 +114,20 @@ class OpenMapActivity : AppCompatActivity(), OnMapReadyCallback,OpenMapView,Goog
     }
 
     override fun onMarkerClick(marker: Marker): Boolean {
-        if (marker == customMarker)
-        {
-            presenter.retrieveDataFromDBOf(marker.snippet,myCurrentLongitude,myCurrentLatitude)
-        }
+        dialog.show()
+        presenter.retrieveDataFromDBOf(marker.snippet, myCurrentLongitude, myCurrentLatitude)
         return true
     }
 
     override fun passListOfAnimals(mlistOfAnimals: ArrayList<AnimalAdapterData>) {
-
         this.mlistOfAnimals = mlistOfAnimals
-        adapter = LocationInfoAdapter(mlistOfAnimals,this)
-        val linearLayoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        adapter = LocationInfoAdapter(mlistOfAnimals, this)
+        val linearLayoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         myRecycler.layoutManager = linearLayoutManager
         myRecycler.setHasFixedSize(true)
         myRecycler.adapter = adapter
         adapter.setOnItemClickListener(this)
+
     }
 
     override fun onitemClick(position: Int) {

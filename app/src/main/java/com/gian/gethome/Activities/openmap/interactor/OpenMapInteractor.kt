@@ -33,7 +33,6 @@ class OpenMapInteractor {
         val database = FirebaseDatabase.getInstance().reference.child("Users").child("Animales")
         database.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-
                 for (dataSnapshot in snapshot.children) {
                     var cantIteraciones: Int = 0
                     for (snap in dataSnapshot.children) {
