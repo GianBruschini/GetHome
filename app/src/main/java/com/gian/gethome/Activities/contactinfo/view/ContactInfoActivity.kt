@@ -11,6 +11,7 @@ import com.gian.gethome.Clases.Animal
 import com.gian.gethome.Clases.UserInfo
 import com.gian.gethome.R
 import com.gian.gethome.databinding.ActivityContactInfoBinding
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_contact_info.*
 
@@ -20,6 +21,7 @@ class ContactInfoActivity : AppCompatActivity(),ContactInfoView {
     private lateinit var animalKey:String
     private lateinit var binding: ActivityContactInfoBinding
     private val presenter = ContactInfoPresenter(this, ContactInfoInteractor())
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityContactInfoBinding.inflate(layoutInflater)
@@ -33,6 +35,7 @@ class ContactInfoActivity : AppCompatActivity(),ContactInfoView {
     private fun getValues() {
         idOwner = intent.getStringExtra("idOwner").toString()
         animalKey = intent.getStringExtra("animalKey").toString()
+
     }
 
     fun back(view: View) {

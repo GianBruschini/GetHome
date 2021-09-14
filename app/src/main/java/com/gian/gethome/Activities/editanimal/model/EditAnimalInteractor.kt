@@ -20,7 +20,7 @@ class EditAnimalInteractor {
         fun onDataBaseError()
         fun passAnimalData(animal: Animal)
         fun onAnimalUpdated()
-
+        fun onNavigateToHome()
     }
     fun retrieveDataFromDB(listener: onEditAnimalInteractor, animalKey: String) {
         this.listener = listener
@@ -77,5 +77,6 @@ class EditAnimalInteractor {
         child(mFirebaseAuth.currentUser!!.uid).child(animalKey).removeValue()
         val photoRef: StorageReference = mFirebaseStorage.getReferenceFromUrl(animalUrlImage)
         photoRef.delete()
+        listener.onNavigateToHome()
     }
 }

@@ -6,6 +6,7 @@ interface EditAnimalView {
     fun showDatabaseError()
     fun showAnimalData(animal: Animal)
     fun showAnimationAnimalUpdated()
+    fun navigateToHome()
 
 
 

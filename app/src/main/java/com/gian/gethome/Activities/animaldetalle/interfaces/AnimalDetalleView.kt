@@ -1,6 +1,7 @@
 package com.gian.gethome.Activities.animaldetalle.interfaces
 
 import android.graphics.drawable.Drawable
+import com.gian.gethome.Clases.Animal
 import com.gian.gethome.Clases.UserInfo
 
 
@@ -12,4 +13,7 @@ interface AnimalDetalleView {
     fun setSexo(sexo:Int)
     fun setTransitoUrgente(transito:String)
     fun onDestroy()
+    fun getContactInfoData(animal: Animal)
+
+
 }

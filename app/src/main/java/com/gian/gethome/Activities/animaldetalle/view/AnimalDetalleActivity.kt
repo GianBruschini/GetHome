@@ -1,29 +1,35 @@
 package com.gian.gethome.Activities.animaldetalle.view
 
+import android.Manifest
+import android.app.Dialog
+import android.content.ActivityNotFoundException
+import android.content.ComponentName
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Bundle
+import android.telephony.PhoneNumberUtils
 import android.text.method.ScrollingMovementMethod
 import android.view.View
-import android.widget.CompoundButton
-import android.widget.Toast
-import android.widget.ToggleButton
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.viewpager.widget.ViewPager
 import com.gian.gethome.Activities.animaldetalle.interfaces.AnimalDetalleView
 import com.gian.gethome.Activities.animaldetalle.model.AnimalDetalleInteractor
 import com.gian.gethome.Activities.animaldetalle.presenter.AnimalDetallePresenter
-import com.gian.gethome.Activities.contactinfo.view.ContactInfoActivity
 import com.gian.gethome.Adapters.SliderPagerAdapterAnimal
 import com.gian.gethome.Clases.Animal
 import com.gian.gethome.Clases.SliderAnimalDetailScreen
 import com.gian.gethome.Clases.UserInfo
 import com.gian.gethome.R
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.tabs.TabLayout
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.*
 import com.squareup.picasso.Picasso
+import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.activity_animal_detalle.*
-import java.util.*
+import kotlinx.android.synthetic.main.bottom_sheet_contact_info.*
 
 
 class AnimalDetalleActivity : AppCompatActivity(),AnimalDetalleView {
@@ -41,6 +47,11 @@ class AnimalDetalleActivity : AppCompatActivity(),AnimalDetalleView {
     private lateinit var provincia:String
     private lateinit var pais:String
     private lateinit var toggleButtonFav:ToggleButton
+    private lateinit var dialogBottomSheet: BottomSheetDialog
+    private lateinit var viewBottomSheet:View
+    private lateinit var image:CircleImageView
+    private lateinit var dialogInfo: Dialog
+    private val REQUEST_CALL = 1
 
     private val presenter = AnimalDetallePresenter(this, AnimalDetalleInteractor())
 
@@ -61,7 +72,7 @@ class AnimalDetalleActivity : AppCompatActivity(),AnimalDetalleView {
     private fun setLogicToToggleButtonFav() {
         toggleButtonFav.setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked) {
-                presenter.saveLikes(animalKey,userIDownerAnimal)
+                presenter.saveLikes(animalKey, userIDownerAnimal)
             } else {
                 presenter.deleteLike(animalKey)
             }
@@ -95,6 +106,16 @@ class AnimalDetalleActivity : AppCompatActivity(),AnimalDetalleView {
         edadAnimalTxt.text = edadAnimal
         descripcionAnimalTxt.text = descripcionAnimal
         distanceTextCard.text = provincia + pais
+        viewBottomSheet = layoutInflater.inflate(R.layout.bottom_sheet_contact_info, null)
+        dialogBottomSheet = BottomSheetDialog(this, R.style.BottomShitDialogTheme)
+        dialogBottomSheet.setCancelable(true)
+        dialogBottomSheet.setContentView(viewBottomSheet)
+        dialogBottomSheet.dismissWithAnimation = true
+        image = dialogBottomSheet.findViewById(R.id.imageProfileBottomSheet)!!
+        val view = layoutInflater.inflate(R.layout.dialog_detail_contact_info, null)
+        dialogInfo = Dialog(this)
+        dialogInfo.setContentView(view)
+        dialogInfo.window?.setBackgroundDrawableResource(android.R.color.transparent);
     }
 
     fun backArrowButton(view: View) {
@@ -102,10 +123,46 @@ class AnimalDetalleActivity : AppCompatActivity(),AnimalDetalleView {
     }
 
     fun goToContactInfo(view: View) {
-            val intent = Intent(this, ContactInfoActivity::class.java)
+            presenter.retrieveContactInfoData(userIDownerAnimal, animalKey)
+
+            /*val intent = Intent(this, ContactInfoActivity::class.java)
             intent.putExtra("idOwner", userIDownerAnimal)
             intent.putExtra("animalKey", animalKey)
             startActivity(intent)
+
+             */
+    }
+
+    private fun setOnClickListenerContactInfo(animal: Animal) {
+        dialogBottomSheet.detailedInfo.setOnClickListener {
+            dialogBottomSheet.dismiss()
+            dialogInfo.show()
+            dialogInfo.findViewById<EditText>(R.id.whatsppNumber).setText(animal.whatsapp)
+            dialogInfo.findViewById<EditText>(R.id.phoneNumber).setText(animal.phone)
+            dialogInfo.findViewById<EditText>(R.id.instagram).setText(animal.instagram)
+            dialogInfo.findViewById<EditText>(R.id.mail).setText(animal.mail)
+            dialogInfo.findViewById<EditText>(R.id.whatsppNumber).setText(animal.whatsapp)
+        }
+
+        dialogBottomSheet.findViewById<ImageView>(R.id.whatsapp)!!.setOnClickListener {
+            makeWhatsappAction(animal)
+        }
+        dialogBottomSheet.findViewById<ImageView>(R.id.mail)!!.setOnClickListener {
+            makeMailAction(animal)
+        }
+        dialogBottomSheet.findViewById<ImageView>(R.id.phone)!!.setOnClickListener {
+            makePhoneAction(animal)
+        }
+        /*dialogBottomSheet.findViewById<ImageView>(R.id.facebook)!!.setOnClickListener {
+            makeFacebookAction(animal)
+        }
+
+         */
+
+        dialogBottomSheet.findViewById<ImageView>(R.id.instagram)!!.setOnClickListener {
+            makeInstagramAction(animal)
+        }
+
     }
 
     override fun databaseError() {
@@ -121,6 +178,7 @@ class AnimalDetalleActivity : AppCompatActivity(),AnimalDetalleView {
     override fun setNombreYfoto(userInfo: UserInfo) {
         Picasso.get().load(userInfo.imageURL).placeholder(R.drawable.progress_animation).into(profileImage)
         nameOwner.text = userInfo.userName
+        Picasso.get().load(userInfo.imageURL).placeholder(R.drawable.progress_animation).into(image)
     }
 
     override fun loadImages(animalImages: MutableList<String>) {
@@ -134,17 +192,151 @@ class AnimalDetalleActivity : AppCompatActivity(),AnimalDetalleView {
         indicator.setupWithViewPager(sliderPager, true)
     }
 
-    override fun setSexo(sexo:Int) {
+    override fun setSexo(sexo: Int) {
         Picasso.get().load(sexo).into(sexoAnimalImage)
     }
 
-    override fun setTransitoUrgente(transito:String) {
+    override fun setTransitoUrgente(transito: String) {
         transitoUrgenteTxt.text = transito
     }
 
     override fun onDestroy() {
         presenter.onDestroy()
         super.onDestroy()
+    }
+
+    override fun getContactInfoData(animal: Animal) {
+        setOnClickListenerContactInfo(animal)
+        checkWhatInfoIsEmpty(animal)
+        dialogBottomSheet.show()
+    }
+
+    private fun checkWhatInfoIsEmpty(animal: Animal) {
+        if(animal.whatsapp.isEmpty()){
+            dialogBottomSheet.findViewById<ImageView>(R.id.whatsapp)!!.visibility = View.GONE
+
+        }
+        if(animal.phone.isEmpty()){
+            dialogBottomSheet.findViewById<ImageView>(R.id.phone)!!.visibility = View.GONE
+        }
+        if(animal.mail.isEmpty()){
+            dialogBottomSheet.findViewById<ImageView>(R.id.mail)!!.visibility = View.GONE
+        }
+        if(animal.instagram.isEmpty()){
+            dialogBottomSheet.findViewById<ImageView>(R.id.instagram)!!.visibility = View.GONE
+        }
+        /*if(animal.facebook.isEmpty()){
+            dialogBottomSheet.findViewById<ImageView>(R.id.facebook)!!.visibility = View.GONE
+        }
+
+         */
+
 
     }
+
+
+
+    fun makeWhatsappAction(animal: Animal){
+        if (animal.whatsapp.isNotEmpty()) {
+            sendWhatsappMessage(animal)
+        } else {
+            Toast.makeText(baseContext,
+                    "El usuario no ha proporcionado información sobre su Whatsapp!",
+                    Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    fun makeMailAction(animal: Animal) {
+        if (animal.mail.isNotEmpty()) {
+            openEmail(animal)
+        }else{
+
+            Toast.makeText(baseContext,
+                    "El usuario no ha proporcionado información sobre su email!",
+                    Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    fun makePhoneAction(animal: Animal) {
+        if (animal.phone.isNotEmpty()) {
+            makePhoneCall(animal)
+        } else {
+            Toast.makeText(this,
+                    "El usuario no ha proporcionado información sobre su teléfono!",
+                    Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun makePhoneCall(animal: Animal) {
+        if (ContextCompat.checkSelfPermission(this,
+                        Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CALL_PHONE), REQUEST_CALL)
+        } else {
+            val intent = Intent(Intent.ACTION_DIAL);
+            intent.data = Uri.parse("tel:${animal.phone}")
+            startActivity(intent)
+        }
+
+    }
+
+    private fun openEmail(animal: Animal) {
+        val emailIntent = Intent(Intent.ACTION_SENDTO)
+        emailIntent.type = "text/plain"
+        val uriText:String = "mailto:" + Uri.encode(animal.mail)
+        val uri: Uri = Uri.parse(uriText)
+        emailIntent.data = uri
+        startActivity(Intent.createChooser(emailIntent, animal.mail))
+    }
+
+    private fun sendWhatsappMessage(animal: Animal) {
+        val installed: Boolean = isAppInstalled("com.whatsapp")
+        if (installed) {
+            val sendIntent = Intent(Intent.ACTION_VIEW)
+            val uri = "whatsapp://send?phone="+animal.whatsapp+"&text="+"Hola, estoy interesado por" + " " + animal.nombre
+            sendIntent.data = Uri.parse(uri)
+            startActivity(sendIntent)
+        } else {
+            Toast.makeText(this, "No tienes Whatsapp en tu celular!", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+
+    private fun isAppInstalled(s: String): Boolean {
+        val packageManager = packageManager
+        var isInstalled: Boolean
+        try {
+            packageManager.getPackageInfo(s, PackageManager.GET_ACTIVITIES)
+            isInstalled = true
+        } catch (e: PackageManager.NameNotFoundException) {
+            isInstalled = false
+            e.printStackTrace()
+        }
+        return isInstalled
+    }
+
+    fun makeInstagramAction(animal: Animal) {
+        val uri: Uri = Uri.parse("https://instagram.com/" + animal.instagram)
+        val insagram= Intent(Intent.ACTION_VIEW, uri)
+        insagram.setPackage("com.instagram.android")
+        try {
+            startActivity(insagram)
+        }catch (e: ActivityNotFoundException){
+            startActivity(Intent(Intent.ACTION_VIEW,
+                    Uri.parse("https://instagram.com/" + animal.instagram)))
+        }
+    }
+
+    /*fun makeFacebookAction(animal: Animal) {
+
+        try {
+            val intent= Intent(Intent.ACTION_VIEW, Uri.parse("fb://page/" + animal.facebook))
+            startActivity(intent)
+        }catch (e: ActivityNotFoundException){
+            val intent= Intent(Intent.ACTION_VIEW,
+                    Uri.parse("https://facebook.com/" + animal.facebook))
+            startActivity(intent)
+        }
+    }
+
+     */
 }

@@ -45,20 +45,25 @@ public class LocationService extends Service {
                 mCurrentLocation = locationResult.getLastLocation();
                 Geocoder geocoder;
                 List<Address> addresses;
-                geocoder = new Geocoder(HomeActivity.getInstance(), Locale.getDefault());
-                try {
-                    addresses = geocoder.getFromLocation(mCurrentLocation.getLatitude(),mCurrentLocation.getLongitude(),1);
-                    HomeActivity.getInstance().setCountryAndProv(
-                            addresses.get(0).getCountryName(), addresses.get(0).getLocality());
-                    Log.d("info country",  " " + addresses.get(0).getCountryName());
-                    if(seEjecuto==1){
-                        HomeActivity.getInstance().setLatitudeAndLongitude(
-                                mCurrentLocation.getLatitude(),mCurrentLocation.getLongitude());
-                    }
-                }catch (Exception e)
-                {
+                if(HomeActivity.getInstance() != null){
+                    geocoder = new Geocoder(HomeActivity.getInstance(), Locale.getDefault());
+                    try {
+                        addresses = geocoder.getFromLocation(mCurrentLocation.getLatitude(),mCurrentLocation.getLongitude(),1);
+                        HomeActivity.getInstance().setCountryAndProv(
+                                addresses.get(0).getCountryName(), addresses.get(0).getLocality());
+                        Log.d("info country",  " " + addresses.get(0).getCountryName());
+                        if(seEjecuto==1){
+                            HomeActivity.getInstance().setLatitudeAndLongitude(
+                                    mCurrentLocation.getLatitude(),mCurrentLocation.getLongitude());
+                        }
+                    }catch (Exception e)
+                    {
 
+                    }
                 }
+
+
+
             }
         }
     };

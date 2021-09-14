@@ -57,6 +57,7 @@ dependencies {
 
     //Location
     implementation 'com.google.android.gms:play-services-location:18.0.0'
+
     //Testing
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
@@ -128,7 +129,14 @@ dependencies {
 
     //Google maps
     implementation 'com.google.android.gms:play-services-maps:17.0.1'
-    
 
+    //Firebase ML, object detection
+
+    implementation 'com.google.mlkit:image-labeling:17.0.5'
+    implementation 'com.google.android.gms:play-services-mlkit-image-labeling:16.0.5'
+    //implementation 'com.google.firebase:firebase-ml-vision:24.0.3'
+    implementation 'com.google.firebase:firebase-ml-vision-image-label-model:20.0.1'
+
+    implementation 'com.hbb20:ccp:2.3.7'
 
 }

@@ -40,13 +40,16 @@ class OpenMapActivity : AppCompatActivity(), OnMapReadyCallback,OpenMapView, Goo
     private lateinit var marker:Marker
 
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_open_map)
         getValues()
         createFragment()
         presenter.retrieveDataOfLocations()
+    }
+
+    override fun onBackPressed() {
+        finish()
     }
 
     private fun getValues() {
@@ -67,6 +70,7 @@ class OpenMapActivity : AppCompatActivity(), OnMapReadyCallback,OpenMapView, Goo
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
+
         map=googleMap
         map.setOnMarkerClickListener(this)
     }

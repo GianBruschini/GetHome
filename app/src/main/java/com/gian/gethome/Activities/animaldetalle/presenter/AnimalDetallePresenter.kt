@@ -1,12 +1,9 @@
 package com.gian.gethome.Activities.animaldetalle.presenter
 
-import android.graphics.drawable.Drawable
 import com.gian.gethome.Activities.animaldetalle.interfaces.AnimalDetalleView
 import com.gian.gethome.Activities.animaldetalle.model.AnimalDetalleInteractor
+import com.gian.gethome.Clases.Animal
 import com.gian.gethome.Clases.UserInfo
-import com.gian.gethome.R
-import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.activity_animal_detalle.*
 
 class AnimalDetallePresenter (var animalDetalleView: AnimalDetalleView?,
                               var animalDetalleInteractor: AnimalDetalleInteractor):AnimalDetalleInteractor.onAnimalDetalleListener {
@@ -63,6 +60,14 @@ class AnimalDetallePresenter (var animalDetalleView: AnimalDetalleView?,
 
     override fun onDetectSexo(sexo: Int) {
         animalDetalleView?.setSexo(sexo)
+    }
+
+    override fun onPassAnimalData(animal: Animal) {
+        animalDetalleView?.getContactInfoData(animal)
+    }
+
+    fun retrieveContactInfoData(userIDownerAnimal: String, animalKey: String) {
+        animalDetalleInteractor.retrieveContactInfOf(userIDownerAnimal,animalKey)
     }
 
 }

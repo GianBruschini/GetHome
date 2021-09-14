@@ -3,6 +3,7 @@ package com.gian.gethome.Activities.homeactivity.view;
 import androidx.annotation.ColorInt;
 import androidx.annotation.ColorRes;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
@@ -120,14 +121,13 @@ public class HomeActivity extends AppCompatActivity implements DrawerAdapter.OnI
     private String mLastUpdateTime;
     static HomeActivity instance;
     LocationRequest locationRequest;
+    private Bundle savedInstance;
 
     public static HomeActivity getInstance() {
         return instance;
     }
 
     FusedLocationProviderClient fusedLocationProviderClient;
-
-
     private static final long UPDATE_INTERVAL_IN_MILLISECONDS = 10000;
     private static final long FASTEST_UPDATE_INTERVAL_IN_MILLISECONDS = 5000;
     private static final int REQUEST_CHECK_SETTINGS = 100;
@@ -145,6 +145,7 @@ public class HomeActivity extends AppCompatActivity implements DrawerAdapter.OnI
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        this.savedInstance = savedInstanceState;
         setContentView(R.layout.activity_home);
         instance = this;
         Dexter.withActivity(this)
@@ -202,7 +203,7 @@ public class HomeActivity extends AppCompatActivity implements DrawerAdapter.OnI
                         //txt.setText(mFirebaseAuth.getCurrentUser().getDisplayName());
                         setFotoPerfil();
 
-                        //adapter.setSelected(POS_HOME);
+                        adapter.setSelected(POS_HOME);
                     }
 
                     @Override
@@ -240,6 +241,12 @@ public class HomeActivity extends AppCompatActivity implements DrawerAdapter.OnI
     }
 
 
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
     private boolean isLocationServiceRunning(){
          ActivityManager activityManager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
         if(activityManager != null){
@@ -260,7 +267,6 @@ public class HomeActivity extends AppCompatActivity implements DrawerAdapter.OnI
             Intent intent = new Intent(getApplicationContext(), LocationService.class);
             intent.setAction("startLocationService");
             startService(intent);
-
         }
     }
 
@@ -317,9 +323,6 @@ public class HomeActivity extends AppCompatActivity implements DrawerAdapter.OnI
             loadingDialog.cancel();
         }
     }
-
-
-
 
 
     private void openSettings() {
@@ -408,7 +411,12 @@ public class HomeActivity extends AppCompatActivity implements DrawerAdapter.OnI
 
     }
 
-
+    @Override
+    protected void onDestroy() {
+        stopLocationService();
+        instance = null;
+        super.onDestroy();
+    }
 
     public void setFragment(Fragment fragment){
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();

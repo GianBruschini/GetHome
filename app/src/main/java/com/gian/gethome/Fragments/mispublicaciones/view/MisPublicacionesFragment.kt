@@ -32,9 +32,30 @@ class MisPublicacionesFragment: Fragment(), MisPublicacionesView,MisPubsAdapter.
         super.onCreate(savedInstanceState)
     }
 
+    override fun onResume() {
+        if(this::adapter.isInitialized){
+            clearListOfRecycler()
+            presenter.getMyPubsData()
+        }
+        super.onResume()
+    }
+
+    private fun clearListOfRecycler() {
+
+        if (mlist.size > 0) {
+            for (i in 0 until mlist.size) {
+                mlist.removeAt(0)
+            }
+            recyclerMisPubs.adapter!!.notifyItemRangeRemoved(0, mlist.size)
+        }
+        //adapter.clearList()
+        //myRecycler.adapter!!.notifyDataSetChanged()
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_mispubs, container, false)
         getValues(view)
+
         recyclerMisPubs.adapter?.notifyDataSetChanged()
         presenter.getMyPubsData()
         return view
@@ -115,10 +136,4 @@ class MisPublicacionesFragment: Fragment(), MisPublicacionesView,MisPubsAdapter.
          */
 
     }
-
-
-
-
-
-
 }

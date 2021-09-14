@@ -18,6 +18,8 @@ import com.gian.gethome.Activities.homeactivity.view.HomeActivity
 import com.gian.gethome.Activities.imagenesanimal.view.ImagenesAnimalActivity
 import com.gian.gethome.R
 import com.gian.gethome.databinding.FragmentPublicarAnimalBinding
+import com.hbb20.CountryCodePicker
+import kotlinx.android.synthetic.main.activity_contact_info.*
 import kotlinx.android.synthetic.main.activity_home.*
 import java.util.*
 
@@ -36,6 +38,8 @@ class PublicarAnimalFragment: Fragment(R.layout.fragment_publicar_animal) {
     private lateinit var homeActivity: HomeActivity
     private lateinit var latitude: String
     private lateinit var longitude:String
+    var countryCodePicker: CountryCodePicker? = null
+
 
 
 
@@ -108,13 +112,14 @@ class PublicarAnimalFragment: Fragment(R.layout.fragment_publicar_animal) {
                 intent.putExtra("descripcionAnimal", descripcionAnimal)
                 intent.putExtra("Pais", pais)
                 intent.putExtra("Provincia", provincia)
-                intent.putExtra("Whatsapp", binding?.whatsppNumber?.text.toString())
+                val nrowsp = binding!!.countryCodePeaker.selectedCountryCode+binding?.whatsppNumber?.text.toString()
+                intent.putExtra("Whatsapp", nrowsp)
                 intent.putExtra("Phone", binding?.phoneNumber?.text.toString())
                 intent.putExtra("Mail", binding?.mail?.text.toString())
                 intent.putExtra("Facebook", binding?.facebook?.text.toString())
                 intent.putExtra("Instagram", binding?.instagram?.text.toString())
                 intent.putExtra("latitude", latitude)
-                intent.putExtra("longitude",longitude)
+                intent.putExtra("longitude", longitude)
                 startActivity(intent)
             }
         }else{
@@ -190,6 +195,9 @@ class PublicarAnimalFragment: Fragment(R.layout.fragment_publicar_animal) {
         }
         edadAnimal = binding?.spinnerAct?.selectedItem.toString()
         descripcionAnimal = binding?.descripcionAnimal?.editableText.toString()
+
+
+
     }
 
     //to avoid memory leaks

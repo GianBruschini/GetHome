@@ -64,7 +64,6 @@ class EditAnimalActivity : AppCompatActivity(),EditAnimalView {
             val noDelate: ImageView = dialog!!.findViewById(R.id.noDelate)
             yesDelate.setOnClickListener {
                 presenter.deleteAnimalFromDB(animalKey, animalUrlImage)
-                finish()
             }
             noDelate.setOnClickListener {
                 dialog?.dismiss()
@@ -124,6 +123,10 @@ class EditAnimalActivity : AppCompatActivity(),EditAnimalView {
 
     }
 
+    override fun navigateToHome() {
+        finish()
+    }
+
     private fun navigateTo(intent: Intent) {
         startActivity(intent)
         finish()
@@ -141,5 +144,11 @@ class EditAnimalActivity : AppCompatActivity(),EditAnimalView {
         fragmentTransaction.replace(R.id.frame_layout, fragment!!)
         fragmentTransaction.commit()
         finish()
+    }
+
+    override fun onDestroy() {
+        presenter.onDestroy()
+        dialog = null
+        super.onDestroy()
     }
 }

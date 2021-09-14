@@ -1,18 +1,16 @@
 package com.gian.gethome.Activities.animaldetalle.model
 
-import android.graphics.drawable.Drawable
 import com.gian.gethome.Activities.animaldetalle.presenter.AnimalDetallePresenter
 import com.gian.gethome.Clases.Animal
 import com.gian.gethome.Clases.UserInfo
 import com.gian.gethome.R
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
-import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.activity_animal_detalle.*
 
 class AnimalDetalleInteractor {
     private val mFirebaseAuth = FirebaseAuth.getInstance()
     private var animalImages:MutableList<String> = mutableListOf()
+    private lateinit var listener: onAnimalDetalleListener
 
     interface onAnimalDetalleListener{
         fun onDatabaseError()
@@ -21,11 +19,15 @@ class AnimalDetalleInteractor {
         fun onLoadImages(animalImages:MutableList<String>)
         fun onTransitoUrgente(transitoUrgente:String)
         fun onDetectSexo(sexo:Int)
+        fun onPassAnimalData(animal: Animal)
+
+
 
     }
 
 
     fun checkFavouritesInDB(animalKey: String, listener: onAnimalDetalleListener) {
+        this.listener = listener
         val reference = FirebaseDatabase.getInstance().reference
         val applesQuery = reference.child("Users").child("Person").
         child(mFirebaseAuth.currentUser!!.uid).
@@ -141,6 +143,25 @@ class AnimalDetalleInteractor {
             "Hembra" -> listener.onDetectSexo(R.drawable.female)
         }
     }
+
+    fun retrieveContactInfOf(userIDownerAnimal: String, animalKey: String) {
+        val databaseAnimalAccess = FirebaseDatabase.getInstance().
+        reference.
+        child("Users").
+        child("Animales").
+        child(userIDownerAnimal).child(animalKey)
+        databaseAnimalAccess.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val animal: Animal = snapshot.getValue(Animal::class.java)!!
+                listener.onPassAnimalData(animal)
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                listener.onDatabaseError()
+            }
+        })
+    }
+
 
 
 }

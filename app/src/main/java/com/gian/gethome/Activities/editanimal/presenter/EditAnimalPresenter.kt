@@ -4,23 +4,27 @@ import com.gian.gethome.Activities.editanimal.Interfaces.EditAnimalView
 import com.gian.gethome.Activities.editanimal.model.EditAnimalInteractor
 import com.gian.gethome.Clases.Animal
 
-class EditAnimalPresenter(val editAnimalView: EditAnimalView,
+class EditAnimalPresenter(var editAnimalView: EditAnimalView?,
                           val editAnimalInteractor: EditAnimalInteractor):EditAnimalInteractor.onEditAnimalInteractor {
     fun retrieveDataFromDB(animalKey: String) {
         editAnimalInteractor.retrieveDataFromDB(this,animalKey)
     }
 
     override fun onDataBaseError() {
-        editAnimalView.showDatabaseError()
+        editAnimalView?.showDatabaseError()
     }
 
     override fun passAnimalData(animal: Animal) {
-        editAnimalView.showAnimalData(animal)
+        editAnimalView?.showAnimalData(animal)
     }
 
     override fun onAnimalUpdated() {
-        editAnimalView.showAnimationAnimalUpdated()
+        editAnimalView?.showAnimationAnimalUpdated()
 
+    }
+
+    override fun onNavigateToHome() {
+        editAnimalView?.navigateToHome()
     }
 
     fun editAnimalFromDB(tipoAnimal: String, nombre: String,
@@ -35,5 +39,9 @@ class EditAnimalPresenter(val editAnimalView: EditAnimalView,
 
     fun deleteAnimalFromDB(animalKey: String, animalUrlImage: String) {
         editAnimalInteractor.deleteAnimalFromDB(animalKey,animalUrlImage)
+    }
+
+    fun onDestroy() {
+        editAnimalView = null
     }
 }

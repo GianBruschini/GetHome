@@ -140,16 +140,12 @@ public class MainActivity extends AppCompatActivity  {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if(user!=null){
                     updateUI();
-                    System.out.println("Se autentico!");
                 }else{
 
                 }
 
             }
         };
-
-
-
     }
 
     private void updateUI() {
@@ -164,10 +160,9 @@ public class MainActivity extends AppCompatActivity  {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()){
-                    System.out.println("Es exitoso!");
-                    updateUI();
+                    checkIfUserWasCreatedOnDatabase();
+                    //updateUI();
                 }else{
-                    System.out.println("NO Es exitoso!");
                 }
             }
         });
@@ -182,40 +177,49 @@ public class MainActivity extends AppCompatActivity  {
             Intent intent = new Intent(this,HomeActivity.class);
             startActivity(intent);
             finish();
+        }else{
+
         }
 
     }
 
     private void checkIfUserWasCreatedOnDatabase() {
-
         if(mAuth.getCurrentUser()!=null){
-
             DatabaseReference ref = FirebaseDatabase.getInstance().getReference().
                     child("Users").child("Person").
                     child(mAuth.getCurrentUser().getUid());
             ref.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-                    for(DataSnapshot data: dataSnapshot.getChildren()){
-                        if(data.exists()){
-                            Intent intent = new Intent (MainActivity.this, HomeActivity.class);
-                            //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                            startActivity(intent);
-                        }else{
-                            Intent intent= new Intent(MainActivity.this,ElegirFotoDePerfilActivity.class);
-                            //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                            startActivity(intent);
+                    if(dataSnapshot.exists()){
+                        for(DataSnapshot data: dataSnapshot.getChildren()){
+                            if(data.exists()){
+                                Intent intent = new Intent (MainActivity.this, HomeActivity.class);
+                                //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                startActivity(intent);
+                            }else{
+                                Intent intent= new Intent(MainActivity.this,ElegirFotoDePerfilActivity.class);
+                                //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                startActivity(intent);
+
+                            }
+                            MainActivity.this.finish();
                         }
+                    }else{
+                        Intent intent= new Intent(MainActivity.this,ElegirFotoDePerfilActivity.class);
+                        //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(intent);
                         MainActivity.this.finish();
                     }
+
                 }
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
 
                 }
-
             });
+
         }
 
     }
@@ -285,8 +289,6 @@ public class MainActivity extends AppCompatActivity  {
                     } else {
                         sliderPager.setCurrentItem(0);
                     }
-
-
                 }
             });
         }
@@ -332,8 +334,9 @@ public class MainActivity extends AppCompatActivity  {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            Intent intent= new Intent(MainActivity.this,ElegirFotoDePerfilActivity.class);
-                            startActivity(intent);
+                            //Intent intent= new Intent(MainActivity.this,ElegirFotoDePerfilActivity.class);
+                            //startActivity(intent);
+                            checkIfUserWasCreatedOnDatabase();
                         } else {
                             Toast.makeText(MainActivity.this, "Error al loguearse", Toast.LENGTH_SHORT).show();
                         }
