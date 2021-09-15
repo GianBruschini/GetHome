@@ -12,6 +12,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
@@ -65,6 +66,7 @@ class HomeFragment: Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLis
     private var distance by Delegates.notNull<Double>()
     private var size by Delegates.notNull<Int>()
     private var listEmpty:MutableList<AnimalAdapterData> = mutableListOf()
+    private lateinit var progressBar:ProgressBar
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -135,6 +137,7 @@ class HomeFragment: Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLis
                             myRecycler.layoutManager = gridLayoutManager
                             myRecycler.setHasFixedSize(true)
                             myRecycler.adapter = adapter
+                            progressBar.visibility = View.GONE
                             adapter.setOnItemClickListener(this@HomeFragment)
                         }
 
@@ -192,6 +195,7 @@ class HomeFragment: Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLis
         todoImg = view.findViewById(R.id.all)
         aveImg = view.findViewById(R.id.bird)
         roedorImg = view.findViewById(R.id.mouse)
+        progressBar = view.findViewById(R.id.progressbar)
         gatoImg.setOnClickListener(this)
         perroImg.setOnClickListener(this)
         loroImg.setOnClickListener(this)
@@ -200,12 +204,8 @@ class HomeFragment: Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLis
         aveImg.setOnClickListener(this)
         roedorImg.setOnClickListener(this)
         todoImg.setOnClickListener(this)
-
+        progressBar.visibility = View.VISIBLE
         setOnClickImages()
-        progressDialog = ProgressDialog(context)
-        progressDialog.setTitle("Cargando publicaciones")
-        progressDialog.setMessage("Por favor, espere")
-        progressDialog.setCancelable(false)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -311,6 +311,7 @@ class HomeFragment: Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLis
                                     myRecycler.layoutManager = gridLayoutManager
                                     myRecycler.setHasFixedSize(true)
                                     myRecycler.adapter = adapter
+
                                     adapter.setOnItemClickListener(this@HomeFragment)
                                 }
 

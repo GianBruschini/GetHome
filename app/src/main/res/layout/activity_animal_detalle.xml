@@ -7,243 +7,305 @@
     tools:context=".Activities.animaldetalle.view.AnimalDetalleActivity">
 
 
-    <RelativeLayout
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="backArrowButton"
+        tools:ignore="UsingOnClickInXml"
+        android:src="@drawable/ic_arrow"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="50dp">
+    </ImageView>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="backArrowButton"
+        tools:ignore="UsingOnClickInXml"
+        android:src="@drawable/ic_share"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="30dp"
+        android:layout_marginTop="50dp">
+    </ImageView>
+
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
 
         <androidx.viewpager.widget.ViewPager
             android:id="@+id/imagenAnimalViewPager"
             android:layout_width="match_parent"
-            android:layout_height="290dp"
+            android:layout_height="400dp"
             android:scaleType="centerCrop"
             android:src="@drawable/dog" />
-
-        <ImageView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_margin="15dp"
-            android:onClick="backArrowButton"
-            android:padding="10dp"
-            android:src="@drawable/ic_baseline_arrow_back_24" />
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/indicator"
             android:layout_width="match_parent"
             android:layout_height="20dp"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="210dp"
+            android:layout_marginTop="320dp"
             app:tabBackground="@drawable/indicator_selector"
             app:tabGravity="center"
             app:tabIndicatorHeight="0dp">
 
         </com.google.android.material.tabs.TabLayout>
 
-    </RelativeLayout>
-
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cardViewDatos"
-        android:layout_width="340dp"
-        android:layout_height="120dp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="230dp"
-        android:elevation="10dp"
-        app:cardCornerRadius="30dp">
-
-        <RelativeLayout
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardViewDatos"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            app:cardCornerRadius="30dp"
+            android:layout_marginTop="320dp">
 
-            <TextView
-                android:id="@+id/nombreAnimalTxt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="15dp"
-                android:fontFamily="@font/opensans_bold"
-                android:padding="5dp"
-                android:text="Firulais"
-                android:textColor="#D9000000"
-                android:textSize="20sp" />
-
-
-            <TextView
-                android:id="@+id/transitoUrgenteTxt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/nombreAnimalTxt"
-                android:layout_marginLeft="25dp"
-                android:layout_marginTop="5dp"
-                android:text="Con transito urgente"
-                android:textColor="#000000"
-                android:textSize="15sp"
-
-                />
-
-
-            <ImageView
-                android:id="@+id/sexoAnimalImage"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:layout_marginTop="20dp"
-                android:layout_marginRight="40dp"
-                android:src="@drawable/male"
-                android:text="Macho" />
-
-            <TextView
-                android:id="@+id/edadAnimalTxt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/sexoAnimalImage"
-                android:layout_alignParentRight="true"
-                android:layout_marginTop="15dp"
-                android:layout_marginRight="20dp"
-                android:gravity="center"
-                android:text="2 años"
-                android:textColor="#000000"
-                android:textSize="15sp"
-
-
-                />
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/transitoUrgenteTxt"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="5dp">
-
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/opensans_bold"
-                    android:src="@drawable/ic_baseline_location_on_24"
-                    android:textSize="20sp" />
-
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                >
                 <TextView
-                    android:id="@+id/distanceTextCard"
+                    android:id="@+id/nombreAnimalTxt"
+                    android:layout_width="270dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="60dp"
+                    android:textColor="#262525"
+                    android:text="Maine Coon Cats"
+                    android:maxLength="270"
+                    android:textSize="20sp"
+                    android:fontFamily="@font/montserrat_bold"
+                    android:layout_marginStart="30dp">
+                </TextView>
+
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:padding="4dp"
-                    android:text="Distance"
-                    android:textColor="#000000"
-                    android:textSize="11sp" />
-            </LinearLayout>
+                    android:layout_marginStart="30dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_below="@id/nombreAnimalTxt">
+
+                    <ImageView
+                        android:id="@+id/positionImage"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/ic_placeholder"
+                        >
+                    </ImageView>
+
+                    <TextView
+                        android:layout_width="230dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:textSize="12sp"
+                        android:text="La Plata, Argentina (2.5 Km)"
+                        android:fontFamily="@font/montserrat_medium">
+
+                    </TextView>
+                </LinearLayout>
+
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/addToFav"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:src="@drawable/favourite_icon"
+                    app:backgroundTint="#BA352B"
+                    android:elevation="30dp"
+                    android:layout_marginTop="60dp"
+                    android:layout_marginEnd="30dp"
+                    android:layout_alignParentEnd="true"
+                    >
+
+                </com.google.android.material.floatingactionbutton.FloatingActionButton>
+
+                <LinearLayout
+                    android:id="@+id/linear1"
+                    android:layout_width="match_parent"
+                    android:layout_height="90dp"
+                    android:layout_below="@id/addToFav"
+                    android:layout_marginTop="40dp"
+                    android:layout_marginStart="25dp">
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="100dp"
+                        android:layout_height="80dp"
+                        app:cardCornerRadius="10dp"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginTop="5dp"
+                        >
+
+                        <TextView
+                            android:id="@+id/edadAnimalTxt"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:fontFamily="@font/montserrat_semibold"
+                            android:gravity="center"
+                            android:layout_marginTop="-15dp"
+                            android:text="Mas de 8 años"
+                            android:textColor="@color/black"
+                            android:textSize="12sp" />
+
+                        <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="50dp"
+                                android:layout_marginStart="35dp"
+                                android:fontFamily="@font/montserrat_semibold"
+                                android:gravity="center"
+                                android:text="Edad"
+                                android:textSize="11sp" />
 
 
-        </RelativeLayout>
-
-    </androidx.cardview.widget.CardView>
-
-    <LinearLayout
-        android:id="@+id/datosUsuario"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/cardViewDatos"
-        android:layout_marginTop="20dp"
-        android:orientation="horizontal">
-
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/profileImage"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_marginLeft="40dp"
-            android:src="@drawable/ic_perfil">
-
-        </de.hdodenhof.circleimageview.CircleImageView>
-
-        <TextView
-            android:id="@+id/nameOwner"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="15dp"
-            android:fontFamily="@font/dmsansbold"
-            android:text="Nombre"
-            android:textSize="15sp" />
+                    </androidx.cardview.widget.CardView>
 
 
-    </LinearLayout>
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="100dp"
+                        android:layout_height="80dp"
+                        app:cardCornerRadius="10dp"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="5dp"
+                        >
 
-    <TextView
-        android:id="@+id/fechaPublicacion"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/cardViewDatos"
-        android:layout_alignRight="@id/cardViewDatos"
-        android:layout_marginTop="30dp"
-        android:layout_marginRight="10dp"
-        android:fontFamily="@font/montserrat_medium"
-        android:text="May 25, 2019"
-        android:textSize="14sp" />
+                        <TextView
+                            android:id="@+id/sexoAnimalTxt"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:fontFamily="@font/montserrat_semibold"
+                            android:gravity="center"
+                            android:layout_marginTop="-15dp"
+                            android:text="Macho"
+                            android:textColor="@color/black"
+                            android:textSize="12sp" />
 
-    <TextView
-        android:id="@+id/descripcionAnimalTxt"
-        android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:layout_below="@id/fechaPublicacion"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="50dp"
-        android:layout_marginRight="20dp"
-        android:fontFamily="@font/montserrat_medium"
-        android:gravity="center"
-        android:scrollbars="vertical"
-        android:text="@string/text_to_test"
-        android:textSize="15sp">
-
-    </TextView>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="50dp"
+                            android:layout_marginStart="35dp"
+                            android:fontFamily="@font/montserrat_semibold"
+                            android:gravity="center"
+                            android:text="Sexo"
+                            android:textSize="11sp" />
 
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="20dp">
+                    </androidx.cardview.widget.CardView>
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/buttonLike"
-            android:layout_width="230dp"
-            android:layout_height="50dp"
-            android:background="@drawable/button_design"
-            android:elevation="10dp"
-            android:fontFamily="@font/montserrat_medium"
-            android:onClick="goToContactInfo"
-            android:text="Adoptar"
-            android:textColor="#fff"
-            android:visibility="visible"
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="100dp"
+                        android:layout_height="80dp"
+                        app:cardCornerRadius="10dp"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="5dp"
+                        >
 
-            tools:ignore="UsingOnClickInXml" />
+                        <TextView
+                            android:id="@+id/transitoUrgenteTxt"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:fontFamily="@font/montserrat_semibold"
+                            android:gravity="center"
+                            android:layout_marginTop="-15dp"
+                            android:text="Macho"
+                            android:textColor="@color/black"
+                            android:textSize="12sp" />
 
-        <androidx.cardview.widget.CardView
-            android:id="@+id/cardAddToFav"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginBottom="30dp"
-            android:background="#473D3D"
-            android:elevation="20dp"
-            app:cardCornerRadius="20dp">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="45dp"
+                            android:paddingRight="2dp"
+                            android:paddingLeft="10dp"
+                            android:fontFamily="@font/montserrat_semibold"
+                            android:gravity="center"
+                            android:text="Tránsito urgente"
+                            android:textSize="11sp" />
 
-            <ToggleButton
-                android:id="@+id/addToFav"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_gravity="center"
-                android:background="@drawable/favourite_icon_selector"
-                android:textOff=""
-                android:textOn=""
 
-                />
+                    </androidx.cardview.widget.CardView>
 
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/linear2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/linear1"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginStart="30dp"
+                    android:orientation="vertical"
+                    >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/montserrat_bold"
+                        android:text="Descripción"
+                        android:textSize="16sp">
+
+                    </TextView>
+
+                    <TextView
+                        android:id="@+id/descripcionAnimalTxt"
+                        android:layout_width="match_parent"
+                        android:layout_height="80dp"
+                        android:fontFamily="@font/montserrat_medium"
+                        android:scrollbars="vertical"
+                        android:text="@string/text_to_test"
+                        android:layout_marginTop="5dp"
+                        android:textSize="12sp">
+
+                    </TextView>
+
+                </LinearLayout>
+
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/profileImage"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:elevation="10dp"
+                        android:layout_marginStart="30dp"
+                        android:layout_marginTop="30dp"
+                        android:layout_below="@id/linear2"
+                        android:src="@drawable/background_pet1">
+
+                    </de.hdodenhof.circleimageview.CircleImageView>
+
+                    <TextView
+                        android:id="@+id/nameOwner"
+                        android:layout_width="120dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="50dp"
+                        android:layout_toEndOf="@id/profileImage"
+                        android:layout_below="@id/linear2"
+                        android:fontFamily="@font/dmsansbold"
+                        android:text="Nombre"
+                        android:textSize="12sp" />
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/buttonLike"
+                        android:layout_width="140dp"
+                        android:layout_height="45dp"
+                        android:background="@drawable/button_design"
+                        android:fontFamily="@font/montserrat_semibold"
+                        android:textAllCaps="false"
+                        android:onClick="goToContactInfo"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginStart="230dp"
+                        android:layout_marginBottom="40dp"
+                        android:text="Contáctame"
+                        android:textColor="#fff"
+                        tools:ignore="UsingOnClickInXml" />
+
+            </RelativeLayout>
 
         </androidx.cardview.widget.CardView>
 
-    </LinearLayout>
+    </FrameLayout>
+
 
 
 </RelativeLayout>

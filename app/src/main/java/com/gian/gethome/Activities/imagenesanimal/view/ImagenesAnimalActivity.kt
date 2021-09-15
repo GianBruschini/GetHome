@@ -5,12 +5,10 @@ import android.app.ProgressDialog
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.provider.MediaStore
 import android.view.View
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.gian.gethome.Activities.homeactivity.view.HomeActivity
 import com.gian.gethome.Activities.imagenesanimal.interfaces.ImagenesAnimalView
 import com.gian.gethome.Activities.imagenesanimal.model.ImagenesAnimalInteractor
 import com.gian.gethome.Activities.imagenesanimal.presenter.ImagenesAnimalPresenter
@@ -37,6 +35,7 @@ class ImagenesAnimalActivity : AppCompatActivity(),ImagenesAnimalView {
     private lateinit var progressDialog: ProgressDialog
     private lateinit var pais:String
     private  lateinit var provincia:String
+    private lateinit var aparecerEnMaps:String
     private  lateinit var formatted:String
     private var loadingDialog: Dialog? = null
     private lateinit var latitude: String
@@ -169,7 +168,8 @@ class ImagenesAnimalActivity : AppCompatActivity(),ImagenesAnimalView {
                 transitoUrgente,
                 edadAnimal,descripcionAnimal,sexoAnimal,
                 provincia,pais,whatsapp,phone,mail,
-                this,facebook,instagram,cantAnimales,latitude,longitude)
+                this,facebook,instagram,
+                cantAnimales,latitude,longitude)
 
     }
 

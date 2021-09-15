@@ -1,5 +1,6 @@
 package com.gian.gethome.Fragments
 
+import android.app.Dialog
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
@@ -30,6 +31,7 @@ class PublicarAnimalFragment: Fragment(R.layout.fragment_publicar_animal) {
     private lateinit var nombreAnimal: String
     private lateinit var sexoAnimal: String
     private var transitoUrgente: Boolean =false
+    private  var aparecerEnMaps: Boolean = false
     private lateinit var edadAnimal:String
     private lateinit var descripcionAnimal: String
     private lateinit var awesomeValidation: AwesomeValidation
@@ -38,9 +40,8 @@ class PublicarAnimalFragment: Fragment(R.layout.fragment_publicar_animal) {
     private lateinit var homeActivity: HomeActivity
     private lateinit var latitude: String
     private lateinit var longitude:String
+    private lateinit var dialogInfo: Dialog
     var countryCodePicker: CountryCodePicker? = null
-
-
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -65,6 +66,13 @@ class PublicarAnimalFragment: Fragment(R.layout.fragment_publicar_animal) {
         provincia = homeActivity.provincia.text.toString()
         latitude = homeActivity.latitudeTxt.text.toString()
         longitude = homeActivity.longitudeTxt.text.toString()
+        val view = layoutInflater.inflate(R.layout.dialog_info_check_map, null)
+        dialogInfo = Dialog(requireContext())
+        dialogInfo.setContentView(view)
+        dialogInfo.window?.setBackgroundDrawableResource(android.R.color.transparent);
+        binding?.infoAboutMaps?.setOnClickListener {
+            dialogInfo.show()
+        }
     }
 
 
@@ -192,6 +200,9 @@ class PublicarAnimalFragment: Fragment(R.layout.fragment_publicar_animal) {
         sexoAnimal = binding?.spinnerSexoAnimal?.selectedItem.toString()
         if(binding?.transitoCheckBox?.isChecked == true){
             transitoUrgente = true
+        }
+        if(binding?.mapsCheckBox?.isChecked == true){
+            aparecerEnMaps = true
         }
         edadAnimal = binding?.spinnerAct?.selectedItem.toString()
         descripcionAnimal = binding?.descripcionAnimal?.editableText.toString()
