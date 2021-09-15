@@ -52,6 +52,10 @@ class ConfigCuentaPresenter(var configCuentaView: ConfigCuentaView?,
         configCuentaView?.hideProgresDialog()
     }
 
+    override fun onPassAparecerEnMapaValue(value: String) {
+        configCuentaView?.setAparecerEnMapaValue(value)
+    }
+
     fun deleteAccount() {
         configCuentaInteractor.deleteAccount()
     }
@@ -66,5 +70,17 @@ class ConfigCuentaPresenter(var configCuentaView: ConfigCuentaView?,
 
     fun saveNewChanges(nombrePerfil: String, context: ConfigCuentaActivity) {
         configCuentaInteractor.saveChangesDB(nombrePerfil,context)
+    }
+
+    fun guardarAparecerEnMapa() {
+        configCuentaInteractor.guardarAparecerEnMapaDB()
+    }
+
+    fun eliminarAparecerEnMapa() {
+        configCuentaInteractor.eliminarAparecerEnMapaDB()
+    }
+
+    fun checkIfAparecerEnMapaIsChecked() {
+        configCuentaInteractor.checkIfAparecerEnMapaIsChecked()
     }
 }

@@ -7,27 +7,6 @@
     tools:context=".Activities.animaldetalle.view.AnimalDetalleActivity">
 
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="backArrowButton"
-        tools:ignore="UsingOnClickInXml"
-        android:src="@drawable/ic_arrow"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="50dp">
-    </ImageView>
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="backArrowButton"
-        tools:ignore="UsingOnClickInXml"
-        android:src="@drawable/ic_share"
-        android:layout_alignParentEnd="true"
-        android:layout_marginEnd="30dp"
-        android:layout_marginTop="50dp">
-    </ImageView>
-
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -40,23 +19,40 @@
             android:scaleType="centerCrop"
             android:src="@drawable/dog" />
 
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="backArrowButton"
+            tools:ignore="UsingOnClickInXml"
+            android:src="@drawable/ic_arrow"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="30dp">
+        </ImageView>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="shareInfoButton"
+            tools:ignore="UsingOnClickInXml"
+            android:src="@drawable/ic_share"
+            android:layout_marginStart="340dp"
+            android:layout_marginTop="30dp">
+        </ImageView>
+
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/indicator"
             android:layout_width="match_parent"
             android:layout_height="20dp"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="320dp"
+            android:layout_marginTop="300dp"
             app:tabBackground="@drawable/indicator_selector"
             app:tabGravity="center"
             app:tabIndicatorHeight="0dp">
-
         </com.google.android.material.tabs.TabLayout>
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cardViewDatos"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:cardCornerRadius="30dp"
             android:layout_marginTop="320dp">
 
             <RelativeLayout
@@ -67,13 +63,13 @@
                     android:id="@+id/nombreAnimalTxt"
                     android:layout_width="270dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="60dp"
+                    android:layout_marginTop="30dp"
                     android:textColor="#262525"
                     android:text="Maine Coon Cats"
                     android:maxLength="270"
                     android:textSize="20sp"
                     android:fontFamily="@font/montserrat_bold"
-                    android:layout_marginStart="30dp">
+                    android:layout_marginStart="32dp">
                 </TextView>
 
                 <LinearLayout
@@ -92,6 +88,7 @@
                     </ImageView>
 
                     <TextView
+                        android:id="@+id/locationTxt"
                         android:layout_width="230dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
@@ -109,7 +106,9 @@
                     android:src="@drawable/favourite_icon"
                     app:backgroundTint="#BA352B"
                     android:elevation="30dp"
-                    android:layout_marginTop="60dp"
+                    android:outlineSpotShadowColor="#BA352B"
+                    android:scaleType="fitXY"
+                    android:layout_marginTop="30dp"
                     android:layout_marginEnd="30dp"
                     android:layout_alignParentEnd="true"
                     >
@@ -121,7 +120,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="90dp"
                     android:layout_below="@id/addToFav"
-                    android:layout_marginTop="40dp"
+                    android:layout_marginTop="20dp"
                     android:layout_marginStart="25dp">
 
                     <androidx.cardview.widget.CardView
@@ -227,76 +226,66 @@
 
                 </LinearLayout>
 
-                <LinearLayout
-                    android:id="@+id/linear2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/linear1"
-                    android:layout_marginTop="15dp"
-                    android:layout_marginStart="30dp"
-                    android:orientation="vertical"
-                    >
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/montserrat_bold"
-                        android:text="Descripción"
-                        android:textSize="16sp">
 
-                    </TextView>
-
-                    <TextView
-                        android:id="@+id/descripcionAnimalTxt"
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="80dp"
-                        android:fontFamily="@font/montserrat_medium"
-                        android:scrollbars="vertical"
-                        android:text="@string/text_to_test"
-                        android:layout_marginTop="5dp"
-                        android:textSize="12sp">
-
-                    </TextView>
-
-                </LinearLayout>
-
-
-                    <de.hdodenhof.circleimageview.CircleImageView
-                        android:id="@+id/profileImage"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:elevation="10dp"
                         android:layout_marginStart="30dp"
-                        android:layout_marginTop="30dp"
-                        android:layout_below="@id/linear2"
-                        android:src="@drawable/background_pet1">
+                        android:layout_marginTop="20dp"
+                        android:layout_below="@id/linear1"
+                        android:gravity="center">
 
-                    </de.hdodenhof.circleimageview.CircleImageView>
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:id="@+id/profileImage"
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:layout_marginStart="5dp"
+                            android:elevation="2dp"
+                            android:src="@drawable/background_pet1">
 
-                    <TextView
-                        android:id="@+id/nameOwner"
-                        android:layout_width="120dp"
-                        android:layout_height="match_parent"
-                        android:layout_marginStart="10dp"
-                        android:layout_marginTop="50dp"
-                        android:layout_toEndOf="@id/profileImage"
-                        android:layout_below="@id/linear2"
-                        android:fontFamily="@font/dmsansbold"
-                        android:text="Nombre"
-                        android:textSize="12sp" />
+                        </de.hdodenhof.circleimageview.CircleImageView>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="120dp"
+                                android:layout_height="match_parent"
+                                android:layout_marginStart="10dp"
+                                android:fontFamily="@font/montserrat_bold"
+                                android:textColor="@color/black"
+                                android:text="@string/publicado_por"
+                                android:textSize="12sp" />
+
+                            <TextView
+                                android:id="@+id/nameOwner"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_marginStart="10dp"
+                                android:fontFamily="@font/montserrat_bold"
+                                android:text="Gianfranco Bruschini"
+                                android:textSize="12sp" />
+
+                        </LinearLayout>
+
+
+                    </LinearLayout>
 
                     <androidx.appcompat.widget.AppCompatButton
                         android:id="@+id/buttonLike"
-                        android:layout_width="140dp"
-                        android:layout_height="45dp"
+                        android:layout_width="170dp"
+                        android:layout_height="50dp"
                         android:background="@drawable/button_design"
                         android:fontFamily="@font/montserrat_semibold"
                         android:textAllCaps="false"
                         android:onClick="goToContactInfo"
                         android:layout_alignParentBottom="true"
-                        android:layout_marginStart="230dp"
-                        android:layout_marginBottom="40dp"
+                        android:layout_centerHorizontal="true"
                         android:text="Contáctame"
+                        android:layout_marginBottom="40dp"
                         android:textColor="#fff"
                         tools:ignore="UsingOnClickInXml" />
 

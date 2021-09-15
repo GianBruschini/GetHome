@@ -37,6 +37,7 @@ class ConfigCuentaInteractor {
             fun onShowChangesNotMade()
             fun onHideProgressDialog()
             fun onShowProgressDialog()
+            fun onPassAparecerEnMapaValue(value: String)
 
     }
 
@@ -117,7 +118,7 @@ class ConfigCuentaInteractor {
     fun saveChangesDB(nombrePerfil: String,
                       context: ConfigCuentaActivity) {
         mFirebaseAuth = FirebaseAuth.getInstance()
-        uploadChangesOnDB(context,nombrePerfil)
+        uploadChangesOnDB(context, nombrePerfil)
     }
 
     private fun getFileExtension(uri: Uri, context: ConfigCuentaActivity): String? {
@@ -126,8 +127,9 @@ class ConfigCuentaInteractor {
         return mime.getExtensionFromMimeType(cR.getType(uri))
     }
 
-    private fun uploadChangesOnDB(context: ConfigCuentaActivity, nombrePerfil: String,
-                                  ) {
+    private fun uploadChangesOnDB(
+            context: ConfigCuentaActivity, nombrePerfil: String,
+    ) {
         mStorageRef = FirebaseStorage.getInstance().
         getReference("UsersProfilePictures" + "/" + mFirebaseAuth.currentUser?.uid)
         if (resultUri != null) {
@@ -137,13 +139,13 @@ class ConfigCuentaInteractor {
                     .addOnSuccessListener {
                         fileReference.downloadUrl.addOnSuccessListener { uri ->
                             val model = Model(uri.toString())
-                             storeValuesFirebase(model.imageURL,nombrePerfil)
+                             storeValuesFirebase(model.imageURL, nombrePerfil)
                         }
                     }
                     .addOnFailureListener { e ->  }
         }else{
             if(nombrePerfil != currentUserName){
-                storeValuesFirebase(null.toString(),nombrePerfil)
+                storeValuesFirebase(null.toString(), nombrePerfil)
             }else{
                 listener.onShowChangesNotMade()
                 listener.onHideProgressDialog()
@@ -152,7 +154,8 @@ class ConfigCuentaInteractor {
         }
     }
 
-    private fun storeValuesFirebase(imageURL: String, nombrePerfil: String,
+    private fun storeValuesFirebase(
+            imageURL: String, nombrePerfil: String,
     ) {
         if(imageURL!="null"){
             val crearUser: HashMap<String, Any> = HashMap()
@@ -177,6 +180,46 @@ class ConfigCuentaInteractor {
             listener.onChangesSaved()
         }
 
+    }
+
+    fun guardarAparecerEnMapaDB() {
+        val ref = FirebaseDatabase.getInstance().
+        reference.child("Users").
+        child("Person").child(FirebaseAuth.getInstance().currentUser!!.uid)
+                .child("mapa").child("figurar")
+        val boolean = true
+        ref.setValue(boolean.toString())
+    }
+
+    fun eliminarAparecerEnMapaDB() {
+        FirebaseDatabase.getInstance().
+        reference.child("Users").
+        child("Person").
+        child(FirebaseAuth.getInstance().currentUser!!.uid).
+        child("mapa").child("figurar").setValue("false")
+    }
+
+    fun checkIfAparecerEnMapaIsChecked() {
+        val database = FirebaseDatabase.getInstance().
+        reference.child("Users").
+        child("Person").
+        child(FirebaseAuth.getInstance().currentUser!!.uid).child("mapa")
+        database.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                for (dataSnapshot in snapshot.children) {
+                    if(dataSnapshot.exists()){
+                        val quieroAparecerEnMapa =
+                                dataSnapshot.getValue(String::class.java)!!
+                        listener.onPassAparecerEnMapaValue(quieroAparecerEnMapa)
+                    }
+                }
+
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                listener.onDataBaseError()
+            }
+        })
     }
 
 }

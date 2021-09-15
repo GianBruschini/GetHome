@@ -1,8 +1,6 @@
 package com.gian.gethome.Activities.openmap.interactor
 
-import androidx.recyclerview.widget.RecyclerView
 import com.gian.gethome.Activities.openmap.Model.Coordinates
-import com.gian.gethome.Adapters.LocationInfoAdapter
 import com.gian.gethome.Clases.Animal
 import com.gian.gethome.Clases.AnimalAdapterData
 import com.google.firebase.auth.FirebaseAuth
@@ -34,16 +32,55 @@ class OpenMapInteractor {
         database.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 for (dataSnapshot in snapshot.children) {
-                    var cantIteraciones: Int = 0
-                    for (snap in dataSnapshot.children) {
-                        cantIteraciones ++
-                        if(cantIteraciones == 1){
-                            animal= snap.getValue(Animal::class.java)!!
-                            listOfCoordinates.add(Coordinates(animal.latitude,animal.longitude,animal.userIDowner))
+                    val actualKey: Any = dataSnapshot.key!!
+                    val mapRef = FirebaseDatabase.getInstance().reference.child("Users")
+                            .child("Person").child(actualKey.toString()).child("mapa")
+                    mapRef.addListenerForSingleValueEvent(object : ValueEventListener {
+                        override fun onDataChange(snapshot: DataSnapshot) {
+                            for (dataSnapshotMap in snapshot.children) {
+                                if(dataSnapshotMap.exists()){
+                                    val quieroAparecerEnMapa =
+                                            dataSnapshotMap.getValue(String::class.java)!!
+
+                                    if(quieroAparecerEnMapa == "true"){
+                                        database.addListenerForSingleValueEvent(object : ValueEventListener {
+                                            override fun onDataChange(snapshotInside: DataSnapshot) {
+                                                for (dataSnapshot2 in snapshotInside.children) {
+                                                    val actualKeyInside: Any = dataSnapshot2.key!!
+                                                    if(actualKeyInside == actualKey){
+                                                        var cantIteraciones = 0
+                                                        for (snapshotInside in dataSnapshot2.children) {
+                                                            cantIteraciones++
+                                                            if (cantIteraciones == 1) {
+                                                                animal = snapshotInside.getValue(Animal::class.java)!!
+                                                                listOfCoordinates.add(Coordinates(animal.latitude, animal.longitude, animal.userIDowner))
+                                                            }
+                                                        }
+                                                    }
+
+                                                }
+                                                listener.onPassListOfCoordinates(listOfCoordinates)
+
+                                            }
+
+                                            override fun onCancelled(error: DatabaseError) {
+                                                listener.onDataBaseError()
+                                            }
+                                        })
+                                    }
+                                }
+                            }
+
                         }
-                    }
+
+                        override fun onCancelled(error: DatabaseError) {
+                            listener.onDataBaseError()
+                        }
+                    })
+
+
                 }
-                listener.onPassListOfCoordinates(listOfCoordinates)
+
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -61,13 +98,12 @@ class OpenMapInteractor {
             override fun onDataChange(snapshot: DataSnapshot) {
                 for (dataSnapshot in snapshot.children) {
                     for (snap in dataSnapshot.children) {
-                        animal= snap.getValue(Animal::class.java)!!
-                        if(animal.userIDowner == idUserOwner){
+                        animal = snap.getValue(Animal::class.java)!!
+                        if (animal.userIDowner == idUserOwner) {
                             imagenNotNull = checkWhatImageIsNotNull(animal)
                             distance = calculateDistance(
                                     myCurrentLatitude.toDouble(),
-                                    myCurrentLongitude.toDouble()
-                                    ,animal.latitude.toDouble(),
+                                    myCurrentLongitude.toDouble(), animal.latitude.toDouble(),
                                     animal.longitude.toDouble()).toString()
 
                             mlistOfAnimals.add(AnimalAdapterData(

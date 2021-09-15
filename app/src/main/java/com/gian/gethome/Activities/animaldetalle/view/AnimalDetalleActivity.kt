@@ -1,6 +1,7 @@
 package com.gian.gethome.Activities.animaldetalle.view
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.ActivityNotFoundException
 import android.content.ComponentName
@@ -25,6 +26,7 @@ import com.gian.gethome.Clases.SliderAnimalDetailScreen
 import com.gian.gethome.Clases.UserInfo
 import com.gian.gethome.R
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.tabs.TabLayout
 import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
@@ -46,11 +48,12 @@ class AnimalDetalleActivity : AppCompatActivity(),AnimalDetalleView {
     private lateinit var animalKey:String
     private lateinit var provincia:String
     private lateinit var pais:String
-    private lateinit var toggleButtonFav:ToggleButton
+    private lateinit var toggleButtonFav:FloatingActionButton
     private lateinit var dialogBottomSheet: BottomSheetDialog
     private lateinit var viewBottomSheet:View
     private lateinit var image:CircleImageView
     private lateinit var dialogInfo: Dialog
+    private var esFavorito:Boolean = true
     private val REQUEST_CALL = 1
 
     private val presenter = AnimalDetallePresenter(this, AnimalDetalleInteractor())
@@ -58,7 +61,7 @@ class AnimalDetalleActivity : AppCompatActivity(),AnimalDetalleView {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_animal_detalle)
-        descripcionAnimalTxt.movementMethod = ScrollingMovementMethod()
+        //descripcionAnimalTxt.movementMethod = ScrollingMovementMethod()
         getIntentValues()
         setUIvalues()
         presenter.checkFavouritesInDB(animalKey)
@@ -70,13 +73,27 @@ class AnimalDetalleActivity : AppCompatActivity(),AnimalDetalleView {
     }
 
     private fun setLogicToToggleButtonFav() {
-        toggleButtonFav.setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener { buttonView, isChecked ->
+       /* toggleButtonFav.setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked) {
                 presenter.saveLikes(animalKey, userIDownerAnimal)
             } else {
                 presenter.deleteLike(animalKey)
             }
         })
+
+        */
+        toggleButtonFav.setOnClickListener {
+            if(esFavorito){
+                presenter.saveLikes(animalKey,userIDownerAnimal)
+                toggleButtonFav.setImageDrawable(ContextCompat.getDrawable(applicationContext, R.drawable.favourite_icon_red));
+                esFavorito = false
+            }else{
+                presenter.deleteLike(animalKey)
+                toggleButtonFav.setImageDrawable(ContextCompat.getDrawable(applicationContext, R.drawable.favourite_icon));
+                esFavorito = true
+            }
+        }
+
     }
 
     private fun settingViewPager(linkImage: String) {
@@ -101,11 +118,13 @@ class AnimalDetalleActivity : AppCompatActivity(),AnimalDetalleView {
 
     }
 
+    @SuppressLint("SetTextI18n")
     private fun setUIvalues() {
         nombreAnimalTxt.text = nombreAnimal
         edadAnimalTxt.text = edadAnimal
-        descripcionAnimalTxt.text = descripcionAnimal
-        distanceTextCard.text = provincia + pais
+        //descripcionAnimalTxt.text = descripcionAnimal
+        locationTxt.text = "$provincia, $pais"
+        cardViewDatos.setBackgroundResource(R.drawable.card_rounded_design_animal_detail)
         viewBottomSheet = layoutInflater.inflate(R.layout.bottom_sheet_contact_info, null)
         dialogBottomSheet = BottomSheetDialog(this, R.style.BottomShitDialogTheme)
         dialogBottomSheet.setCancelable(true)
@@ -115,7 +134,7 @@ class AnimalDetalleActivity : AppCompatActivity(),AnimalDetalleView {
         val view = layoutInflater.inflate(R.layout.dialog_detail_contact_info, null)
         dialogInfo = Dialog(this)
         dialogInfo.setContentView(view)
-        dialogInfo.window?.setBackgroundDrawableResource(android.R.color.transparent);
+        dialogInfo.window?.setBackgroundDrawableResource(android.R.color.transparent)
     }
 
     fun backArrowButton(view: View) {
@@ -134,23 +153,23 @@ class AnimalDetalleActivity : AppCompatActivity(),AnimalDetalleView {
     }
 
     private fun setOnClickListenerContactInfo(animal: Animal) {
-        dialogBottomSheet.detailedInfo.setOnClickListener {
-            dialogBottomSheet.dismiss()
+
+
             dialogInfo.show()
             dialogInfo.findViewById<EditText>(R.id.whatsppNumber).setText(animal.whatsapp)
             dialogInfo.findViewById<EditText>(R.id.phoneNumber).setText(animal.phone)
             dialogInfo.findViewById<EditText>(R.id.instagram).setText(animal.instagram)
             dialogInfo.findViewById<EditText>(R.id.mail).setText(animal.mail)
             dialogInfo.findViewById<EditText>(R.id.whatsppNumber).setText(animal.whatsapp)
-        }
 
-        dialogBottomSheet.findViewById<ImageView>(R.id.whatsapp)!!.setOnClickListener {
+
+        dialogInfo.findViewById<EditText>(R.id.whatsppNumber)!!.setOnClickListener {
             makeWhatsappAction(animal)
         }
-        dialogBottomSheet.findViewById<ImageView>(R.id.mail)!!.setOnClickListener {
+        dialogInfo.findViewById<EditText>(R.id.mail)!!.setOnClickListener {
             makeMailAction(animal)
         }
-        dialogBottomSheet.findViewById<ImageView>(R.id.phone)!!.setOnClickListener {
+        dialogInfo.findViewById<EditText>(R.id.phoneNumber)!!.setOnClickListener {
             makePhoneAction(animal)
         }
         /*dialogBottomSheet.findViewById<ImageView>(R.id.facebook)!!.setOnClickListener {
@@ -159,7 +178,7 @@ class AnimalDetalleActivity : AppCompatActivity(),AnimalDetalleView {
 
          */
 
-        dialogBottomSheet.findViewById<ImageView>(R.id.instagram)!!.setOnClickListener {
+        dialogInfo.findViewById<EditText>(R.id.instagram)!!.setOnClickListener {
             makeInstagramAction(animal)
         }
 
@@ -172,7 +191,7 @@ class AnimalDetalleActivity : AppCompatActivity(),AnimalDetalleView {
     }
 
     override fun setFavButton() {
-        toggleButtonFav.isChecked = true
+        toggleButtonFav.setImageDrawable(ContextCompat.getDrawable(applicationContext, R.drawable.favourite_icon_red));
     }
 
     override fun setNombreYfoto(userInfo: UserInfo) {
@@ -193,7 +212,7 @@ class AnimalDetalleActivity : AppCompatActivity(),AnimalDetalleView {
     }
 
     override fun setSexo(sexo: Int) {
-        Picasso.get().load(sexo).into(sexoAnimalImage)
+        //Picasso.get().load(sexo).into(sexoAnimalImage)
     }
 
     override fun setTransitoUrgente(transito: String) {
@@ -208,7 +227,7 @@ class AnimalDetalleActivity : AppCompatActivity(),AnimalDetalleView {
     override fun getContactInfoData(animal: Animal) {
         setOnClickListenerContactInfo(animal)
         checkWhatInfoIsEmpty(animal)
-        dialogBottomSheet.show()
+        dialogInfo.show()
     }
 
     private fun checkWhatInfoIsEmpty(animal: Animal) {
@@ -324,6 +343,10 @@ class AnimalDetalleActivity : AppCompatActivity(),AnimalDetalleView {
             startActivity(Intent(Intent.ACTION_VIEW,
                     Uri.parse("https://instagram.com/" + animal.instagram)))
         }
+    }
+
+    fun shareInfoButton(view: View) {
+
     }
 
     /*fun makeFacebookAction(animal: Animal) {

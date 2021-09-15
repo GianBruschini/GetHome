@@ -13,6 +13,7 @@ interface ConfigCuentaView {
     fun showChangesNotMade()
     fun showProgressDialog()
     fun hideProgresDialog()
+    fun setAparecerEnMapaValue(value: String)
 
 
 

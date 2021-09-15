@@ -30,18 +30,36 @@ class ConfigCuentaActivity : AppCompatActivity(),ConfigCuentaView {
     private val presenter = ConfigCuentaPresenter(this, ConfigCuentaInteractor())
     private var dialog: Dialog? = null
     private var loadingDialog: Dialog? = null
+    private lateinit var dialogInfo: Dialog
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityConfigCuentaBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setLogicToButtons()
         presenter.getProifleImage()
+        presenter.checkIfAparecerEnMapaIsChecked()
     }
 
     private fun setLogicToButtons() {
+        val view = layoutInflater.inflate(R.layout.dialog_info_check_map, null)
+        dialogInfo = Dialog(this)
+        dialogInfo.setContentView(view)
+        dialogInfo.window?.setBackgroundDrawableResource(android.R.color.transparent);
+        binding.infoAboutMaps.setOnClickListener {
+            dialogInfo.show()
+        }
         binding.backButton.setOnClickListener {
             finish()
         }
+        binding.habilitarMapa.setOnClickListener {
+            if(binding.habilitarMapa.isChecked){
+                presenter.guardarAparecerEnMapa()
+            }else{
+                presenter.eliminarAparecerEnMapa()
+            }
+        }
+
+
         binding.botonEliminarCuenta.setOnClickListener {
             dialog = Dialog(this)
             dialog?.setContentView(R.layout.dialog_deleteacc_layout)
@@ -65,9 +83,14 @@ class ConfigCuentaActivity : AppCompatActivity(),ConfigCuentaView {
         }
 
         binding.botonGuardar.setOnClickListener {
-            showProgressDialog()
-            presenter.saveNewChanges(
-                    binding.nombrePerfil.text.toString(), this)
+            if(!binding.nombrePerfil.text.toString().isNullOrEmpty()){
+                showProgressDialog()
+                presenter.saveNewChanges(
+                        binding.nombrePerfil.text.toString(), this)
+            }else{
+                Toast.makeText(this,"Debes indicar un nombre de perfil",Toast.LENGTH_SHORT).show()
+            }
+
         }
     }
 
@@ -107,6 +130,16 @@ class ConfigCuentaActivity : AppCompatActivity(),ConfigCuentaView {
 
 
     override fun hideProgresDialog() {
+
+    }
+
+    override fun setAparecerEnMapaValue(value: String) {
+        println("El valor del aparecer es " + " " + value.toString())
+        if(value.toString() == "true"){
+            binding.habilitarMapa.isChecked = true
+        }else{
+            binding.habilitarMapa.isChecked = false
+        }
 
     }
 

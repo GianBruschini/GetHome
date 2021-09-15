@@ -132,8 +132,8 @@ class AnimalDetalleInteractor {
 
     fun detectTransitoUrgente(transitoUrgente: String,listener: onAnimalDetalleListener){
         when(transitoUrgente){
-            "true" ->  listener.onTransitoUrgente("Con tránsito urgente")
-            "false" -> listener.onTransitoUrgente("Sin tránsito urgente")
+            "true" ->  listener.onTransitoUrgente("Si")
+            "false" -> listener.onTransitoUrgente("No")
         }
 
     }
