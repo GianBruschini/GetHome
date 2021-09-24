@@ -24,7 +24,7 @@ In this application an MVP architecture was used and Firebase was used for the p
 
 # Future updates
 * Firebase ML kit, for labeling detection
-* Dependency Injection, using Hilt for a better test
+* Dependency Injection, using Hilt for a better writing of the tests
 * Testing
 
 # Some screenshots of the app
