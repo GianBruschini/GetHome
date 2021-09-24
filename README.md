@@ -8,7 +8,7 @@ In this application an MVP architecture was used and Firebase was used for the p
 
 **Libraries used**
 
-* Firebase database, and Firebase storage.
+* Firebase database, Firebase crashlytics and Firebase storage.
 * Google play service, for Gmail login.
 * Facebook login,
 * Butterknife
@@ -20,6 +20,10 @@ In this application an MVP architecture was used and Firebase was used for the p
 * Airbnb Lottie for animations
 * Google maps (google play services maps)
 
+
+# Future updates
+* Firebase ML kit, for labeling detection
+
 # Some screenshots of the app
 
 <p align"center">
@@ -28,6 +32,7 @@ In this application an MVP architecture was used and Firebase was used for the p
 <img src="https://user-images.githubusercontent.com/59579790/127756520-ad15fbbb-8fa3-45fb-8e1e-5f7a4cb9162d.png" width="211" height="423"  />
 <img src="https://user-images.githubusercontent.com/59579790/127693701-bb4483ec-b090-4a69-91cf-b392df1470a5.png" width="211" height="423"  />
 </p>
+
 
 
 
