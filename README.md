@@ -25,15 +25,23 @@ In this application an MVP architecture was used and Firebase was used for the p
 # Future updates
 * Firebase ML kit, for labeling detection
 * Dependency Injection, using Hilt for a better writing of the tests
-* Testing
+* Testing!
+
+
+
+
+![screen4](https://user-images.githubusercontent.com/59579790/134691363-ac2fd58a-56d1-4512-b9bb-ac69f30484fc.png)
+
+
+
 
 # Some screenshots of the app
 
 <p align"center">
-<img src="https://user-images.githubusercontent.com/59579790/127693579-71657620-046a-464d-b869-ca66076e44da.png" width="211" height="423" />
-<img src="https://user-images.githubusercontent.com/59579790/127693618-c3a59aca-30b7-41e4-ae8a-e8aec51328d7.png" width="211" height="423"  />
-<img src="https://user-images.githubusercontent.com/59579790/127756520-ad15fbbb-8fa3-45fb-8e1e-5f7a4cb9162d.png" width="211" height="423"  />
-<img src="https://user-images.githubusercontent.com/59579790/127693701-bb4483ec-b090-4a69-91cf-b392df1470a5.png" width="211" height="423"  />
+<img src="https://user-images.githubusercontent.com/59579790/134691263-da077aa3-3b3a-4274-82e7-63af1f3a42e6.png" width="211" height="423" />
+<img src="https://user-images.githubusercontent.com/59579790/134691287-6791e9b2-33ec-4ba9-9626-4939923b0f08.png" width="211" height="423"  />
+<img src="https://user-images.githubusercontent.com/59579790/134691325-ba9cce94-ecee-4ee8-9e40-2d08817e0752.png" width="211" height="423"  />
+<img src="https://user-images.githubusercontent.com/59579790/134691363-ac2fd58a-56d1-4512-b9bb-ac69f30484fc.png" width="211" height="423"  />
 </p>
 
 
