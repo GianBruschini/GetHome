@@ -18,6 +18,7 @@ In this application an MVP architecture was used and Firebase was used for the p
 * Dexter
 * FormValidation by basgeekball
 * Airbnb Lottie for animations
+* Google maps (google play services maps)
 
 # Some screenshots of the app
 
