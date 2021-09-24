@@ -21,6 +21,7 @@ In this application an MVP architecture was used and Firebase was used for the p
 * Google maps (google play services maps)
 
 
+![device-2021-09-24-114109](https://user-images.githubusercontent.com/59579790/134693580-dab55ef7-28d0-48fb-b883-129865b8513f.png)
 
 # Future updates
 * Firebase ML kit, for labeling detection
@@ -30,6 +31,7 @@ In this application an MVP architecture was used and Firebase was used for the p
 
 
 
+![Screenshot_1632494529](https://user-images.githubusercontent.com/59579790/134693758-2bfafae2-f4db-4e42-8f58-9bc48528e2cb.png)
 
 
 
@@ -38,9 +40,9 @@ In this application an MVP architecture was used and Firebase was used for the p
 
 <p align"center">
 <img src="https://user-images.githubusercontent.com/59579790/134691263-da077aa3-3b3a-4274-82e7-63af1f3a42e6.png" width="211" height="423" />
-<img src="https://user-images.githubusercontent.com/59579790/134691287-6791e9b2-33ec-4ba9-9626-4939923b0f08.png" width="211" height="423"  />
-<img src="https://user-images.githubusercontent.com/59579790/134691325-ba9cce94-ecee-4ee8-9e40-2d08817e0752.png" width="211" height="423"  />
 <img src="https://user-images.githubusercontent.com/59579790/134691363-ac2fd58a-56d1-4512-b9bb-ac69f30484fc.png" width="211" height="423"  />
+<img src="https://user-images.githubusercontent.com/59579790/134693580-dab55ef7-28d0-48fb-b883-129865b8513f.png" width="211" height="423"  />
+<img src="https://user-images.githubusercontent.com/59579790/134693758-2bfafae2-f4db-4e42-8f58-9bc48528e2cb.png" width="211" height="423"  />
 </p>
 
 
