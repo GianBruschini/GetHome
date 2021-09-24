@@ -30,7 +30,6 @@ In this application an MVP architecture was used and Firebase was used for the p
 
 
 
-![screen4](https://user-images.githubusercontent.com/59579790/134691363-ac2fd58a-56d1-4512-b9bb-ac69f30484fc.png)
 
 
 
