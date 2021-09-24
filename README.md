@@ -21,7 +21,7 @@ In this application an MVP architecture was used and Firebase was used for the p
 * Google maps (google play services maps)
 
 
-![device-2021-09-24-114109](https://user-images.githubusercontent.com/59579790/134693580-dab55ef7-28d0-48fb-b883-129865b8513f.png)
+
 
 # Future updates
 * Firebase ML kit, for labeling detection
@@ -31,7 +31,6 @@ In this application an MVP architecture was used and Firebase was used for the p
 
 
 
-![Screenshot_1632494529](https://user-images.githubusercontent.com/59579790/134693758-2bfafae2-f4db-4e42-8f58-9bc48528e2cb.png)
 
 
 
