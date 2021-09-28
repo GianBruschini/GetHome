@@ -68,8 +68,8 @@ class ConfigCuentaPresenter(var configCuentaView: ConfigCuentaView?,
         configCuentaInteractor.retrieveImageResult(result,resultCode)
     }
 
-    fun saveNewChanges(nombrePerfil: String, context: ConfigCuentaActivity) {
-        configCuentaInteractor.saveChangesDB(nombrePerfil,context)
+    fun saveNewChanges(nombrePerfil: String, context: ConfigCuentaActivity, estadoMapa: Int) {
+        configCuentaInteractor.saveChangesDB(nombrePerfil,context,estadoMapa)
     }
 
     fun guardarAparecerEnMapa() {

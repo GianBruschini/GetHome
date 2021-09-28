@@ -45,6 +45,12 @@ class PerfilFragment: Fragment(R.layout.fragment_mi_perfil),PerfilView,View.OnCl
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
     }
 
+    override fun onResume() {
+        getImageFromDB()
+        getUserNameFromDB()
+        super.onResume()
+    }
+
     private fun getUserNameFromDB() {
         presenter.getUserNameFromDB()
     }

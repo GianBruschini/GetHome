@@ -109,6 +109,10 @@ class EditAnimalActivity : AppCompatActivity(),EditAnimalView {
         binding.phoneNumber.setText(animal.phone)
         binding.mail.setText(animal.mail)
         binding.instagram.setText(animal.instagram)
+        when(animal.transitoUrgente){
+            "true"->binding.transitoCheckBox.isChecked = true
+            "false"->binding.transitoCheckBox.isChecked = false
+        }
     }
 
     override fun showAnimationAnimalUpdated() {

@@ -10,6 +10,59 @@
         <item />
         <item>Cerrar sesión</item>
     </string-array>
+    <string-array name="tipoAnimales"><item>
+            Perro
+        </item>
+        <item>
+            Gato
+        </item>
+        <item>
+            Loro
+        </item>
+        <item>
+            Conejo
+        </item>
+        <item>
+            Ave
+        </item>
+        <item>
+            Roedor
+        </item>
+    </string-array>
+
+    <string-array name="edadAnimal">
+        <item>
+            Menos de 2 semanas
+        </item>
+        <item>
+            2 semanas a 1 mes
+        </item>
+        <item>
+            1 a 3 meses
+        </item>
+        <item>
+            3 a 6 meses
+        </item>
+        <item>
+            6 meses a 1 año
+        </item>
+        <item>
+            1 a 3 años
+        </item>
+        <item>
+            3 a 5 años
+        </item>
+    </string-array>
+
+
+    <string-array name="sexoAnimal">
+        <item>
+            Macho
+        </item>
+        <item>
+            Hembra
+        </item>
+    </string-array>
 
     <array name="ld_activityScreenIcons">
         <item>@drawable/ic_home</item>

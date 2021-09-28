@@ -6,9 +6,6 @@ import android.content.Intent
 import android.net.Uri
 import android.webkit.MimeTypeMap
 import android.widget.ImageView
-import com.amazonaws.auth.BasicAWSCredentials
-import com.amazonaws.services.rekognition.AmazonRekognition
-import com.amazonaws.services.rekognition.AmazonRekognitionClient
 import com.gian.gethome.Activities.elegirfotodeperfil.model.Model
 import com.gian.gethome.Activities.imagenesanimal.view.ImagenesAnimalActivity
 import com.google.firebase.auth.FirebaseAuth
@@ -17,8 +14,15 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.StorageTask
+import com.google.mlkit.vision.common.InputImage
+import com.google.mlkit.vision.label.ImageLabeling
+import com.google.mlkit.vision.label.defaults.ImageLabelerOptions
+import com.google.mlkit.vision.objects.ObjectDetection
+import com.google.mlkit.vision.objects.defaults.ObjectDetectorOptions
+import com.google.mlkit.vision.objects.defaults.PredefinedCategory
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
+import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.properties.Delegates
@@ -60,6 +64,7 @@ class ImagenesAnimalInteractor {
         imageList.add(imagen2)
         imageList.add(imagen3)
         imageList.add(imagen4)
+
 
     }
 
@@ -227,13 +232,46 @@ class ImagenesAnimalInteractor {
 
     private fun uploadFiles(key: String, currentUser: FirebaseUser, context: ImagenesAnimalActivity, listener: onImagenesAnimalListener) {
         settingImagesInNullDB(currentUser, key)
+        // Multiple object detection in static images
+        val options = ObjectDetectorOptions.Builder()
+                .setDetectorMode(ObjectDetectorOptions.SINGLE_IMAGE_MODE)
+                .enableMultipleObjects()
+                .enableClassification()  // Optional
+                .build()
+
+        val objectDetector = ObjectDetection.getClient(options)
+
         for(item in arrayUrisNulls.indices){
             if(arrayUrisNulls[item] == null){
 
-            }else{
+            }else {
                 arrayUris.add(arrayUrisNulls[item]!!)
+                val image: InputImage
+                try {
+                    image = InputImage.fromFilePath(context, arrayUrisNulls[item]!!)
+                    val labeler = ImageLabeling.getClient(ImageLabelerOptions.DEFAULT_OPTIONS)
+                    labeler.process(image)
+                            .addOnSuccessListener { labels ->
+                                for (label in labels) {
+                                    println("El texto es " + " " + label.text)
+
+                                }
+                            }
+                            .addOnFailureListener { e ->
+
+                            }
+                } catch (e: IOException) {
+                    e.printStackTrace()
+                }
+
             }
-        }
+
+            }
+
+
+
+
+
         total = arrayUris.size
         for (i in arrayUris.indices) {
             val actualImage: Uri = arrayUris[i]
@@ -317,9 +355,5 @@ class ImagenesAnimalInteractor {
     }
 
 
-    private fun instantiateRekognition(){
-        val rekognitionClient: AmazonRekognition =
-                AmazonRekognitionClient(BasicAWSCredentials("", ""))
 
-    }
 }

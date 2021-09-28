@@ -39,7 +39,6 @@ class MisPublicacionesInteractor {
                 if (snapshot.exists()) {
                     for (dataSnapshot in snapshot.children) {
                         val animal: Animal = dataSnapshot.getValue(Animal::class.java)!!
-                        println("El nombre del animal es " + " " + animal.nombre)
                         imagenNotNull = checkWhatImageIsNotNull(animal)
                         mlist.add(AnimalAdapterData(animal.nombre,
                                 animal.tipoAnimal,

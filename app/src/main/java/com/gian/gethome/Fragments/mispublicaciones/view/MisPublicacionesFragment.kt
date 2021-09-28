@@ -34,7 +34,6 @@ class MisPublicacionesFragment: Fragment(), MisPublicacionesView,MisPubsAdapter.
 
     override fun onResume() {
         if(this::adapter.isInitialized){
-            clearListOfRecycler()
             presenter.getMyPubsData()
         }
         super.onResume()
@@ -112,6 +111,7 @@ class MisPublicacionesFragment: Fragment(), MisPublicacionesView,MisPubsAdapter.
 
     override fun onEditClick(position: Int) {
         presenter.giveMeTheAnimalAt(position)
+        clearListOfRecycler()
         val intent= Intent(activity, EditAnimalActivity::class.java)
         intent.putExtra("animalKey", animal.animalKey)
         intent.putExtra("animalUrlImage", animal.imageURL)

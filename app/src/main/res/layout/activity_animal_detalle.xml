@@ -99,21 +99,17 @@
                     </TextView>
                 </LinearLayout>
 
-                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                <com.airbnb.lottie.LottieAnimationView
                     android:id="@+id/addToFav"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
-                    android:src="@drawable/favourite_icon"
-                    app:backgroundTint="#BA352B"
-                    android:elevation="30dp"
-                    android:outlineSpotShadowColor="#BA352B"
-                    android:scaleType="fitXY"
-                    android:layout_marginTop="30dp"
-                    android:layout_marginEnd="30dp"
+                    android:layout_width="80dp"
+                    android:layout_height="100dp"
+                    app:lottie_autoPlay="false"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="20dp"
+                    app:srcCompat="@drawable/twitter_like"
                     android:layout_alignParentEnd="true"
-                    >
+                    app:lottie_loop="false"/>
 
-                </com.google.android.material.floatingactionbutton.FloatingActionButton>
 
                 <LinearLayout
                     android:id="@+id/linear1"

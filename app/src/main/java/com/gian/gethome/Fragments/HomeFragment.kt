@@ -101,9 +101,6 @@ class HomeFragment: Fragment(), HomeAdapter.OnItemClickListener, View.OnClickLis
         longitude = homeActivity.longitudeTxt.text.toString()
     }
 
-
-
-
     private fun loadRecycler() {
         texto_resultado.visibility = View.GONE
         mFirebaseAuth = FirebaseAuth.getInstance()

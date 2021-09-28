@@ -17,7 +17,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.GetHome">
-        <activity android:name=".Activities.openmap.view.OpenMapActivity"></activity>
+        <activity android:name=".Activities.testActivity"></activity>
+        <activity android:name=".Activities.openmap.view.OpenMapActivity" />
         <activity
             android:name=".Activities.configcuenta.view.ConfigCuentaActivity"
             android:screenOrientation="portrait" />
@@ -35,7 +36,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".Activities.homeactivity.view.HomeActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Activities.elegirfotodeperfil.view.ElegirFotoDePerfilActivity"
             android:screenOrientation="portrait" />
@@ -87,14 +88,10 @@
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="@string/google_maps_key"></meta-data>
-
+            android:value="@string/google_maps_key" />
         <meta-data
             android:name="com.google.mlkit.vision.DEPENDENCIES"
             android:value="ica" />
-        <!-- To use multiple models: android:value="ica,model2,model3" -->
-
-
     </application>
 
 </manifest>

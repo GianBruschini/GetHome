@@ -16,7 +16,6 @@ import com.gian.gethome.Activities.configcuenta.model.ConfigCuentaInteractor
 import com.gian.gethome.Activities.configcuenta.presenter.ConfigCuentaPresenter
 import com.gian.gethome.Activities.homeactivity.view.HomeActivity
 import com.gian.gethome.Clases.CommonUtils
-import com.gian.gethome.Clases.CommonUtilsJava
 import com.gian.gethome.MainActivity
 import com.gian.gethome.R
 import com.gian.gethome.databinding.ActivityConfigCuentaBinding
@@ -31,6 +30,7 @@ class ConfigCuentaActivity : AppCompatActivity(),ConfigCuentaView {
     private var dialog: Dialog? = null
     private var loadingDialog: Dialog? = null
     private lateinit var dialogInfo: Dialog
+    private var estadoMapa:Int = 0 // 0 no fue check, 1 fue check, 2 unchecked
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityConfigCuentaBinding.inflate(layoutInflater)
@@ -39,6 +39,7 @@ class ConfigCuentaActivity : AppCompatActivity(),ConfigCuentaView {
         presenter.getProifleImage()
         presenter.checkIfAparecerEnMapaIsChecked()
     }
+
 
     private fun setLogicToButtons() {
         val view = layoutInflater.inflate(R.layout.dialog_info_check_map, null)
@@ -53,9 +54,9 @@ class ConfigCuentaActivity : AppCompatActivity(),ConfigCuentaView {
         }
         binding.habilitarMapa.setOnClickListener {
             if(binding.habilitarMapa.isChecked){
-                presenter.guardarAparecerEnMapa()
+                estadoMapa = 1
             }else{
-                presenter.eliminarAparecerEnMapa()
+                estadoMapa = 2
             }
         }
 
@@ -86,9 +87,9 @@ class ConfigCuentaActivity : AppCompatActivity(),ConfigCuentaView {
             if(!binding.nombrePerfil.text.toString().isNullOrEmpty()){
                 showProgressDialog()
                 presenter.saveNewChanges(
-                        binding.nombrePerfil.text.toString(), this)
+                        binding.nombrePerfil.text.toString(), this,estadoMapa)
             }else{
-                Toast.makeText(this,"Debes indicar un nombre de perfil",Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Debes indicar un nombre de perfil", Toast.LENGTH_SHORT).show()
             }
 
         }
@@ -134,7 +135,6 @@ class ConfigCuentaActivity : AppCompatActivity(),ConfigCuentaView {
     }
 
     override fun setAparecerEnMapaValue(value: String) {
-        println("El valor del aparecer es " + " " + value.toString())
         if(value.toString() == "true"){
             binding.habilitarMapa.isChecked = true
         }else{
@@ -166,7 +166,7 @@ class ConfigCuentaActivity : AppCompatActivity(),ConfigCuentaView {
     override fun showChangesSaved()
     {
         Toast.makeText(this, "Cambios guardados!", Toast.LENGTH_SHORT).show()
-        navigateTo(Intent(this@ConfigCuentaActivity, HomeActivity::class.java))
+        finish()
     }
 
     override fun showChangesNotMade() {

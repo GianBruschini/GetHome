@@ -116,9 +116,10 @@ class ConfigCuentaInteractor {
     }
 
     fun saveChangesDB(nombrePerfil: String,
-                      context: ConfigCuentaActivity) {
+                      context: ConfigCuentaActivity,
+                      estadoMapa: Int) {
         mFirebaseAuth = FirebaseAuth.getInstance()
-        uploadChangesOnDB(context, nombrePerfil)
+        uploadChangesOnDB(context, nombrePerfil,estadoMapa)
     }
 
     private fun getFileExtension(uri: Uri, context: ConfigCuentaActivity): String? {
@@ -128,7 +129,7 @@ class ConfigCuentaInteractor {
     }
 
     private fun uploadChangesOnDB(
-            context: ConfigCuentaActivity, nombrePerfil: String,
+            context: ConfigCuentaActivity, nombrePerfil: String, estadoMapa: Int,
     ) {
         mStorageRef = FirebaseStorage.getInstance().
         getReference("UsersProfilePictures" + "/" + mFirebaseAuth.currentUser?.uid)
@@ -139,24 +140,38 @@ class ConfigCuentaInteractor {
                     .addOnSuccessListener {
                         fileReference.downloadUrl.addOnSuccessListener { uri ->
                             val model = Model(uri.toString())
-                             storeValuesFirebase(model.imageURL, nombrePerfil)
+                             storeValuesFirebase(model.imageURL, nombrePerfil,estadoMapa)
                         }
                     }
                     .addOnFailureListener { e ->  }
         }else{
-            if(nombrePerfil != currentUserName){
-                storeValuesFirebase(null.toString(), nombrePerfil)
+            if(nombrePerfil != currentUserName || estadoMapa!=0){
+                if(estadoMapa != 0){
+                    when(estadoMapa){
+                        1->guardarAparecerEnMapaDB()
+                        2->eliminarAparecerEnMapaDB()
+                    }
+                }
+                if(nombrePerfil != currentUserName){
+                    storeValuesFirebase(null.toString(), nombrePerfil,estadoMapa)
+                }
             }else{
                 listener.onShowChangesNotMade()
                 listener.onHideProgressDialog()
             }
-
         }
     }
 
     private fun storeValuesFirebase(
-            imageURL: String, nombrePerfil: String,
+            imageURL: String, nombrePerfil: String,estadoMapa: Int
     ) {
+
+        if(estadoMapa != 0){
+            when(estadoMapa){
+                1->guardarAparecerEnMapaDB()
+                2->eliminarAparecerEnMapaDB()
+            }
+        }
         if(imageURL!="null"){
             val crearUser: HashMap<String, Any> = HashMap()
             crearUser["imageURL"] = imageURL
@@ -180,6 +195,7 @@ class ConfigCuentaInteractor {
             listener.onChangesSaved()
         }
 
+
     }
 
     fun guardarAparecerEnMapaDB() {
@@ -189,6 +205,7 @@ class ConfigCuentaInteractor {
                 .child("mapa").child("figurar")
         val boolean = true
         ref.setValue(boolean.toString())
+
     }
 
     fun eliminarAparecerEnMapaDB() {
@@ -197,6 +214,7 @@ class ConfigCuentaInteractor {
         child("Person").
         child(FirebaseAuth.getInstance().currentUser!!.uid).
         child("mapa").child("figurar").setValue("false")
+
     }
 
     fun checkIfAparecerEnMapaIsChecked() {

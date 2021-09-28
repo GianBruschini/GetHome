@@ -11,7 +11,9 @@ import android.widget.ArrayAdapter
 import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.GridLayoutManager
 import com.basgeekball.awesomevalidation.AwesomeValidation
 import com.basgeekball.awesomevalidation.ValidationStyle
 import com.basgeekball.awesomevalidation.utility.RegexTemplate
@@ -20,6 +22,7 @@ import com.gian.gethome.Activities.imagenesanimal.view.ImagenesAnimalActivity
 import com.gian.gethome.R
 import com.gian.gethome.databinding.FragmentPublicarAnimalBinding
 import com.hbb20.CountryCodePicker
+import com.skydoves.powerspinner.*
 import kotlinx.android.synthetic.main.activity_contact_info.*
 import kotlinx.android.synthetic.main.activity_home.*
 import java.util.*
@@ -46,33 +49,34 @@ class PublicarAnimalFragment: Fragment(R.layout.fragment_publicar_animal) {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentPublicarAnimalBinding.inflate(inflater)
+
         initializeValues()
-        getBundleFromHomeActivity()
         settingSpinner()
         settingOnClickListenerBotonContinuar()
         return binding!!.root
-    }
 
-    private fun getBundleFromHomeActivity() {
-        //latitude = activity?.intent?.getStringExtra("latitude").toString()
-        //longitude = activity?.intent?.getStringExtra("longitude").toString()
 
     }
+
 
     private fun initializeValues() {
+
         awesomeValidation = AwesomeValidation(ValidationStyle.BASIC)
         homeActivity = (activity as HomeActivity?)!!
         pais= homeActivity.pais.text.toString()
         provincia = homeActivity.provincia.text.toString()
         latitude = homeActivity.latitudeTxt.text.toString()
         longitude = homeActivity.longitudeTxt.text.toString()
-        val view = layoutInflater.inflate(R.layout.dialog_info_check_map, null)
+        /*val view = layoutInflater.inflate(R.layout.dialog_info_check_map, null)
         dialogInfo = Dialog(requireContext())
         dialogInfo.setContentView(view)
         dialogInfo.window?.setBackgroundDrawableResource(android.R.color.transparent);
         binding?.infoAboutMaps?.setOnClickListener {
             dialogInfo.show()
         }
+
+         */
+
     }
 
 
@@ -85,7 +89,7 @@ class PublicarAnimalFragment: Fragment(R.layout.fragment_publicar_animal) {
 
     private fun checkInfoAndContinue() {
 
-        awesomeValidation.addValidation(binding?.nombreAnimal,
+        awesomeValidation.addValidation(binding?.textName,
                 RegexTemplate.NOT_EMPTY, "Tiene que indicar un nombre")
         awesomeValidation.addValidation(binding?.descripcionAnimal,
                 RegexTemplate.NOT_EMPTY, "Tiene que indicar una descripción")
@@ -93,7 +97,7 @@ class PublicarAnimalFragment: Fragment(R.layout.fragment_publicar_animal) {
                 RegexTemplate.TELEPHONE, "Tiene que indicar un número válido de Whatsapp")
         awesomeValidation.addValidation(binding?.phoneNumber,
                 RegexTemplate.TELEPHONE, "Tiene que indicar un número válido de teléfono")
-        awesomeValidation.addValidation(binding?.cantAnimales,
+        awesomeValidation.addValidation(binding?.textCant,
                 RegexTemplate.NOT_EMPTY, "Tiene que indicar la cantidad de animales a publicar")
 
 
@@ -112,7 +116,7 @@ class PublicarAnimalFragment: Fragment(R.layout.fragment_publicar_animal) {
             }else{
                 val intent = Intent(context, ImagenesAnimalActivity::class.java)
                 intent.putExtra("nombreAnimal", nombreAnimal)
-                intent.putExtra("cantAnimales", binding?.cantAnimales?.text.toString())
+                intent.putExtra("cantAnimales", binding!!.cantAnimales.editText!!.text.toString())
                 intent.putExtra("tipoAnimal", tipoAnimal)
                 intent.putExtra("sexoAnimal", sexoAnimal)
                 intent.putExtra("transitoUrgente", transitoUrgente.toString())
@@ -137,7 +141,7 @@ class PublicarAnimalFragment: Fragment(R.layout.fragment_publicar_animal) {
 
     private fun validateSpinnerEdadAnimal() {
         awesomeValidation.addValidation(activity, R.id.spinnerAct, { validationHolder ->
-            (validationHolder.view as Spinner).selectedItem.toString() != "Edad del animal"
+            (validationHolder.view as PowerSpinnerView).text.toString() != "Seleccione la edad"
         }, { validationHolder ->
             val textViewError = (validationHolder.view as Spinner).selectedView as TextView
             textViewError.error = validationHolder.errMsg
@@ -151,7 +155,7 @@ class PublicarAnimalFragment: Fragment(R.layout.fragment_publicar_animal) {
 
     private fun validateSpinnerSexoAnimal() {
         awesomeValidation.addValidation(activity, R.id.spinnerSexoAnimal, { validationHolder ->
-            (validationHolder.view as Spinner).selectedItem.toString() != "Sexo animal"
+            (validationHolder.view as PowerSpinnerView).text.toString() != "Seleccione el sexo"
         }, { validationHolder ->
             val textViewError = (validationHolder.view as Spinner).selectedView as TextView
             textViewError.error = validationHolder.errMsg
@@ -165,7 +169,7 @@ class PublicarAnimalFragment: Fragment(R.layout.fragment_publicar_animal) {
 
     private fun validateSpinnerTipoAnimal() {
         awesomeValidation.addValidation(activity, R.id.spinnerTipoAnimal, { validationHolder ->
-            (validationHolder.view as Spinner).selectedItem.toString() != "Tipo de animal"
+            (validationHolder.view as PowerSpinnerView).text.toString() != "Seleccione un tipo de animal"
         }, { validationHolder ->
             val textViewError = (validationHolder.view as Spinner).selectedView as TextView
             textViewError.error = validationHolder.errMsg
@@ -179,36 +183,20 @@ class PublicarAnimalFragment: Fragment(R.layout.fragment_publicar_animal) {
 
 
     private fun settingSpinner() {
-        val value = arrayOf("Edad del animal", "Menos de 2 semanas", "2 semanas a 1 mes", "1 a 3 meses", "3 a 6 meses", "6 meses a 1 año", "1 a 3 años", "3 a 5 años", "5 a 8 años", "Más de 8 años")
-        val tipoAnimal = arrayOf("Tipo de animal", "Perro", "Gato", "Ave", "Conejo", "Tortuga", "Roedor", "Otro")
-        val sexoAnimal = arrayOf("Sexo animal", "Macho", "Hembra")
-        val arrayList = ArrayList(Arrays.asList(*value))
-        val arrayListTipoAnimal = ArrayList(Arrays.asList(*tipoAnimal))
-        val arrayListSexoAnimal = ArrayList(Arrays.asList(*sexoAnimal))
-        val arrayAdapter = ArrayAdapter(requireContext(), R.layout.spinner_layout, arrayList)
-        val arrayAdapterTipoAnimal = ArrayAdapter(requireContext(), R.layout.spinner_layout, arrayListTipoAnimal)
-        val arrayAdapterSexoAnimal = ArrayAdapter(requireContext(), R.layout.spinner_layout, arrayListSexoAnimal)
-        binding?.spinnerAct?.adapter = arrayAdapter
-        binding?.spinnerTipoAnimal?.adapter = arrayAdapterTipoAnimal
-        binding?.spinnerSexoAnimal?.adapter = arrayAdapterSexoAnimal
+
     }
 
 
     private fun getEditTextValues() {
-        tipoAnimal = binding?.spinnerTipoAnimal?.selectedItem.toString()
-        nombreAnimal = binding?.nombreAnimal?.editableText.toString()
-        sexoAnimal = binding?.spinnerSexoAnimal?.selectedItem.toString()
+        tipoAnimal = binding!!.spinnerTipoAnimal.text.toString()
+        nombreAnimal = binding?.nombreAnimal?.editText?.text.toString()
+        sexoAnimal = binding!!.spinnerSexoAnimal.text.toString()
         if(binding?.transitoCheckBox?.isChecked == true){
             transitoUrgente = true
         }
-        if(binding?.mapsCheckBox?.isChecked == true){
-            aparecerEnMaps = true
-        }
-        edadAnimal = binding?.spinnerAct?.selectedItem.toString()
+
+        edadAnimal = binding!!.spinnerEdadAnimal.text.toString()
         descripcionAnimal = binding?.descripcionAnimal?.editableText.toString()
-
-
-
     }
 
     //to avoid memory leaks
@@ -218,10 +206,9 @@ class PublicarAnimalFragment: Fragment(R.layout.fragment_publicar_animal) {
     }
 
 
-
     fun putBundle(bundle: Bundle) {
-            //latitude=bundle.getString("latitude").toString()
-            //longitude=bundle.getString("longitude").toString()
+        //latitude=bundle.getString("latitude").toString()
+        //longitude=bundle.getString("longitude").toString()
 
     }
 

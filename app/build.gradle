@@ -124,19 +124,20 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.1"
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.3.1'
 
-    //AWS
-    implementation 'com.amazonaws:aws-android-sdk-rekognition:2.10.0'
 
     //Google maps
     implementation 'com.google.android.gms:play-services-maps:17.0.1'
 
     //Firebase ML, object detection
 
+    implementation 'com.google.mlkit:object-detection:16.2.6'
     implementation 'com.google.mlkit:image-labeling:17.0.5'
     implementation 'com.google.android.gms:play-services-mlkit-image-labeling:16.0.5'
-    //implementation 'com.google.firebase:firebase-ml-vision:24.0.3'
-    implementation 'com.google.firebase:firebase-ml-vision-image-label-model:20.0.1'
-
+    // Import the BoM for the Firebase platform
+    implementation platform('com.google.firebase:firebase-bom:28.4.1')
     implementation 'com.hbb20:ccp:2.3.7'
+    //Power spinner
+    implementation "com.github.skydoves:powerspinner:1.1.7"
+
 
 }

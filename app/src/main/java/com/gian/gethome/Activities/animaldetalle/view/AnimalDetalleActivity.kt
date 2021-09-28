@@ -17,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.viewpager.widget.ViewPager
+import com.airbnb.lottie.LottieAnimationView
 import com.gian.gethome.Activities.animaldetalle.interfaces.AnimalDetalleView
 import com.gian.gethome.Activities.animaldetalle.model.AnimalDetalleInteractor
 import com.gian.gethome.Activities.animaldetalle.presenter.AnimalDetallePresenter
@@ -48,7 +49,7 @@ class AnimalDetalleActivity : AppCompatActivity(),AnimalDetalleView {
     private lateinit var animalKey:String
     private lateinit var provincia:String
     private lateinit var pais:String
-    private lateinit var toggleButtonFav:FloatingActionButton
+    private lateinit var buttonAddToFav:LottieAnimationView
     private lateinit var dialogBottomSheet: BottomSheetDialog
     private lateinit var viewBottomSheet:View
     private lateinit var image:CircleImageView
@@ -65,14 +66,16 @@ class AnimalDetalleActivity : AppCompatActivity(),AnimalDetalleView {
         getIntentValues()
         setUIvalues()
         presenter.checkFavouritesInDB(animalKey)
-        setLogicToToggleButtonFav()
+        setLogicToButtonFav()
         presenter.setFotoYnombrePerfil(userIDownerAnimal)
         presenter.loadImagesAnimal(animalKey)
         presenter.detectSexoAnimal(sexoAnimal)
         presenter.detectTransitoUrgente(transitoUrgente)
+        // Multiple object detection in static images
+
     }
 
-    private fun setLogicToToggleButtonFav() {
+    private fun setLogicToButtonFav() {
        /* toggleButtonFav.setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked) {
                 presenter.saveLikes(animalKey, userIDownerAnimal)
@@ -82,15 +85,17 @@ class AnimalDetalleActivity : AppCompatActivity(),AnimalDetalleView {
         })
 
         */
-        toggleButtonFav.setOnClickListener {
+        buttonAddToFav = findViewById(R.id.addToFav)
+        addToFav.setOnClickListener {
             if(esFavorito){
-                presenter.saveLikes(animalKey,userIDownerAnimal)
-                toggleButtonFav.setImageDrawable(ContextCompat.getDrawable(applicationContext, R.drawable.favourite_icon_red));
                 esFavorito = false
+                buttonAddToFav.setAnimation(R.raw.apple_event)
+                buttonAddToFav.playAnimation()
+                presenter.saveLikes(animalKey,userIDownerAnimal)
             }else{
-                presenter.deleteLike(animalKey)
-                toggleButtonFav.setImageDrawable(ContextCompat.getDrawable(applicationContext, R.drawable.favourite_icon));
                 esFavorito = true
+                buttonAddToFav.setImageResource(R.drawable.twitter_like)
+                presenter.deleteLike(animalKey)
             }
         }
 
@@ -114,7 +119,7 @@ class AnimalDetalleActivity : AppCompatActivity(),AnimalDetalleView {
         sexoAnimal = intent.getStringExtra("sexoAnimal").toString()
         provincia = intent.getStringExtra("Provincia").toString()
         pais = intent.getStringExtra("Pais").toString()
-        toggleButtonFav = findViewById(R.id.addToFav)
+
 
     }
 
@@ -191,7 +196,7 @@ class AnimalDetalleActivity : AppCompatActivity(),AnimalDetalleView {
     }
 
     override fun setFavButton() {
-        toggleButtonFav.setImageDrawable(ContextCompat.getDrawable(applicationContext, R.drawable.favourite_icon_red));
+       // toggleButtonFav.setImageDrawable(ContextCompat.getDrawable(applicationContext, R.drawable.favourite_icon_red));
     }
 
     override fun setNombreYfoto(userInfo: UserInfo) {
