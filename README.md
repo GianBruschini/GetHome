@@ -8,7 +8,7 @@ In this application an MVP architecture was used and Firebase was used for the p
 
 **Libraries used**
 
-* Firebase database, and Firebase storage.
+* Firebase database, Firebase crashlytics and Firebase storage.
 * Google play service, for Gmail login.
 * Facebook login,
 * Butterknife
@@ -18,15 +18,32 @@ In this application an MVP architecture was used and Firebase was used for the p
 * Dexter
 * FormValidation by basgeekball
 * Airbnb Lottie for animations
+* Google maps (google play services maps)
+
+
+
+
+# Future updates
+* Firebase ML kit, for labeling detection
+* Dependency Injection, using Hilt for a better writing of the tests
+* Testing!
+
+
+
+
+
+
+
 
 # Some screenshots of the app
 
 <p align"center">
-<img src="https://user-images.githubusercontent.com/59579790/127693579-71657620-046a-464d-b869-ca66076e44da.png" width="211" height="423" />
-<img src="https://user-images.githubusercontent.com/59579790/127693618-c3a59aca-30b7-41e4-ae8a-e8aec51328d7.png" width="211" height="423"  />
-<img src="https://user-images.githubusercontent.com/59579790/127756520-ad15fbbb-8fa3-45fb-8e1e-5f7a4cb9162d.png" width="211" height="423"  />
-<img src="https://user-images.githubusercontent.com/59579790/127693701-bb4483ec-b090-4a69-91cf-b392df1470a5.png" width="211" height="423"  />
+<img src="https://user-images.githubusercontent.com/59579790/134691263-da077aa3-3b3a-4274-82e7-63af1f3a42e6.png" width="211" height="423" />
+<img src="https://user-images.githubusercontent.com/59579790/134691363-ac2fd58a-56d1-4512-b9bb-ac69f30484fc.png" width="211" height="423"  />
+<img src="https://user-images.githubusercontent.com/59579790/134693580-dab55ef7-28d0-48fb-b883-129865b8513f.png" width="211" height="423"  />
+<img src="https://user-images.githubusercontent.com/59579790/134693758-2bfafae2-f4db-4e42-8f58-9bc48528e2cb.png" width="211" height="423"  />
 </p>
+
 
 
 
